@@ -14,8 +14,8 @@ The platform empowers citizens to **report waste sites**, **track cleanup progre
 
 **Supporting Goals:**
 
-* **SDG 12 – Responsible Consumption and Production**
-* **SDG 13 – Climate Action**
+- **SDG 12 – Responsible Consumption and Production**
+- **SDG 13 – Climate Action**
 
 ---
 
@@ -34,11 +34,11 @@ The MVP focuses on waste reporting and community engagement.
 
 ### Core Features
 
-* 🗑️ **Report Waste Sites:** Upload photos, add a description, and mark location on the map.
-* 🧱 **Geolocation Tracking:** Identify exact dump sites or littered areas.
-* 📊 **City Dashboard:** Visualize cleanup progress and report trends.
-* 🌾 **Eco-Points System:** Reward users for verified cleanup actions.
-* 🤝 **Collaboration Tools:** Link citizens with local authorities and NGOs.
+- 🗑️ **Report Waste Sites:** Upload photos, add a description, and mark location on the map.
+- 🧱 **Geolocation Tracking:** Identify exact dump sites or littered areas.
+- 📊 **City Dashboard:** Visualize cleanup progress and report trends.
+- 🌾 **Eco-Points System:** Reward users for verified cleanup actions.
+- 🤝 **Collaboration Tools:** Link citizens with local authorities and NGOs.
 
 ---
 
@@ -57,15 +57,15 @@ The MVP focuses on waste reporting and community engagement.
 
 ## 📈 Market Analysis
 
-* **Global Smart Waste Management Market:** Expected to reach **$5.5 billion by 2027** (Allied Market Research, 2024).
-* **African Urban Waste Projection:** Expected to **triple by 2050** (World Bank).
-* **Opportunity:** No dominant citizen-centered waste tracking platform currently exists in most African cities.
+- **Global Smart Waste Management Market:** Expected to reach **$5.5 billion by 2027** (Allied Market Research, 2024).
+- **African Urban Waste Projection:** Expected to **triple by 2050** (World Bank).
+- **Opportunity:** No dominant citizen-centered waste tracking platform currently exists in most African cities.
 
 ### Target Users
 
-* Urban residents (citizens, youth, environmental activists)
-* Municipal waste management authorities
-* Environmental NGOs and CSR partners
+- Urban residents (citizens, youth, environmental activists)
+- Municipal waste management authorities
+- Environmental NGOs and CSR partners
 
 ---
 
@@ -106,19 +106,48 @@ reviwa/
 
 ---
 
+## 🚀 Implementation Status
+
+**Current Phase:** Planning → Development Transition
+
+### MVP Development Progress (Q4 2025)
+
+- [x] ✅ **Phase 1**: Requirements & Planning Complete
+- [x] ✅ **Phase 2**: System Design & Architecture Complete
+- [ ] 🔄 **Phase 3**: Implementation (In Progress)
+  - [ ] Project structure setup
+  - [ ] Authentication system
+  - [ ] Waste reporting API
+  - [ ] Admin dashboard
+  - [ ] Interactive map
+- [ ] ⏳ **Phase 4**: Testing & Deployment
+
 ## 🦯 Roadmap (MVP → Expansion)
 
 **Phase 1 – MVP (Q4 2025):**
 
-* Waste site reporting and verification system
-* Dashboard for progress tracking
-* User authentication & eco-points system
+- Waste site reporting and verification system
+- Dashboard for progress tracking
+- User authentication & eco-points system
 
 **Phase 2 – Smart Expansion:**
 
-* IoT bin integration (future scope)
-* AI waste classification using image recognition
-* Mobile app version for Android & iOS
+- IoT bin integration (future scope)
+- AI waste classification using image recognition
+- Mobile app version for Android & iOS
+
+## 🛠️ Quick Start for Developers
+
+```bash
+# Get started with development
+git clone https://github.com/Mayen007/reviwa.git
+cd reviwa
+npm install
+
+# Follow the SETUP.md guide for detailed instructions
+```
+
+See [SETUP.md](SETUP.md) for complete development setup instructions.
 
 ---
 
@@ -145,4 +174,4 @@ Interested in collaborating, funding, or integrating Reviwa into your city progr
 📧 **[reviwa.project@gmail.com](mailto:reviwa.project@gmail.com)**
 🌐 Coming soon: [reviwa.io](#)
 
-> *"Cleaner cities start with informed citizens." – Reviwa Team*
+> _"Cleaner cities start with informed citizens." – Reviwa Team_
