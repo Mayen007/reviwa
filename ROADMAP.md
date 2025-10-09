@@ -2,7 +2,7 @@
 
 ## 📋 **Overview**
 
-Reviwa is a civic tech platform transforming urban waste management through democratic participation. This roadmap outlines the development journey from planning to a scalable community engagement platform.
+Reviwa is a smart waste management platform transforming urban environmental sustainability through community engagement. This roadmap outlines the development journey from planning to a scalable environmental impact platform.
 
 ---
 
@@ -12,16 +12,69 @@ Reviwa is a civic tech platform transforming urban waste management through demo
 
 - **Phase 1**: Requirements & Planning (100%)
 - **Phase 2**: System Design & Architecture (100%)
-- **Phase 3**: Development Setup (80% - In Progress)
+- **Phase 3**: Backend Infrastructure (90% - Nearly Complete)
 
-### **🔄 Current Sprint: Setup & Foundation**
+### **🔄 Current Sprint: Database Testing & Frontend Initialization**
+
+**✅ Backend Infrastructure (Completed):**
 
 - [x] Project structure initialization
 - [x] MERN stack dependency installation
-- [x] Tailwind CSS configuration
-- [ ] Server structure creation
-- [ ] Environment configuration
-- [ ] Basic authentication setup
+- [x] Express server with environmental focus
+- [x] MongoDB User model with green points system
+- [x] JWT authentication with role-based access
+- [x] API routes for waste reporting and events
+- [x] Database setup and testing scripts
+- [x] Environmental middleware and validation
+
+**🔄 Current Tasks (In Progress):**
+
+- [ ] MongoDB Atlas connection testing
+- [ ] Frontend React app initialization
+- [ ] Environment variables configuration
+
+---
+
+## 🏗️ **What's Actually Been Built**
+
+### ✅ **Completed Infrastructure (Production-Ready)**
+
+**Backend System (Express.js + MongoDB):**
+
+- Complete User model with environmental metrics (green_points, waste_reports_submitted, etc.)
+- JWT authentication with environmental role-based access (user/environmental_org/admin)
+- API routes for waste reporting, cleanup events, and user management
+- MongoDB connection with geospatial indexing for location features
+- Middleware for authentication, validation, and environmental role checking
+- Database setup scripts with sample environmental users
+- Green points system and achievement tracking
+
+**Environmental Data Models:**
+
+- Users with sustainability interests and location data
+- Reports schema ready for waste site reporting with AI categorization
+- Events schema for cleanup coordination and participant tracking
+- Geospatial indexing for location-based queries
+
+**Development Utilities:**
+
+- Database connection testing script
+- Sample environmental users creation script
+- MongoDB setup guide with Atlas and local options
+
+### 🔄 **Current Development Focus**
+
+**Database Connectivity (Week 2):**
+
+- Testing MongoDB Atlas connection with environmental data
+- Validating geospatial queries for waste site locations
+- Configuring production environment variables
+
+**Frontend Initialization (Week 3-4):**
+
+- React components for waste reporting with image upload
+- User authentication UI with environmental theme
+- Admin dashboard for report verification and cleanup coordination
 
 ---
 
@@ -31,29 +84,43 @@ Reviwa is a civic tech platform transforming urban waste management through demo
 
 **Goal**: Establish development environment and user authentication system
 
-#### Week 1: Development Setup
+#### Week 1: Backend Infrastructure (✅ COMPLETED)
 
 - [x] Initialize React client with Vite
-- [x] Configure Tailwind CSS with civic tech color scheme
+- [x] Configure Tailwind CSS with environmental sustainability color scheme
 - [x] Install MERN stack dependencies
-- [ ] Create Express server structure
-- [ ] Configure MongoDB Atlas connection
-- [ ] Set up environment variables
+- [x] Create Express server structure with environmental focus
+- [x] Build complete User model with green points system
+- [x] Implement JWT authentication with environmental roles
+- [x] Create API routes for waste reporting and cleanup events
+- [x] Build database setup and testing scripts
+- [x] Configure MongoDB connection with geospatial indexing
 
-#### Week 2: Authentication System
+#### Week 2: Database Testing & Frontend Setup (🔄 IN PROGRESS)
 
+**✅ Authentication System (COMPLETED):**
+
+- [x] Implement JWT-based authentication with environmental user data
+- [x] Create role-based access control (user/environmental_org/admin)
+- [x] Build protected route middleware
+- [x] Password hashing with bcrypt (salt rounds: 12)
+- [x] User profile management with green points system
+- [x] Sample environmental users with achievements
+
+**🔄 Current Tasks:**
+
+- [ ] Test MongoDB Atlas connection with sample data
+- [ ] Validate geospatial queries for location features
 - [ ] Design user registration/login UI components
-- [ ] Implement JWT-based authentication
-- [ ] Create role-based access control (citizen/admin/ngo)
-- [ ] Build protected route middleware
-- [ ] Password hashing with bcrypt
-- [ ] User profile management
+- [ ] Connect frontend to authentication endpoints
 
 **Deliverables**:
 
 - ✅ Working development environment
-- 🔄 User authentication system
-- 🔄 Role-based access control
+- ✅ User authentication system (Backend)
+- ✅ Role-based access control (Backend)
+- 🔄 Database connectivity validation
+- 🔄 Frontend authentication UI
 
 ---
 
@@ -79,9 +146,10 @@ Reviwa is a civic tech platform transforming urban waste management through demo
 
 **Deliverables**:
 
-- 🔄 Waste reporting form with image upload
-- 🔄 Geolocation integration
-- 🔄 Report management system
+- ✅ Waste reporting API endpoints (Backend)
+- 🔄 Waste reporting form with image upload (Frontend)
+- 🔄 Geolocation integration (Frontend)
+- 🔄 Report management system (Frontend)
 
 ---
 
@@ -107,9 +175,11 @@ Reviwa is a civic tech platform transforming urban waste management through demo
 
 **Deliverables**:
 
-- 🔄 Admin dashboard with report management
-- 🔄 Community engagement features
-- 🔄 Eco-points and gamification system
+- ✅ Admin/NGO role-based access (Backend)
+- 🔄 Admin dashboard with report management (Frontend)
+- ✅ Green points system with achievements (Backend)
+- 🔄 Community engagement features (Frontend)
+- 🔄 Eco-points gamification UI (Frontend)
 
 ---
 
@@ -200,7 +270,7 @@ Reviwa is a civic tech platform transforming urban waste management through demo
 - [ ] 60% report resolution rate
 - [ ] 70% user retention after 30 days
 
-### **Civic Impact Metrics**
+### **Environmental Impact Metrics**
 
 - [ ] 3+ NGO partnerships established
 - [ ] 1+ municipal partnership
@@ -247,7 +317,7 @@ Reviwa is a civic tech platform transforming urban waste management through demo
 ### **Year 3: Ecosystem Leadership**
 
 - Open-source community platform
-- API marketplace for civic tech
+- API marketplace for environmental tech
 - Global waste management standards
 - UN SDG impact certification
 
@@ -264,4 +334,4 @@ Reviwa is a civic tech platform transforming urban waste management through demo
 
 ---
 
-> _"Every line of code brings us closer to cleaner, more sustainable cities through democratic participation."_ - Reviwa Team
+> _"Every line of code brings us closer to cleaner, more sustainable cities through environmental action."_ - Reviwa Team

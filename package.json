@@ -1,7 +1,7 @@
 {
   "name": "reviwa",
   "version": "1.0.0",
-  "description": "MERN stack civic tech platform for smart waste management and community engagement",
+  "description": "MERN stack environmental platform for smart waste management and sustainability tracking",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -14,7 +14,7 @@
   },
   "keywords": [
     "waste-management",
-    "civic-tech",
+    "environmental-tech",
     "mern-stack",
     "sustainability",
     "sdg"
