@@ -10,13 +10,14 @@ import PrivateRoute from "./components/PrivateRoute";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
+import ReportWaste from "./components/ReportWaste";
 import "./index.css";
 
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="App">
+        <div className="App w-full min-h-screen">
           <Routes>
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
@@ -28,6 +29,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Dashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/report"
+              element={
+                <PrivateRoute>
+                  <ReportWaste />
                 </PrivateRoute>
               }
             />
