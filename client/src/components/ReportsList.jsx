@@ -76,9 +76,9 @@ const ReportsList = ({ reports = [], onStatusChange, onViewDetails }) => {
   };
 
   return (
-    <div className="bg-white shadow rounded-lg">
+    <div className="bg-white shadow-lg rounded-2xl">
       {/* Header with filters */}
-      <div className="px-6 py-4 border-b border-gray-200">
+      <div className="px-6 py-6 border-b border-gray-200">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-lg font-medium text-gray-900 mb-4 sm:mb-0">
             Recent Reports ({filteredReports.length})
@@ -208,8 +208,7 @@ const ReportsList = ({ reports = [], onStatusChange, onViewDetails }) => {
                           onClick={() =>
                             onStatusChange?.(report.id, "verified")
                           }
-                          className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                          style={{ backgroundColor: "#16a34a", color: "white" }}
+                          className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md btn-premium btn-primary"
                         >
                           Verify
                         </button>
@@ -220,8 +219,7 @@ const ReportsList = ({ reports = [], onStatusChange, onViewDetails }) => {
                           onClick={() =>
                             onStatusChange?.(report.id, "in_progress")
                           }
-                          className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                          style={{ backgroundColor: "#2563eb", color: "white" }}
+                          className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md btn-premium btn-secondary"
                         >
                           Start Cleanup
                         </button>
@@ -232,8 +230,7 @@ const ReportsList = ({ reports = [], onStatusChange, onViewDetails }) => {
                           onClick={() =>
                             onStatusChange?.(report.id, "resolved")
                           }
-                          className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                          style={{ backgroundColor: "#16a34a", color: "white" }}
+                          className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md btn-premium btn-primary"
                         >
                           Mark Resolved
                         </button>
@@ -249,7 +246,7 @@ const ReportsList = ({ reports = [], onStatusChange, onViewDetails }) => {
 
       {/* Summary Footer */}
       {filteredReports.length > 0 && (
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+        <div className="px-6 py-6 bg-accent-sand border-t border-gray-200">
           <div className="flex items-center justify-between text-sm text-gray-600">
             <div className="flex items-center space-x-6">
               <span>
