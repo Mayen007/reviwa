@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { FadeIn, SlideUp } from "./MotionWrapper";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -43,95 +44,84 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-accent-sand to-gray-50 py-12 px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <div className="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-green-600">
-            <svg
-              className="h-8 w-8 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+        {/* Logo and Header */}
+        <FadeIn className="text-center">
+          <div className="mx-auto h-20 w-20 flex items-center justify-center rounded-2xl bg-gradient-to-r from-primary to-emerald-600 shadow-lg mb-6">
+            <span className="text-2xl text-white font-inter font-bold">R</span>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h1 className="text-3xl font-inter font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
             Welcome back to Reviwa
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          </h1>
+          <p className="text-charcoal/70 font-body">
             Sign in to continue building sustainable cities
           </p>
-        </div>
+        </FadeIn>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
-              {error}
+        {/* Login Form Card */}
+        <SlideUp delay={0.2} className="card-glass">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm font-body">
+                {error}
+              </div>
+            )}
+
+            <div className="space-y-6">
+              {/* Email Field with Floating Label */}
+              <div className="relative">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="peer block w-full px-4 py-3 border border-gray-300 rounded-xl bg-white/50 backdrop-blur-sm placeholder-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                  placeholder="Email address"
+                />
+                <label
+                  htmlFor="email"
+                  className="absolute left-4 -top-2.5 px-2 bg-white text-sm font-medium text-charcoal/70 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-charcoal/50 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary"
+                >
+                  Email address
+                </label>
+              </div>
+
+              {/* Password Field with Floating Label */}
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="peer block w-full px-4 py-3 border border-gray-300 rounded-xl bg-white/50 backdrop-blur-sm placeholder-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                  placeholder="Password"
+                />
+                <label
+                  htmlFor="password"
+                  className="absolute left-4 -top-2.5 px-2 bg-white text-sm font-medium text-charcoal/70 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-charcoal/50 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary"
+                >
+                  Password
+                </label>
+              </div>
             </div>
-          )}
 
-          <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500"
-                placeholder="Enter your email"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500"
-                placeholder="Enter your password"
-              />
-            </div>
-          </div>
-
-          <div>
+            {/* Sign In Button */}
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-green-400 disabled:cursor-not-allowed transition-colors"
-              style={{
-                backgroundColor: loading ? "#4ade80" : "#16a34a",
-                color: "white",
-              }}
+              className="btn-reviwa w-full disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {loading ? (
-                <div className="flex items-center">
+                <div className="flex items-center justify-center">
                   <svg
-                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                    className="animate-spin -ml-1 mr-2 h-4 w-4"
                     fill="none"
                     viewBox="0 0 24 24"
                   >
@@ -152,41 +142,51 @@ const Login = () => {
                   Signing in...
                 </div>
               ) : (
-                "Sign in"
+                "Sign in to Dashboard"
               )}
             </button>
-          </div>
+          </form>
+        </SlideUp>
 
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
-              <Link
-                to="/register"
-                className="font-medium text-green-600 hover:text-green-500 transition-colors"
-              >
-                Join the movement
-              </Link>
-            </p>
-          </div>
+        {/* Register Link */}
+        <div className="text-center">
+          <p className="text-charcoal/70 font-body">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="font-medium text-primary hover:text-secondary transition-colors"
+            >
+              Join the environmental movement
+            </Link>
+          </p>
+        </div>
 
-          {/* Demo credentials for testing */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h4 className="text-sm font-medium text-blue-900 mb-2">
-              Demo Accounts
-            </h4>
-            <div className="text-xs text-blue-700 space-y-1">
+        {/* Demo Credentials */}
+        <div className="card-glass">
+          <h4 className="text-sm font-medium text-charcoal mb-3 font-inter">
+            🌱 Demo Accounts
+          </h4>
+          <div className="text-xs text-charcoal/70 space-y-2 font-body">
+            <div className="p-2 bg-emerald-50 rounded-lg">
               <p>
-                <strong>User:</strong> sarah@example.com / EcoPass123!
+                <strong className="text-primary">Citizen:</strong>{" "}
+                sarah@example.com / EcoPass123!
               </p>
+            </div>
+            <div className="p-2 bg-blue-50 rounded-lg">
               <p>
-                <strong>Org:</strong> contact@greensolutions.org / GreenOrg123!
+                <strong className="text-secondary">NGO:</strong>{" "}
+                contact@greensolutions.org / GreenOrg123!
               </p>
+            </div>
+            <div className="p-2 bg-gray-50 rounded-lg">
               <p>
-                <strong>Admin:</strong> admin@reviwa.com / AdminPass123!
+                <strong className="text-charcoal">Admin:</strong>{" "}
+                admin@reviwa.com / AdminPass123!
               </p>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

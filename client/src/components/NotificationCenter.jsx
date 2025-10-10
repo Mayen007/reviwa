@@ -49,8 +49,8 @@ const AchievementNotification = ({ achievement, onClose, duration = 5000 }) => {
                 setIsLeaving(true);
                 setTimeout(() => onClose?.(), 300);
               }}
-              className="text-white/80 hover:text-white transition-colors"
-              style={{ color: "white" }}
+              className="text-white/90 hover:text-white transition-colors focus:outline-none"
+              aria-label="Close achievement"
             >
               <svg
                 className="w-4 h-4"
@@ -102,10 +102,7 @@ const AchievementNotification = ({ achievement, onClose, duration = 5000 }) => {
         <div className="h-1 bg-gray-200">
           <div
             className="h-1 bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-300 ease-out"
-            style={{
-              width: isVisible ? "0%" : "100%",
-              transition: `width ${duration}ms linear`,
-            }}
+            style={{ width: isVisible ? "0%" : "100%", transition: `width ${duration}ms linear` }}
           ></div>
         </div>
       </div>
