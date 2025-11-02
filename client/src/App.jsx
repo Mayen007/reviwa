@@ -1,31 +1,47 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
+
+// Pages
+import LandingPage from "./pages/LandingPage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Reports from "./pages/Reports";
+import CreateReport from "./pages/CreateReport";
+import ReportDetail from "./pages/ReportDetail";
+import Profile from "./pages/Profile";
+import Leaderboard from "./pages/Leaderboard";
+
+// Components
 import PrivateRoute from "./components/PrivateRoute";
-import LandingPage from "./components/LandingPage";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Dashboard from "./components/Dashboard";
-import ReportWaste from "./components/ReportWaste";
-import "./index.css";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <div className="App w-full min-h-screen">
+    <AuthProvider>
+      <Router
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <div className="min-h-screen bg-gray-50">
+          <Navbar />
           <Routes>
-            {/* Public routes */}
+            {/* Public Routes */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/reports/:id" element={<ReportDetail />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
 
-            {/* Protected routes */}
+            {/* Protected Routes */}
             <Route
               path="/dashboard"
               element={
@@ -35,20 +51,28 @@ function App() {
               }
             />
             <Route
-              path="/report"
+              path="/create-report"
               element={
                 <PrivateRoute>
-                  <ReportWaste />
+                  <CreateReport />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
                 </PrivateRoute>
               }
             />
 
-            {/* Catch all - redirect to landing page */}
+            {/* 404 */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
-      </AuthProvider>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 }
 

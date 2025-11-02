@@ -1,0 +1,81 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="256" fill="#00B26F"/>
+  
+  <!-- Large Leaf Shape -->
+  <path d="M 256 80 Q 340 120 360 220 Q 365 260 350 300 Q 330 350 280 380 Q 256 395 232 380 Q 182 350 162 300 Q 147 260 152 220 Q 172 120 256 80 Z" fill="#ffffff" opacity="0.95"/>
+  
+  <!-- Leaf vein (center) -->
+  <path d="M 256 100 Q 256 150 256 380" stroke="#00B26F" stroke-width="4" opacity="0.3" stroke-linecap="round"/>
+  
+  <!-- Side veins -->
+  <path d="M 256 160 Q 220 180 200 200" stroke="#00B26F" stroke-width="2" opacity="0.2" stroke-linecap="round"/>
+  <path d="M 256 160 Q 292 180 312 200" stroke="#00B26F" stroke-width="2" opacity="0.2" stroke-linecap="round"/>
+  <path d="M 256 220 Q 225 235 210 250" stroke="#00B26F" stroke-width="2" opacity="0.2" stroke-linecap="round"/>
+  <path d="M 256 220 Q 287 235 302 250" stroke="#00B26F" stroke-width="2" opacity="0.2" stroke-linecap="round"/>
+  
+  <!-- City Skyline inside leaf -->
+  <g opacity="0.85">
+    <!-- Building 1 (left) -->
+    <rect x="190" y="280" width="30" height="60" fill="#047857" rx="2"/>
+    <rect x="195" y="285" width="6" height="6" fill="#34d399" opacity="0.6"/>
+    <rect x="205" y="285" width="6" height="6" fill="#34d399" opacity="0.6"/>
+    <rect x="195" y="295" width="6" height="6" fill="#34d399" opacity="0.6"/>
+    <rect x="205" y="295" width="6" height="6" fill="#34d399" opacity="0.6"/>
+    <rect x="195" y="305" width="6" height="6" fill="#34d399" opacity="0.6"/>
+    <rect x="205" y="305" width="6" height="6" fill="#34d399" opacity="0.6"/>
+    
+    <!-- Building 2 (center-left) -->
+    <rect x="225" y="260" width="25" height="80" fill="#065f46" rx="2"/>
+    <rect x="229" y="265" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="237" y="265" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="229" y="275" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="237" y="275" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="229" y="285" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="237" y="285" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="229" y="295" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="237" y="295" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    
+    <!-- Building 3 (center) - tallest -->
+    <rect x="255" y="240" width="28" height="100" fill="#064e3b" rx="2"/>
+    <rect x="259" y="245" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    <rect x="269" y="245" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    <rect x="259" y="255" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    <rect x="269" y="255" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    <rect x="259" y="265" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    <rect x="269" y="265" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    <rect x="259" y="275" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    <rect x="269" y="275" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    <rect x="259" y="285" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    <rect x="269" y="285" width="6" height="6" fill="#a7f3d0" opacity="0.6"/>
+    
+    <!-- Building 4 (center-right) -->
+    <rect x="287" y="265" width="24" height="75" fill="#065f46" rx="2"/>
+    <rect x="291" y="270" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="299" y="270" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="291" y="280" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="299" y="280" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="291" y="290" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    <rect x="299" y="290" width="5" height="5" fill="#6ee7b7" opacity="0.6"/>
+    
+    <!-- Building 5 (right) -->
+    <rect x="315" y="285" width="22" height="55" fill="#047857" rx="2"/>
+    <rect x="319" y="290" width="5" height="5" fill="#34d399" opacity="0.6"/>
+    <rect x="327" y="290" width="5" height="5" fill="#34d399" opacity="0.6"/>
+    <rect x="319" y="300" width="5" height="5" fill="#34d399" opacity="0.6"/>
+    <rect x="327" y="300" width="5" height="5" fill="#34d399" opacity="0.6"/>
+  </g>
+  
+  <!-- Ground line inside leaf -->
+  <path d="M 180 340 Q 256 335 332 340" stroke="#00B26F" stroke-width="3" opacity="0.3" stroke-linecap="round"/>
+  
+  <!-- Decorative elements -->
+  <g opacity="0.5">
+    <!-- Small leaves/sparkles around main leaf -->
+    <circle cx="140" cy="180" r="6" fill="#d1fae5"/>
+    <circle cx="372" cy="180" r="6" fill="#d1fae5"/>
+    <circle cx="160" cy="280" r="5" fill="#d1fae5"/>
+    <circle cx="352" cy="280" r="5" fill="#d1fae5"/>
+    <circle cx="256" cy="420" r="4" fill="#d1fae5"/>
+  </g>
+</svg>

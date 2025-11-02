@@ -1,0 +1,383 @@
+import Report from '../models/Report.model.js';
+import User from '../models/User.model.js';
+import cloudinary from '../config/cloudinary.js';
+
+/**
+ * @desc    Create new report
+ * @route   POST /api/reports
+ * @access  Private
+ */
+export const createReport = async (req, res, next) => {
+  try {
+    // Debug: Log what we're receiving
+    console.log('req.body:', req.body);
+    console.log('req.files:', req.files);
+
+    const { title, description, wasteType, severity } = req.body;
+
+    // Validate required fields
+    if (!title || !description) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide all required fields',
+        details: {
+          title: !title ? 'Title is required' : null,
+          description: !description ? 'Description is required' : null
+        }
+      });
+    }
+
+    // Parse location from form data
+    // Multer creates a nested structure, so access it accordingly
+    let longitude, latitude;
+
+    if (req.body.location && req.body.location.coordinates) {
+      // If multer already nested it
+      longitude = parseFloat(req.body.location.coordinates[0]);
+      latitude = parseFloat(req.body.location.coordinates[1]);
+    } else {
+      // Fallback to bracket notation
+      longitude = parseFloat(req.body['location[coordinates][0]']);
+      latitude = parseFloat(req.body['location[coordinates][1]']);
+    }
+
+    console.log('Parsed coordinates:', { longitude, latitude });
+
+    if (isNaN(longitude) || isNaN(latitude) || (longitude === 0 && latitude === 0)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide valid location coordinates',
+        debug: {
+          receivedLocation: req.body.location,
+          parsedLongitude: longitude,
+          parsedLatitude: latitude
+        }
+      });
+    }
+
+    const location = {
+      type: (req.body.location && req.body.location.type) || req.body['location[type]'] || 'Point',
+      coordinates: [longitude, latitude]
+    };
+
+    if ((req.body.location && req.body.location.address) || req.body['location[address]']) {
+      location.address = (req.body.location && req.body.location.address) || req.body['location[address]'];
+    }
+
+    // Handle image uploads to Cloudinary
+    const imageUploads = [];
+    if (req.files && req.files.length > 0) {
+      // Check if Cloudinary is configured
+      const cloudinaryConfig = cloudinary.config();
+      if (!cloudinaryConfig.cloud_name || !cloudinaryConfig.api_key || !cloudinaryConfig.api_secret) {
+        console.warn('⚠️  Cloudinary not configured. Skipping image uploads.');
+        console.log('Set CLOUDINARY_URL in .env to enable image uploads');
+      } else {
+        for (const file of req.files) {
+          try {
+            // Check file size
+            const fileSizeMB = file.size / (1024 * 1024);
+            console.log(`Processing image: ${file.originalname} (${fileSizeMB.toFixed(2)}MB)`);
+
+            // Upload to Cloudinary with aggressive compression for large files
+            const result = await new Promise((resolve, reject) => {
+              const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                  folder: 'reviwa/reports',
+                  transformation: [
+                    { width: 1920, height: 1920, crop: 'limit' }, // Max 1920px
+                    { quality: 'auto:low' }, // Aggressive quality reduction
+                    { fetch_format: 'auto' } // Use best format (WebP, AVIF)
+                  ],
+                  resource_type: 'auto'
+                },
+                (error, result) => {
+                  if (error) reject(error);
+                  else resolve(result);
+                }
+              );
+              uploadStream.end(file.buffer);
+            });
+
+            console.log(`✓ Image uploaded: ${result.secure_url} (${(result.bytes / (1024 * 1024)).toFixed(2)}MB)`);
+
+            imageUploads.push({
+              url: result.secure_url,
+              publicId: result.public_id
+            });
+          } catch (uploadError) {
+            console.error('Image upload error:', uploadError.message);
+            // Continue with other images even if one fails
+          }
+        }
+      }
+    }
+
+    // Create report
+    const report = await Report.create({
+      title,
+      description,
+      location,
+      wasteType,
+      severity,
+      images: imageUploads,
+      reportedBy: req.user.id
+    });
+
+    // Update user's report count
+    await User.findByIdAndUpdate(req.user.id, {
+      $inc: { reportsCount: 1, ecoPoints: 10 } // Award 10 points for reporting
+    });
+
+    // Populate user info
+    await report.populate('reportedBy', 'name email avatar');
+
+    res.status(201).json({
+      success: true,
+      message: 'Report created successfully',
+      data: { report }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get all reports with filters
+ * @route   GET /api/reports
+ * @access  Public
+ */
+export const getReports = async (req, res, next) => {
+  try {
+    const { status, wasteType, severity, limit = 50, page = 1 } = req.query;
+
+    // Build query
+    const query = {};
+    if (status) query.status = status;
+    if (wasteType) query.wasteType = wasteType;
+    if (severity) query.severity = severity;
+
+    // Calculate pagination
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    // Get reports
+    const reports = await Report.find(query)
+      .populate('reportedBy', 'name email avatar')
+      .sort({ createdAt: -1 })
+      .limit(parseInt(limit))
+      .skip(skip);
+
+    // Get total count
+    const total = await Report.countDocuments(query);
+
+    res.json({
+      success: true,
+      data: {
+        reports,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / parseInt(limit))
+        }
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get single report
+ * @route   GET /api/reports/:id
+ * @access  Public
+ */
+export const getReport = async (req, res, next) => {
+  try {
+    const report = await Report.findById(req.params.id)
+      .populate('reportedBy', 'name email avatar ecoPoints')
+      .populate('verifiedBy', 'name email');
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: 'Report not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: { report }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Update report status
+ * @route   PATCH /api/reports/:id/status
+ * @access  Private (Admin or Report Owner)
+ */
+export const updateReportStatus = async (req, res, next) => {
+  try {
+    const { status } = req.body;
+    const report = await Report.findById(req.params.id);
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: 'Report not found'
+      });
+    }
+
+    // Check authorization
+    const isOwner = report.reportedBy.toString() === req.user.id;
+    const isAdmin = req.user.role === 'admin';
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to update this report'
+      });
+    }
+
+    // Update status
+    report.status = status;
+
+    if (status === 'verified' && !report.verifiedBy) {
+      report.verifiedBy = req.user.id;
+      // Award bonus points for verification
+      await User.findByIdAndUpdate(report.reportedBy, {
+        $inc: { ecoPoints: 20 }
+      });
+    }
+
+    if (status === 'resolved') {
+      report.resolvedAt = new Date();
+      // Award completion points
+      await User.findByIdAndUpdate(report.reportedBy, {
+        $inc: { ecoPoints: 50 }
+      });
+    }
+
+    await report.save();
+    await report.populate('reportedBy', 'name email avatar');
+
+    res.json({
+      success: true,
+      message: 'Report status updated',
+      data: { report }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Delete report
+ * @route   DELETE /api/reports/:id
+ * @access  Private (Admin or Report Owner)
+ */
+export const deleteReport = async (req, res, next) => {
+  try {
+    const report = await Report.findById(req.params.id);
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: 'Report not found'
+      });
+    }
+
+    // Check authorization
+    const isOwner = report.reportedBy.toString() === req.user.id;
+    const isAdmin = req.user.role === 'admin';
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to delete this report'
+      });
+    }
+
+    // Delete images from cloudinary if any
+    if (report.images && report.images.length > 0) {
+      for (const image of report.images) {
+        if (image.publicId) {
+          await cloudinary.uploader.destroy(image.publicId);
+        }
+      }
+    }
+
+    await Report.findByIdAndDelete(req.params.id);
+
+    // Update user's report count
+    await User.findByIdAndUpdate(report.reportedBy, {
+      $inc: { reportsCount: -1 }
+    });
+
+    res.json({
+      success: true,
+      message: 'Report deleted successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get reports by user
+ * @route   GET /api/reports/user/:userId
+ * @access  Public
+ */
+export const getUserReports = async (req, res, next) => {
+  try {
+    const reports = await Report.find({ reportedBy: req.params.userId })
+      .populate('reportedBy', 'name email avatar')
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      data: { reports }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get dashboard statistics
+ * @route   GET /api/reports/stats/dashboard
+ * @access  Public
+ */
+export const getDashboardStats = async (req, res, next) => {
+  try {
+    const totalReports = await Report.countDocuments();
+    const pendingReports = await Report.countDocuments({ status: 'pending' });
+    const resolvedReports = await Report.countDocuments({ status: 'resolved' });
+    const inProgressReports = await Report.countDocuments({ status: 'in-progress' });
+    const totalUsers = await User.countDocuments();
+
+    // Get reports by waste type
+    const reportsByType = await Report.aggregate([
+      { $group: { _id: '$wasteType', count: { $sum: 1 } } }
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        stats: {
+          total: totalReports,
+          pending: pendingReports,
+          resolved: resolvedReports,
+          inProgress: inProgressReports,
+          totalUsers: totalUsers
+        },
+        reportsByType
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};

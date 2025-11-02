@@ -1,73 +1,178 @@
-# React + TypeScript + Vite
+# Reviwa V2 - Clean Architecture
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a complete rebuild of the Reviwa waste management platform with improved code quality, maintainability, and consistent design.
 
-Currently, two official plugins are available:
+## 🎯 What's New in V2
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Architecture Improvements
 
-## React Compiler
+- **Clean MVC Structure**: Proper separation of models, controllers, and routes
+- **ES6 Modules**: Modern JavaScript throughout (import/export)
+- **Consistent Error Handling**: Centralized error middleware
+- **Better Code Organization**: Logical folder structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Frontend
 
-## Expanding the ESLint configuration
+- **Modern React**: Hooks, Context API, functional components
+- **Tailwind CSS**: Consistent, utility-first styling
+- **Framer Motion**: Smooth animations
+- **Clean Components**: Reusable, maintainable code
+- **Responsive Design**: Mobile-first approach
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Backend
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **RESTful API**: Proper HTTP methods and status codes
+- **JWT Authentication**: Secure token-based auth
+- **Mongoose Models**: Clean schema definitions with validation
+- **Geospatial Indexing**: Efficient location queries
+- **Role-based Access**: Admin and user permissions
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 📁 Project Structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+reviwa/
+├── server-v2/
+│   ├── config/          # Database & third-party configs
+│   ├── controllers/     # Business logic
+│   ├── middleware/      # Auth & error handling
+│   ├── models/          # MongoDB schemas
+│   ├── routes/          # API routes
+│   └── server.js        # Entry point
+│
+└── client-v2/
+    ├── src/
+    │   ├── components/  # Reusable components
+    │   ├── context/     # React contexts
+    │   ├── pages/       # Page components
+    │   ├── App.jsx      # Main app
+    │   └── main.jsx     # Entry point
+    └── package.json
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 16+
+- MongoDB running locally or connection string
+
+### Server Setup
+
+```bash
+cd server-v2
+npm install
+cp .env.example .env
+# Edit .env with your configuration
+npm run dev
 ```
+
+### Client Setup
+
+```bash
+cd client-v2
+npm install
+npm run dev
+```
+
+## 🔑 Key Features
+
+### Authentication
+
+- JWT-based authentication
+- Secure password hashing with bcrypt
+- Protected routes
+
+### Reports
+
+- Create waste reports with location
+- Upload images (ready for Cloudinary)
+- Filter by status, type, severity
+- Real-time status updates
+- Geolocation tracking
+
+### Gamification
+
+- Eco-points system
+- Leaderboard
+- Rewards for verified reports
+
+### User Experience
+
+- Clean, modern UI
+- Smooth animations
+- Mobile responsive
+- Loading states
+- Error handling
+
+## 📊 API Endpoints
+
+### Auth
+
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login
+- `GET /api/auth/me` - Get current user (protected)
+
+### Reports
+
+- `GET /api/reports` - Get all reports (with filters)
+- `GET /api/reports/:id` - Get single report
+- `POST /api/reports` - Create report (protected)
+- `PATCH /api/reports/:id/status` - Update status (protected)
+- `DELETE /api/reports/:id` - Delete report (protected)
+- `GET /api/reports/stats/dashboard` - Get statistics
+
+### Users
+
+- `GET /api/users/:id` - Get user profile
+- `PATCH /api/users/:id` - Update profile (protected)
+- `GET /api/users/leaderboard` - Get top users
+
+## 🎨 Design System
+
+### Colors
+
+- **Primary**: Green (#16a34a) - Environmental theme
+- **Secondary**: Blue - Info and actions
+- **Status Colors**: Yellow (pending), Green (resolved), Red (rejected)
+
+### Components
+
+- Buttons: Primary, Secondary, Outline, Danger
+- Cards: White background with hover effects
+- Badges: Status indicators
+- Forms: Clean inputs with validation
+
+## 🔐 Environment Variables
+
+```env
+PORT=5000
+NODE_ENV=development
+MONGODB_URI=mongodb://localhost:27017/reviwa-v2
+JWT_SECRET=your_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloud
+CLOUDINARY_API_KEY=your_key
+CLOUDINARY_API_SECRET=your_secret
+CLIENT_URL=http://localhost:5173
+```
+
+## 📝 Next Steps
+
+1. Set up MongoDB connection
+2. Configure Cloudinary for image uploads
+3. Test authentication flow
+4. Create sample reports
+5. Deploy to production
+
+## 🤝 Contributing
+
+This is a cleaner, more maintainable codebase. Follow these principles:
+
+- Write clean, readable code
+- Use meaningful variable names
+- Add comments for complex logic
+- Keep components small and focused
+- Test before committing
+
+## 📄 License
+
+MIT
