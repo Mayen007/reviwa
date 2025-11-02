@@ -37,13 +37,14 @@ The MVP focuses on waste reporting and community engagement.
 - 🗑️ **Report Waste Sites:** Upload photos (up to 5 images with auto-compression), add description, and mark location
 - 📍 **Geolocation Tracking:** Browser-based GPS to identify exact dump sites
 - 📊 **User Dashboard:** Track your reports, eco-points, and community impact
-- 🌍 **Interactive Map:** Visualize waste sites with Leaflet mapping
 - � **Eco-Points System:** Earn points for verified cleanup actions (10 points per report)
-- 👤 **User Profiles:** Dynamic avatars with initials, stats tracking
+- 👤 **User Profiles:** View account details and environmental impact stats
+- 🏅 **Leaderboard:** Top contributors ranked by eco-points
 - 🔐 **Secure Authentication:** JWT-based auth with protected routes
-- 📱 **Mobile Responsive:** Works seamlessly on desktop, tablet, and mobile devices
+- � **Report Management:** View, update status, and delete reports
+- �📱 **Mobile Responsive:** Works seamlessly on desktop, tablet, and mobile devices
 - ⚡ **Real-time Updates:** Dynamic data fetching with loading states
-- 🎨 **Modern UI/UX:** Glassmorphism effects, smooth animations, emerald color scheme
+- 🎨 **Modern UI/UX:** Glassmorphism effects, smooth Framer Motion animations, emerald color scheme
 
 ---
 
@@ -56,7 +57,6 @@ The MVP focuses on waste reporting and community engagement.
 | **Database**        | MongoDB 8.3.0 (Atlas)                       |
 | **Auth**            | JWT (bcryptjs, jsonwebtoken)                |
 | **File Storage**    | Cloudinary (image uploads & optimization)   |
-| **Maps**            | Leaflet, React Leaflet 4.2.1                |
 | **UI/Animations**   | Framer Motion 11.11, Heroicons 2.2          |
 | **API Client**      | Axios 1.7.7                                 |
 | **Hosting**         | Vercel (client) + Render / Railway (server) |
@@ -143,11 +143,11 @@ reviwa/
 - **React Router 6:** Client-side routing with protected routes
 - **Context API:** Global state management (AuthContext for user authentication)
 - **Tailwind CSS:** Utility-first CSS with custom emerald color scheme
-- **Framer Motion:** Smooth animations and transitions
+- **Framer Motion:** Smooth animations and transitions (loading spinners, page transitions, hover effects)
 - **Axios:** HTTP client with interceptors for API calls
-- **Leaflet Maps:** Interactive mapping with markers and popups
 - **Image Compression:** Client-side image optimization before upload (Canvas API)
 - **Responsive Design:** Mobile-first approach with breakpoints
+- **Heroicons:** Beautiful SVG icons for UI elements
 
 ### Data Models
 - **User Model:** name, email, password (hashed), avatar, ecoPoints, reportsCount
@@ -201,8 +201,11 @@ reviwa/
   - [x] Waste reporting API with geolocation
   - [x] Image upload system (Cloudinary + Multer)
   - [x] Client-side image compression (auto-resize for large files)
-  - [x] Interactive dashboard with statistics
-  - [x] Map integration (Leaflet/React Leaflet)
+  - [x] Dashboard with user statistics and recent reports
+  - [x] Reports list page with filtering (status, waste type, severity)
+  - [x] Individual report detail pages with status updates
+  - [x] Profile page with user stats and information
+  - [x] Leaderboard page showing top contributors
   - [x] Modern UI with Tailwind CSS + Framer Motion animations
   - [x] Mobile-responsive design with hamburger menu
   - [x] Form validation & error handling
@@ -217,20 +220,24 @@ reviwa/
 ## 🦯 Roadmap (MVP → Expansion)
 
 **Phase 1 – MVP (Q4 2025) ✅:**
-- ✅ Waste site reporting with image uploads
-- ✅ User authentication & authorization
-- ✅ Geolocation-based reporting
-- ✅ Eco-points reward system
-- ✅ Interactive dashboard with statistics
-- ✅ Real-time map visualization
+- ✅ Waste site reporting with image uploads and compression
+- ✅ User authentication & authorization (JWT)
+- ✅ Geolocation-based reporting (browser GPS)
+- ✅ Eco-points reward system (10 points per report)
+- ✅ Interactive dashboard with user statistics
+- ✅ Reports list with filtering capabilities
+- ✅ Leaderboard showing top contributors
+- ✅ User profiles with impact tracking
+- ✅ Report status management (pending, verified, in-progress, resolved, rejected)
 
 **Phase 2 – Enhanced Features (Q1 2026):**
-- 🔄 Admin dashboard for report verification
-- 🔄 Report status tracking (pending → verified → resolved)
-- 🔄 User roles (citizen, verifier, admin)
-- 🔄 Report comments & community engagement
-- 🔄 Email notifications for report updates
-- 🔄 Advanced filtering & search
+- ⏳ Interactive map visualization with Leaflet (reports plotted on map with markers/popups)
+- ⏳ Advanced admin dashboard for report verification workflow
+- ⏳ User role system expansion (citizen, verifier, admin roles)
+- ⏳ Report comments & community engagement features
+- ⏳ Email notifications for report updates
+- ⏳ Advanced analytics and insights
+- ⏳ Bulk actions for report management
 
 **Phase 3 – Smart Expansion (Q2 2026):**
 - ⏳ Mobile app version (React Native)
@@ -268,9 +275,9 @@ npm install
 **Server (.env in `/server` directory):**
 
 ```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/reviwa
-JWT_SECRET=your_super_secure_jwt_secret_here
-CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
+MONGODB_URI=your_mongodb_connection_string_here
+JWT_SECRET=your_jwt_secret_key_here
+CLOUDINARY_URL=your_cloudinary_url_here
 PORT=5000
 NODE_ENV=development
 CLIENT_URL=http://localhost:5173
