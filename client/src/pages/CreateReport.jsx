@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { MapPinIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import { useLoading } from "../context/LoadingContext";
 
 const CreateReport = () => {
   const [formData, setFormData] = useState({
@@ -17,10 +18,10 @@ const CreateReport = () => {
   });
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
-  const [uploadingImages, setUploadingImages] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { loading, showLoading, hideLoading, updateProgress, updateMessage } =
+    useLoading();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -111,12 +112,23 @@ const CreateReport = () => {
       return;
     }
 
-    setUploadingImages(true);
+    showLoading(
+      `Compressing ${files.length} image${files.length > 1 ? "s" : ""}...`,
+      "upload",
+      0
+    );
     const compressedFiles = [];
     const newPreviews = [];
 
     try {
-      for (const file of files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        // Update progress
+        const progress = ((i + 1) / files.length) * 100;
+        updateProgress(progress);
+        updateMessage(`Compressing image ${i + 1} of ${files.length}...`);
+
         // Check file size
         const fileSizeMB = file.size / (1024 * 1024);
 
@@ -141,7 +153,7 @@ const CreateReport = () => {
       console.error("Image compression error:", error);
       setError("Failed to process images. Please try again.");
     } finally {
-      setUploadingImages(false);
+      hideLoading();
     }
   };
 
@@ -156,7 +168,8 @@ const CreateReport = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
+
+    showLoading("Validating report...", "submit");
 
     try {
       // Validate location
@@ -165,11 +178,13 @@ const CreateReport = () => {
         formData.location.coordinates[1] === 0
       ) {
         setError("Please get your current location first");
-        setLoading(false);
+        hideLoading();
         return;
       }
 
       console.log("Current location state:", formData.location);
+
+      updateMessage("Preparing data...");
 
       // Create FormData for multipart/form-data
       const submitData = new FormData();
@@ -203,11 +218,26 @@ const CreateReport = () => {
         console.log(pair[0], ":", pair[1]);
       }
 
+      updateMessage(
+        `Uploading report${
+          images.length > 0
+            ? ` with ${images.length} image${images.length > 1 ? "s" : ""}`
+            : ""
+        }...`
+      );
+
       // Don't set Content-Type manually - let axios set it with proper boundary
       const response = await axios.post("/api/reports", submitData);
 
-      navigate(`/reports/${response.data.data.report._id}`);
+      updateMessage("Report created successfully!");
+
+      // Brief success message before navigation
+      setTimeout(() => {
+        hideLoading();
+        navigate(`/reports/${response.data.data.report._id}`);
+      }, 500);
     } catch (error) {
+      hideLoading();
       console.error("Error creating report:", error.response?.data);
       const errorMessage =
         error.response?.data?.message || "Failed to create report";
@@ -219,8 +249,6 @@ const CreateReport = () => {
       } else {
         setError(errorMessage);
       }
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -445,10 +473,10 @@ const CreateReport = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               type="submit"
-              disabled={loading}
+              disabled={loading.isLoading}
               className="btn btn-primary flex-1"
             >
-              {loading ? "Submitting..." : "Submit Report"}
+              {loading.isLoading ? "Submitting..." : "Submit Report"}
             </motion.button>
           </div>
         </form>

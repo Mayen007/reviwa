@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useLoading } from "../context/LoadingContext";
+import ConfirmDialog from "../components/ConfirmDialog";
 import {
   MapPinIcon,
   CalendarIcon,
@@ -13,9 +15,11 @@ const ReportDetail = () => {
   const { id } = useParams();
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { loading: loadingState, showLoading, hideLoading } = useLoading();
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
+  const [error, setError] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     fetchReport();
@@ -35,29 +39,46 @@ const ReportDetail = () => {
   const handleStatusUpdate = async (newStatus) => {
     if (!isAuthenticated) return;
 
-    setUpdating(true);
+    showLoading(`Updating status to ${newStatus}...`, "submit");
+    setError("");
+
     try {
       const response = await axios.patch(`/api/reports/${id}/status`, {
         status: newStatus,
       });
       setReport(response.data.data.report);
+
+      // Brief success delay
+      setTimeout(() => {
+        hideLoading();
+      }, 300);
     } catch (error) {
+      hideLoading();
       console.error("Failed to update status:", error);
-      alert(error.response?.data?.message || "Failed to update status");
-    } finally {
-      setUpdating(false);
+      setError(error.response?.data?.message || "Failed to update status");
     }
   };
 
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this report?")) return;
+  const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirmed = async () => {
+    showLoading("Deleting report...", "delete");
+    setError("");
 
     try {
       await axios.delete(`/api/reports/${id}`);
-      navigate("/reports");
+
+      // Show success briefly before navigation
+      setTimeout(() => {
+        hideLoading();
+        navigate("/reports");
+      }, 500);
     } catch (error) {
+      hideLoading();
       console.error("Failed to delete report:", error);
-      alert(error.response?.data?.message || "Failed to delete report");
+      setError(error.response?.data?.message || "Failed to delete report");
     }
   };
 
@@ -99,6 +120,13 @@ const ReportDetail = () => {
       >
         ← Back
       </button>
+
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+          {error}
+        </div>
+      )}
 
       <div className="card mb-6">
         {/* Header */}
@@ -206,7 +234,7 @@ const ReportDetail = () => {
               {report.status !== "verified" && (
                 <button
                   onClick={() => handleStatusUpdate("verified")}
-                  disabled={updating}
+                  disabled={loadingState.isLoading}
                   className="btn btn-primary"
                 >
                   Mark as Verified
@@ -215,7 +243,7 @@ const ReportDetail = () => {
               {report.status !== "in-progress" && (
                 <button
                   onClick={() => handleStatusUpdate("in-progress")}
-                  disabled={updating}
+                  disabled={loadingState.isLoading}
                   className="btn btn-secondary"
                 >
                   Mark as In Progress
@@ -224,7 +252,7 @@ const ReportDetail = () => {
               {report.status !== "resolved" && (
                 <button
                   onClick={() => handleStatusUpdate("resolved")}
-                  disabled={updating}
+                  disabled={loadingState.isLoading}
                   className="btn bg-green-600 text-white hover:bg-green-700"
                 >
                   Mark as Resolved
@@ -233,6 +261,17 @@ const ReportDetail = () => {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={showDeleteConfirm}
+          onClose={() => setShowDeleteConfirm(false)}
+          onConfirm={handleDeleteConfirmed}
+          title="Delete Report?"
+          message="Are you sure you want to delete this report? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+        />
       </div>
     </div>
   );
