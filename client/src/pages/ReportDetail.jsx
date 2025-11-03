@@ -230,35 +230,46 @@ const ReportDetail = () => {
             <h4 className="text-lg font-semibold text-gray-900 mb-4">
               Update Status
             </h4>
-            <div className="flex flex-wrap gap-3">
-              {report.status !== "verified" && (
-                <button
-                  onClick={() => handleStatusUpdate("verified")}
-                  disabled={loadingState.isLoading}
-                  className="btn btn-primary"
-                >
-                  Mark as Verified
-                </button>
-              )}
-              {report.status !== "in-progress" && (
-                <button
-                  onClick={() => handleStatusUpdate("in-progress")}
-                  disabled={loadingState.isLoading}
-                  className="btn btn-secondary"
-                >
-                  Mark as In Progress
-                </button>
-              )}
-              {report.status !== "resolved" && (
-                <button
-                  onClick={() => handleStatusUpdate("resolved")}
-                  disabled={loadingState.isLoading}
-                  className="btn bg-green-600 text-white hover:bg-green-700"
-                >
-                  Mark as Resolved
-                </button>
-              )}
-            </div>
+            {report.status === "resolved" ? (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <p className="text-green-800 font-medium">
+                  ✓ This issue has been resolved
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-3">
+                {/* pending → verified */}
+                {report.status === "pending" && (
+                  <button
+                    onClick={() => handleStatusUpdate("verified")}
+                    disabled={loadingState.isLoading}
+                    className="btn btn-primary"
+                  >
+                    Mark as Verified
+                  </button>
+                )}
+                {/* verified → in-progress */}
+                {report.status === "verified" && (
+                  <button
+                    onClick={() => handleStatusUpdate("in-progress")}
+                    disabled={loadingState.isLoading}
+                    className="btn btn-secondary"
+                  >
+                    Mark as In Progress
+                  </button>
+                )}
+                {/* in-progress → resolved */}
+                {report.status === "in-progress" && (
+                  <button
+                    onClick={() => handleStatusUpdate("resolved")}
+                    disabled={loadingState.isLoading}
+                    className="btn bg-green-600 text-white hover:bg-green-700"
+                  >
+                    Mark as Resolved
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         )}
 
