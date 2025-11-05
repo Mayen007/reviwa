@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useLoading } from "../context/LoadingContext";
@@ -219,24 +219,34 @@ const ReportDetail = () => {
                 </span>
               </p>
             </div>
-            {report.location?.address && (
+            {(report.location?.address ||
+              (report.location?.coordinates &&
+                report.location.coordinates.length === 2)) && (
               <div className="md:col-span-2">
                 <h4 className="text-sm font-medium text-gray-500 mb-2 flex items-center gap-2">
                   <MapPinIcon className="w-4 h-4" />
                   Location
                 </h4>
-                <p className="text-gray-900 mb-1">{report.location.address}</p>
-                <p className="text-sm text-gray-600">
-                  Coordinates: {report.location?.coordinates[1].toFixed(6)},{" "}
-                  {report.location?.coordinates[0].toFixed(6)}
-                </p>
-                <button
-                  onClick={() => navigate(`/map?report=${report._id}`)}
+                {report.location?.address ? (
+                  <p className="text-gray-900 mb-1">
+                    {report.location.address}
+                  </p>
+                ) : null}
+                {report.location?.coordinates && (
+                  <p className="text-sm text-gray-600">
+                    Coordinates: {report.location.coordinates[1].toFixed(6)},{" "}
+                    {report.location.coordinates[0].toFixed(6)}
+                  </p>
+                )}
+
+                {/* Link to map - always available when coordinates exist */}
+                <Link
+                  to={`/map?report=${report._id}`}
                   className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-primary-600 hover:text-primary-700"
                 >
                   <MapPinIcon className="w-4 h-4" />
                   View on Map
-                </button>
+                </Link>
               </div>
             )}
             {report.estimatedVolume && (

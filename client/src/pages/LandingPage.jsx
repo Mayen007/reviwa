@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -12,6 +13,7 @@ import {
 const LandingPage = () => {
   const [userInitials, setUserInitials] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
+  const { isAuthenticated, loading: authLoading } = useAuth();
 
   useEffect(() => {
     fetchUserInitials();
@@ -84,18 +86,39 @@ const LandingPage = () => {
                   rewards for making your community cleaner.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                  <Link
-                    to="/register"
-                    className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-4 text-lg font-bold shadow-2xl hover:shadow-3xl"
-                  >
-                    Get Started Free →
-                  </Link>
-                  <Link
-                    to="/reports"
-                    className="btn bg-transparent hover:bg-white/10 px-8 py-4 text-lg font-bold border-2 border-white backdrop-blur-sm"
-                  >
-                    View Reports
-                  </Link>
+                  {authLoading ? (
+                    <div className="h-12 w-40 rounded-md bg-white/10 animate-pulse" />
+                  ) : isAuthenticated ? (
+                    <>
+                      <Link
+                        to="/create-report"
+                        className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-4 text-lg font-bold shadow-2xl hover:shadow-3xl"
+                      >
+                        Create Report
+                      </Link>
+                      <Link
+                        to="/reports"
+                        className="btn bg-transparent hover:bg-white/10 px-8 py-4 text-lg font-bold border-2 border-white backdrop-blur-sm"
+                      >
+                        View Reports
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/register"
+                        className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-4 text-lg font-bold shadow-2xl hover:shadow-3xl"
+                      >
+                        Get Started Free →
+                      </Link>
+                      <Link
+                        to="/login"
+                        className="btn bg-transparent hover:bg-white/10 px-8 py-4 text-lg font-bold border-2 border-white backdrop-blur-sm"
+                      >
+                        Sign in
+                      </Link>
+                    </>
+                  )}
                 </div>
 
                 {/* Community Members Section */}
@@ -623,12 +646,23 @@ const LandingPage = () => {
               Join thousands of citizens working together to create cleaner,
               healthier communities.
             </p>
-            <Link
-              to="/register"
-              className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-3 text-lg inline-block"
-            >
-              Start Reporting Today
-            </Link>
+            {authLoading ? (
+              <div className="h-12 w-48 rounded-md bg-white/10 animate-pulse inline-block" />
+            ) : isAuthenticated ? (
+              <Link
+                to="/create-report"
+                className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-3 text-lg inline-block"
+              >
+                Start Reporting Today
+              </Link>
+            ) : (
+              <Link
+                to="/register"
+                className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-3 text-lg inline-block"
+              >
+                Start Reporting Today
+              </Link>
+            )}
           </div>
         </section>
 

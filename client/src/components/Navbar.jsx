@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import {
-  HomeIcon,
   MapIcon,
   MapPinIcon,
   PlusCircleIcon,
@@ -12,6 +11,7 @@ import {
   ArrowRightOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
+  ChartBarIcon,
 } from "@heroicons/react/24/outline";
 
 const Navbar = () => {
@@ -48,7 +48,9 @@ const Navbar = () => {
               onClick={closeMobileMenu}
             >
               <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-lg">
-                <span className="text-white font-bold text-xl">♻</span>
+                <span className="text-white font-bold text-xl">
+                  <img src="/logo.svg" alt="Reviwa logo" className="w-6 h-6" />
+                </span>
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
                 Reviwa
@@ -57,15 +59,17 @@ const Navbar = () => {
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center space-x-1">
-              <Link
-                to="/"
-                className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                  "/"
-                )}`}
-              >
-                <HomeIcon className="w-5 h-5 inline mr-1" />
-                Home
-              </Link>
+              {isAuthenticated && (
+                <Link
+                  to="/dashboard"
+                  className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
+                    "/dashboard"
+                  )}`}
+                >
+                  <ChartBarIcon className="w-5 h-5 inline mr-1" />
+                  Dashboard
+                </Link>
+              )}
               <Link
                 to="/reports"
                 className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
@@ -178,16 +182,18 @@ const Navbar = () => {
             >
               <div className="px-4 py-6 space-y-3">
                 {/* Mobile Navigation Links */}
-                <Link
-                  to="/"
-                  onClick={closeMobileMenu}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                    "/"
-                  )}`}
-                >
-                  <HomeIcon className="w-5 h-5" />
-                  <span>Home</span>
-                </Link>
+                {isAuthenticated && (
+                  <Link
+                    to="/dashboard"
+                    onClick={closeMobileMenu}
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
+                      "/dashboard"
+                    )}`}
+                  >
+                    <ChartBarIcon className="w-5 h-5" />
+                    <span>Dashboard</span>
+                  </Link>
+                )}
                 <Link
                   to="/reports"
                   onClick={closeMobileMenu}
