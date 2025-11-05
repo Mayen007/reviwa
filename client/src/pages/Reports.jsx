@@ -48,171 +48,177 @@ const Reports = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-      </div>
+      <>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Waste Reports</h1>
-          <p className="text-gray-600 mt-2">
-            Community-reported waste sites across the city
-          </p>
-        </div>
-        <Link
-          to={`/map?${searchParams.toString()}`}
-          className="btn btn-primary inline-flex items-center gap-2 whitespace-nowrap"
-        >
-          <MapIcon className="w-5 h-5" />
-          View on Map
-        </Link>
-      </div>
-
-      {/* Filters */}
-      <div className="card mb-8">
-        <div className="flex items-center gap-2 mb-4">
-          <FunnelIcon className="w-5 h-5 text-gray-600" />
-          <h3 className="font-semibold text-gray-900">Filters</h3>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-4">
+    <>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8 flex justify-between items-center">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Status
-            </label>
-            <select
-              value={filters.status}
-              onChange={(e) => handleFilterChange("status", e.target.value)}
-              className="input"
-            >
-              <option value="">All</option>
-              <option value="pending">Pending</option>
-              <option value="verified">Verified</option>
-              <option value="in-progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-            </select>
+            <h1 className="text-3xl font-bold text-gray-900">Waste Reports</h1>
+            <p className="text-gray-600 mt-2">
+              Community-reported waste sites across the city
+            </p>
+          </div>
+          <Link
+            to={`/map?${searchParams.toString()}`}
+            className="btn btn-primary inline-flex items-center gap-2 whitespace-nowrap"
+          >
+            <MapIcon className="w-5 h-5" />
+            View on Map
+          </Link>
+        </div>
+
+        {/* Filters */}
+        <div className="card mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <FunnelIcon className="w-5 h-5 text-gray-600" />
+            <h3 className="font-semibold text-gray-900">Filters</h3>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Waste Type
-            </label>
-            <select
-              value={filters.wasteType}
-              onChange={(e) => handleFilterChange("wasteType", e.target.value)}
-              className="input"
-            >
-              <option value="">All</option>
-              <option value="plastic">Plastic</option>
-              <option value="organic">Organic</option>
-              <option value="metal">Metal</option>
-              <option value="glass">Glass</option>
-              <option value="electronic">Electronic</option>
-              <option value="mixed">Mixed</option>
-            </select>
-          </div>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Status
+              </label>
+              <select
+                value={filters.status}
+                onChange={(e) => handleFilterChange("status", e.target.value)}
+                className="input"
+              >
+                <option value="">All</option>
+                <option value="pending">Pending</option>
+                <option value="verified">Verified</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Severity
-            </label>
-            <select
-              value={filters.severity}
-              onChange={(e) => handleFilterChange("severity", e.target.value)}
-              className="input"
-            >
-              <option value="">All</option>
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-              <option value="critical">Critical</option>
-            </select>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Waste Type
+              </label>
+              <select
+                value={filters.wasteType}
+                onChange={(e) =>
+                  handleFilterChange("wasteType", e.target.value)
+                }
+                className="input"
+              >
+                <option value="">All</option>
+                <option value="plastic">Plastic</option>
+                <option value="organic">Organic</option>
+                <option value="metal">Metal</option>
+                <option value="glass">Glass</option>
+                <option value="electronic">Electronic</option>
+                <option value="mixed">Mixed</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Severity
+              </label>
+              <select
+                value={filters.severity}
+                onChange={(e) => handleFilterChange("severity", e.target.value)}
+                className="input"
+              >
+                <option value="">All</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Reports Grid */}
-      {reports.length === 0 ? (
-        <div className="card text-center py-12">
-          <MapPinIcon className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            No reports found
-          </h3>
-          <p className="text-gray-600">
-            Try adjusting your filters or be the first to report waste
-          </p>
-        </div>
-      ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reports.map((report) => (
-            <div key={report._id} className="card card-hover">
-              {report.images && report.images.length > 0 && (
-                <img
-                  src={report.images[0].url}
-                  alt={report.title}
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                />
-              )}
+        {/* Reports Grid */}
+        {reports.length === 0 ? (
+          <div className="card text-center py-12">
+            <MapPinIcon className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No reports found
+            </h3>
+            <p className="text-gray-600">
+              Try adjusting your filters or be the first to report waste
+            </p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {reports.map((report) => (
+              <div key={report._id} className="card card-hover">
+                {report.images && report.images.length > 0 && (
+                  <img
+                    src={report.images[0].url}
+                    alt={report.title}
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                  />
+                )}
 
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-semibold text-gray-900 text-lg">
-                  {report.title}
-                </h3>
-                <span className={`badge badge-${report.status}`}>
-                  {report.status}
-                </span>
-              </div>
-
-              <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                {report.description}
-              </p>
-
-              <div className="flex items-center justify-between text-xs text-gray-500">
-                <span className="capitalize">{report.wasteType} waste</span>
-                <span className="capitalize">{report.severity} severity</span>
-              </div>
-
-              <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-200">
-                <div className="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-semibold text-primary-700">
-                    {report.reportedBy?.name?.charAt(0)}
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="font-semibold text-gray-900 text-lg">
+                    {report.title}
+                  </h3>
+                  <span className={`badge badge-${report.status}`}>
+                    {report.status}
                   </span>
                 </div>
-                <span className="text-sm text-gray-600">
-                  {report.reportedBy?.name}
-                </span>
-                <span className="text-gray-400">•</span>
-                <span className="text-sm text-gray-500">
-                  {new Date(report.createdAt).toLocaleDateString()}
-                </span>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-2 mt-4">
-                <Link
-                  to={`/reports/${report._id}`}
-                  className="flex-1 btn btn-outline text-sm py-2"
-                >
-                  View Details
-                </Link>
-                <Link
-                  to={`/map?report=${report._id}`}
-                  className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors whitespace-nowrap"
-                  title="View on map"
-                >
-                  <MapPinIcon className="w-4 h-4" />
-                  Map
-                </Link>
+                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                  {report.description}
+                </p>
+
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <span className="capitalize">{report.wasteType} waste</span>
+                  <span className="capitalize">{report.severity} severity</span>
+                </div>
+
+                <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-200">
+                  <div className="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-semibold text-primary-700">
+                      {report.reportedBy?.name?.charAt(0)}
+                    </span>
+                  </div>
+                  <span className="text-sm text-gray-600">
+                    {report.reportedBy?.name}
+                  </span>
+                  <span className="text-gray-400">•</span>
+                  <span className="text-sm text-gray-500">
+                    {new Date(report.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-2 mt-4">
+                  <Link
+                    to={`/reports/${report._id}`}
+                    className="flex-1 btn btn-outline text-sm py-2"
+                  >
+                    View Details
+                  </Link>
+                  <Link
+                    to={`/map?report=${report._id}`}
+                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors whitespace-nowrap"
+                    title="View on map"
+                  >
+                    <MapPinIcon className="w-4 h-4" />
+                    Map
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

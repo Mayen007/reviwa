@@ -204,160 +204,165 @@ const Map = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600"
-        />
-      </div>
+      <>
+        <div className="min-h-screen flex items-center justify-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600"
+          />
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4 md:px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <MapPinIcon className="w-7 h-7 text-primary-600" />
-              Waste Reports Map
-            </h1>
-            <p className="text-sm text-gray-600 mt-1">
-              {filteredReports.length} reports shown on map
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Link
-              to={`/reports?${searchParams.toString()}`}
-              className="btn btn-outline flex items-center gap-2"
-            >
-              <ListBulletIcon className="w-5 h-5" />
-              <span className="hidden sm:inline">View List</span>
-            </Link>
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="btn btn-outline flex items-center gap-2"
-            >
-              <FunnelIcon className="w-5 h-5" />
-              <span className="hidden sm:inline">Filters</span>
-              {(filters.status || filters.wasteType || filters.severity) && (
-                <span className="bg-primary-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {
-                    [
-                      filters.status,
-                      filters.wasteType,
-                      filters.severity,
-                    ].filter(Boolean).length
-                  }
-                </span>
-              )}
-            </button>
-          </div>
-        </div>{" "}
-        {/* Filter Panel */}
-        {showFilters && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="max-w-7xl mx-auto mt-4 bg-gray-50 rounded-lg p-4"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900">Filter Reports</h3>
-              <button
-                onClick={clearFilters}
-                className="text-sm text-primary-600 hover:text-primary-700"
+    <>
+      <div className="h-screen flex flex-col">
+        {/* Header */}
+        <div className="bg-white border-b border-gray-200 px-4 py-4 md:px-6">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <MapPinIcon className="w-7 h-7 text-primary-600" />
+                Waste Reports Map
+              </h1>
+              <p className="text-sm text-gray-600 mt-1">
+                {filteredReports.length} reports shown on map
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link
+                to={`/reports?${searchParams.toString()}`}
+                className="btn btn-outline flex items-center gap-2"
               >
-                Clear All
+                <ListBulletIcon className="w-5 h-5" />
+                <span className="hidden sm:inline">View List</span>
+              </Link>
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="btn btn-outline flex items-center gap-2"
+              >
+                <FunnelIcon className="w-5 h-5" />
+                <span className="hidden sm:inline">Filters</span>
+                {(filters.status || filters.wasteType || filters.severity) && (
+                  <span className="bg-primary-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {
+                      [
+                        filters.status,
+                        filters.wasteType,
+                        filters.severity,
+                      ].filter(Boolean).length
+                    }
+                  </span>
+                )}
               </button>
             </div>
-
-            <div className="grid md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Status
-                </label>
-                <select
-                  value={filters.status}
-                  onChange={(e) => handleFilterChange("status", e.target.value)}
-                  className="input"
+          </div>{" "}
+          {/* Filter Panel */}
+          {showFilters && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="max-w-7xl mx-auto mt-4 bg-gray-50 rounded-lg p-4"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-900">Filter Reports</h3>
+                <button
+                  onClick={clearFilters}
+                  className="text-sm text-primary-600 hover:text-primary-700"
                 >
-                  <option value="">All</option>
-                  <option value="pending">Pending</option>
-                  <option value="verified">Verified</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="resolved">Resolved</option>
-                </select>
+                  Clear All
+                </button>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Waste Type
-                </label>
-                <select
-                  value={filters.wasteType}
-                  onChange={(e) =>
-                    handleFilterChange("wasteType", e.target.value)
-                  }
-                  className="input"
-                >
-                  <option value="">All</option>
-                  <option value="plastic">Plastic</option>
-                  <option value="organic">Organic</option>
-                  <option value="metal">Metal</option>
-                  <option value="glass">Glass</option>
-                  <option value="electronic">Electronic</option>
-                  <option value="mixed">Mixed</option>
-                </select>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Status
+                  </label>
+                  <select
+                    value={filters.status}
+                    onChange={(e) =>
+                      handleFilterChange("status", e.target.value)
+                    }
+                    className="input"
+                  >
+                    <option value="">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="verified">Verified</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="resolved">Resolved</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Waste Type
+                  </label>
+                  <select
+                    value={filters.wasteType}
+                    onChange={(e) =>
+                      handleFilterChange("wasteType", e.target.value)
+                    }
+                    className="input"
+                  >
+                    <option value="">All</option>
+                    <option value="plastic">Plastic</option>
+                    <option value="organic">Organic</option>
+                    <option value="metal">Metal</option>
+                    <option value="glass">Glass</option>
+                    <option value="electronic">Electronic</option>
+                    <option value="mixed">Mixed</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Severity
+                  </label>
+                  <select
+                    value={filters.severity}
+                    onChange={(e) =>
+                      handleFilterChange("severity", e.target.value)
+                    }
+                    className="input"
+                  >
+                    <option value="">All</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="critical">Critical</option>
+                  </select>
+                </div>
               </div>
+            </motion.div>
+          )}
+        </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Severity
-                </label>
-                <select
-                  value={filters.severity}
-                  onChange={(e) =>
-                    handleFilterChange("severity", e.target.value)
-                  }
-                  className="input"
-                >
-                  <option value="">All</option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                  <option value="critical">Critical</option>
-                </select>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </div>
+        {/* Map Container */}
+        <div className="flex-1 relative">
+          <MapContainer
+            center={mapCenter}
+            zoom={13}
+            className="h-full w-full"
+            zoomControl={true}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
 
-      {/* Map Container */}
-      <div className="flex-1 relative">
-        <MapContainer
-          center={mapCenter}
-          zoom={13}
-          className="h-full w-full"
-          zoomControl={true}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+            <RecenterMap position={mapCenter} />
 
-          <RecenterMap position={mapCenter} />
-
-          {/* User Location Marker */}
-          {userLocation && (
-            <Marker
-              position={userLocation}
-              icon={L.divIcon({
-                className: "user-location-marker",
-                html: `
+            {/* User Location Marker */}
+            {userLocation && (
+              <Marker
+                position={userLocation}
+                icon={L.divIcon({
+                  className: "user-location-marker",
+                  html: `
                   <div style="
                     width: 20px;
                     height: 20px;
@@ -367,125 +372,128 @@ const Map = () => {
                     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
                   "></div>
                 `,
-                iconSize: [20, 20],
-                iconAnchor: [10, 10],
-              })}
+                  iconSize: [20, 20],
+                  iconAnchor: [10, 10],
+                })}
+              >
+                <Popup>
+                  <div className="text-center">
+                    <p className="font-semibold text-blue-600">
+                      📍 You are here
+                    </p>
+                  </div>
+                </Popup>
+              </Marker>
+            )}
+
+            {/* Report Markers with Clustering */}
+            <MarkerClusterGroup
+              chunkedLoading
+              maxClusterRadius={50}
+              spiderfyOnMaxZoom={true}
+              showCoverageOnHover={false}
+              zoomToBoundsOnClick={true}
             >
-              <Popup>
-                <div className="text-center">
-                  <p className="font-semibold text-blue-600">📍 You are here</p>
-                </div>
-              </Popup>
-            </Marker>
-          )}
+              {filteredReports.map((report) => {
+                if (!report.location?.coordinates) return null;
 
-          {/* Report Markers with Clustering */}
-          <MarkerClusterGroup
-            chunkedLoading
-            maxClusterRadius={50}
-            spiderfyOnMaxZoom={true}
-            showCoverageOnHover={false}
-            zoomToBoundsOnClick={true}
-          >
-            {filteredReports.map((report) => {
-              if (!report.location?.coordinates) return null;
+                const position = [
+                  report.location.coordinates[1], // latitude
+                  report.location.coordinates[0], // longitude
+                ];
 
-              const position = [
-                report.location.coordinates[1], // latitude
-                report.location.coordinates[0], // longitude
-              ];
+                const isHighlighted = report._id === highlightedReportId;
 
-              const isHighlighted = report._id === highlightedReportId;
-
-              return (
-                <Marker
-                  key={report._id}
-                  position={position}
-                  icon={createCustomIcon(report.status)}
-                  eventHandlers={{
-                    add: (e) => {
-                      // Auto-open popup for highlighted report
-                      if (isHighlighted) {
-                        setTimeout(() => {
-                          e.target.openPopup();
-                        }, 300);
-                      }
-                    },
-                  }}
-                >
-                  <Popup maxWidth={280} className="custom-popup">
-                    <div className="px-2 py-3 min-w-[240px] max-w-[280px]">
-                      {report.images && report.images.length > 0 && (
-                        <img
-                          src={report.images[0].url}
-                          alt={report.title}
-                          className="w-full h-40 object-cover rounded-lg mb-3"
-                        />
-                      )}
-                      <h3 className="font-bold text-gray-900 mb-1">
-                        {report.title}
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">
-                        {report.description}
-                      </p>
-                      <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <span
-                          className={`badge badge-${report.status} text-xs whitespace-nowrap`}
+                return (
+                  <Marker
+                    key={report._id}
+                    position={position}
+                    icon={createCustomIcon(report.status)}
+                    eventHandlers={{
+                      add: (e) => {
+                        // Auto-open popup for highlighted report
+                        if (isHighlighted) {
+                          setTimeout(() => {
+                            e.target.openPopup();
+                          }, 300);
+                        }
+                      },
+                    }}
+                  >
+                    <Popup maxWidth={280} className="custom-popup">
+                      <div className="px-2 py-3 min-w-[240px] max-w-[280px]">
+                        {report.images && report.images.length > 0 && (
+                          <img
+                            src={report.images[0].url}
+                            alt={report.title}
+                            className="w-full h-40 object-cover rounded-lg mb-3"
+                          />
+                        )}
+                        <h3 className="font-bold text-gray-900 mb-1">
+                          {report.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                          {report.description}
+                        </p>
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          <span
+                            className={`badge badge-${report.status} text-xs whitespace-nowrap`}
+                          >
+                            {report.status}
+                          </span>
+                          <span className="text-xs text-gray-500 capitalize whitespace-nowrap">
+                            {report.wasteType}
+                          </span>
+                          <span className="text-xs text-gray-500 capitalize whitespace-nowrap">
+                            {report.severity}
+                          </span>
+                        </div>
+                        <Link
+                          to={`/reports/${report._id}`}
+                          className="block w-full text-center bg-green-600 hover:bg-green-700 font-semibold rounded-lg px-4 py-2 text-sm transition-colors duration-200 no-underline"
+                          style={{ color: "white" }}
                         >
-                          {report.status}
-                        </span>
-                        <span className="text-xs text-gray-500 capitalize whitespace-nowrap">
-                          {report.wasteType}
-                        </span>
-                        <span className="text-xs text-gray-500 capitalize whitespace-nowrap">
-                          {report.severity}
-                        </span>
+                          View Details
+                        </Link>
                       </div>
-                      <Link
-                        to={`/reports/${report._id}`}
-                        className="block w-full text-center bg-green-600 hover:bg-green-700 font-semibold rounded-lg px-4 py-2 text-sm transition-colors duration-200 no-underline"
-                        style={{ color: "white" }}
-                      >
-                        View Details
-                      </Link>
-                    </div>
-                  </Popup>
-                </Marker>
-              );
-            })}
-          </MarkerClusterGroup>
-        </MapContainer>
+                    </Popup>
+                  </Marker>
+                );
+              })}
+            </MarkerClusterGroup>
+          </MapContainer>
 
-        {/* Legend */}
-        <div className="absolute bottom-24 right-6 bg-white rounded-lg shadow-lg p-4 z-[1000]">
-          <h4 className="font-semibold text-gray-900 mb-3 text-sm">
-            Report Status
-          </h4>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
-              <span className="text-xs text-gray-700">Pending</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-blue-500"></div>
-              <span className="text-xs text-gray-700">Verified</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-orange-500"></div>
-              <span className="text-xs text-gray-700">In Progress</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-green-500"></div>
-              <span className="text-xs text-gray-700">Resolved</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-blue-500 border-2 border-white"></div>
-              <span className="text-xs text-gray-700">Your Location</span>
+          {/* Legend */}
+          <div className="absolute bottom-24 right-6 bg-white rounded-lg shadow-lg p-4 z-[1000]">
+            <h4 className="font-semibold text-gray-900 mb-3 text-sm">
+              Report Status
+            </h4>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
+                <span className="text-xs text-gray-700">Pending</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-blue-500"></div>
+                <span className="text-xs text-gray-700">Verified</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-orange-500"></div>
+                <span className="text-xs text-gray-700">In Progress</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                <span className="text-xs text-gray-700">Resolved</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-blue-500 border-2 border-white"></div>
+                <span className="text-xs text-gray-700">Your Location</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -253,235 +253,237 @@ const CreateReport = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
-      >
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
-          Report Waste Site
-        </h1>
-        <p className="text-gray-600 mt-2">
-          Help keep our community clean by reporting illegal waste dumping
-        </p>
-      </motion.div>
+    <>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
+            Report Waste Site
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Help keep our community clean by reporting illegal waste dumping
+          </p>
+        </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="card"
-      >
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg"
-            >
-              {error}
-            </motion.div>
-          )}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="card"
+        >
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg"
+              >
+                {error}
+              </motion.div>
+            )}
 
-          <div>
-            <label
-              htmlFor="title"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Title *
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              required
-              value={formData.title}
-              onChange={handleChange}
-              className="input"
-              placeholder="e.g., Illegal dump near Main Street"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Description *
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              required
-              rows="4"
-              value={formData.description}
-              onChange={handleChange}
-              className="input"
-              placeholder="Provide details about the waste site..."
-            />
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label
-                htmlFor="wasteType"
+                htmlFor="title"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Waste Type *
+                Title *
               </label>
-              <select
-                id="wasteType"
-                name="wasteType"
-                value={formData.wasteType}
+              <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                value={formData.title}
                 onChange={handleChange}
                 className="input"
-              >
-                <option value="plastic">Plastic</option>
-                <option value="organic">Organic</option>
-                <option value="metal">Metal</option>
-                <option value="glass">Glass</option>
-                <option value="electronic">Electronic</option>
-                <option value="mixed">Mixed</option>
-                <option value="other">Other</option>
-              </select>
+                placeholder="e.g., Illegal dump near Main Street"
+              />
             </div>
 
             <div>
               <label
-                htmlFor="severity"
+                htmlFor="description"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Severity *
+                Description *
               </label>
-              <select
-                id="severity"
-                name="severity"
-                value={formData.severity}
+              <textarea
+                id="description"
+                name="description"
+                required
+                rows="4"
+                value={formData.description}
                 onChange={handleChange}
                 className="input"
-              >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-                <option value="critical">Critical</option>
-              </select>
+                placeholder="Provide details about the waste site..."
+              />
             </div>
-          </div>
 
-          {/* Image Upload */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Photos <span className="text-gray-500">(Max 5)</span>
-            </label>
-            <div className="space-y-4">
-              <label className="btn btn-outline w-full flex items-center justify-center gap-2 cursor-pointer">
-                <PhotoIcon className="w-5 h-5" />
-                Choose Images
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                  className="hidden"
-                  disabled={images.length >= 5}
-                />
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="wasteType"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Waste Type *
+                </label>
+                <select
+                  id="wasteType"
+                  name="wasteType"
+                  value={formData.wasteType}
+                  onChange={handleChange}
+                  className="input"
+                >
+                  <option value="plastic">Plastic</option>
+                  <option value="organic">Organic</option>
+                  <option value="metal">Metal</option>
+                  <option value="glass">Glass</option>
+                  <option value="electronic">Electronic</option>
+                  <option value="mixed">Mixed</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="severity"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Severity *
+                </label>
+                <select
+                  id="severity"
+                  name="severity"
+                  value={formData.severity}
+                  onChange={handleChange}
+                  className="input"
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                  <option value="critical">Critical</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Image Upload */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Photos <span className="text-gray-500">(Max 5)</span>
               </label>
+              <div className="space-y-4">
+                <label className="btn btn-outline w-full flex items-center justify-center gap-2 cursor-pointer">
+                  <PhotoIcon className="w-5 h-5" />
+                  Choose Images
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageChange}
+                    className="hidden"
+                    disabled={images.length >= 5}
+                  />
+                </label>
 
-              {imagePreviews.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {imagePreviews.map((preview, index) => (
-                    <div key={index} className="relative group">
-                      <img
-                        src={preview}
-                        alt={`Preview ${index + 1}`}
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
+                {imagePreviews.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {imagePreviews.map((preview, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={preview}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Location */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Location *
+              </label>
+              <button
+                type="button"
+                onClick={handleGetLocation}
+                className="btn btn-outline w-full flex items-center justify-center gap-2"
+              >
+                <MapPinIcon className="w-5 h-5" />
+                Get Current Location
+              </button>
+              {formData.location.coordinates[0] !== 0 ||
+              formData.location.coordinates[1] !== 0 ? (
+                <p className="text-sm text-green-600 mt-2">
+                  ✓ Location captured: Lat{" "}
+                  {formData.location.coordinates[1].toFixed(6)}, Lon{" "}
+                  {formData.location.coordinates[0].toFixed(6)}
+                </p>
+              ) : (
+                <p className="text-sm text-gray-500 mt-2">
+                  Click the button above to capture your current location
+                </p>
               )}
             </div>
-          </div>
 
-          {/* Location */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Location *
-            </label>
-            <button
-              type="button"
-              onClick={handleGetLocation}
-              className="btn btn-outline w-full flex items-center justify-center gap-2"
-            >
-              <MapPinIcon className="w-5 h-5" />
-              Get Current Location
-            </button>
-            {formData.location.coordinates[0] !== 0 ||
-            formData.location.coordinates[1] !== 0 ? (
-              <p className="text-sm text-green-600 mt-2">
-                ✓ Location captured: Lat{" "}
-                {formData.location.coordinates[1].toFixed(6)}, Lon{" "}
-                {formData.location.coordinates[0].toFixed(6)}
-              </p>
-            ) : (
-              <p className="text-sm text-gray-500 mt-2">
-                Click the button above to capture your current location
-              </p>
-            )}
-          </div>
+            <div>
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Address (Optional)
+              </label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                value={formData.location.address}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    location: { ...prev.location, address: e.target.value },
+                  }))
+                }
+                className="input"
+                placeholder="Nearest landmark or street address"
+              />
+            </div>
 
-          <div>
-            <label
-              htmlFor="address"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Address (Optional)
-            </label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={formData.location.address}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  location: { ...prev.location, address: e.target.value },
-                }))
-              }
-              className="input"
-              placeholder="Nearest landmark or street address"
-            />
-          </div>
-
-          <div className="flex gap-4">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="btn btn-secondary flex-1"
-            >
-              Cancel
-            </button>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              disabled={loading.isLoading}
-              className="btn btn-primary flex-1"
-            >
-              {loading.isLoading ? "Submitting..." : "Submit Report"}
-            </motion.button>
-          </div>
-        </form>
-      </motion.div>
-    </div>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="btn btn-secondary flex-1"
+              >
+                Cancel
+              </button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                disabled={loading.isLoading}
+                className="btn btn-primary flex-1"
+              >
+                {loading.isLoading ? "Submitting..." : "Submit Report"}
+              </motion.button>
+            </div>
+          </form>
+        </motion.div>
+      </div>
+    </>
   );
 };
 

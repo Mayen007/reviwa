@@ -38,192 +38,196 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600"
-        />
-      </div>
+      <>
+        <div className="min-h-screen flex items-center justify-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600"
+          />
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Welcome Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
-      >
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
-          Welcome back, {user?.name}! 👋
-        </h1>
-        <p className="text-gray-600 mt-2">
-          Here's what's happening with your environmental impact
-        </p>
-      </motion.div>
-
-      {/* Stats Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <StatCard
-          icon={<ChartBarIcon className="w-8 h-8 text-primary-600" />}
-          title="Your Eco Points"
-          value={user?.ecoPoints || 0}
-          color="primary"
-        />
-        <StatCard
-          icon={<MapPinIcon className="w-8 h-8 text-blue-600" />}
-          title="Reports Submitted"
-          value={user?.reportsCount || 0}
-          color="blue"
-        />
-        <StatCard
-          icon={<CheckCircleIcon className="w-8 h-8 text-green-600" />}
-          title="Total Resolved"
-          value={stats?.resolved || 0}
-          color="green"
-        />
-        <StatCard
-          icon={<ClockIcon className="w-8 h-8 text-yellow-600" />}
-          title="Pending"
-          value={stats?.pending || 0}
-          color="yellow"
-        />
-      </div>
-
-      {/* Quick Actions */}
-      <div className="grid md:grid-cols-4 gap-6 mb-8">
-        <Link
-          to="/create-report"
-          className="card card-hover text-center group overflow-hidden relative"
+    <>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Welcome Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="relative">
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-200 transition-colors"
-            >
-              <MapPinIcon className="w-6 h-6 text-primary-600" />
-            </motion.div>
-            <h3 className="font-semibold text-gray-900 mb-2">Report Waste</h3>
-            <p className="text-sm text-gray-600">
-              Found illegal dumping? Report it now
-            </p>
-          </div>
-        </Link>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
+            Welcome back, {user?.name}! 👋
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Here's what's happening with your environmental impact
+          </p>
+        </motion.div>
 
-        <Link
-          to="/reports"
-          className="card card-hover text-center group overflow-hidden relative"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="relative">
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors"
-            >
-              <ChartBarIcon className="w-6 h-6 text-blue-600" />
-            </motion.div>
-            <h3 className="font-semibold text-gray-900 mb-2">
-              View All Reports
-            </h3>
-            <p className="text-sm text-gray-600">Browse community reports</p>
-          </div>
-        </Link>
+        {/* Stats Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <StatCard
+            icon={<ChartBarIcon className="w-8 h-8 text-primary-600" />}
+            title="Your Eco Points"
+            value={user?.ecoPoints || 0}
+            color="primary"
+          />
+          <StatCard
+            icon={<MapPinIcon className="w-8 h-8 text-blue-600" />}
+            title="Reports Submitted"
+            value={user?.reportsCount || 0}
+            color="blue"
+          />
+          <StatCard
+            icon={<CheckCircleIcon className="w-8 h-8 text-green-600" />}
+            title="Total Resolved"
+            value={stats?.resolved || 0}
+            color="green"
+          />
+          <StatCard
+            icon={<ClockIcon className="w-8 h-8 text-yellow-600" />}
+            title="Pending"
+            value={stats?.pending || 0}
+            color="yellow"
+          />
+        </div>
 
-        <Link
-          to="/map"
-          className="card card-hover text-center group overflow-hidden relative"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="relative">
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors"
-            >
-              <span className="text-2xl">🗺️</span>
-            </motion.div>
-            <h3 className="font-semibold text-gray-900 mb-2">
-              Interactive Map
-            </h3>
-            <p className="text-sm text-gray-600">View reports on map</p>
-          </div>
-        </Link>
+        {/* Quick Actions */}
+        <div className="grid md:grid-cols-4 gap-6 mb-8">
+          <Link
+            to="/create-report"
+            className="card card-hover text-center group overflow-hidden relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-200 transition-colors"
+              >
+                <MapPinIcon className="w-6 h-6 text-primary-600" />
+              </motion.div>
+              <h3 className="font-semibold text-gray-900 mb-2">Report Waste</h3>
+              <p className="text-sm text-gray-600">
+                Found illegal dumping? Report it now
+              </p>
+            </div>
+          </Link>
 
-        <Link
-          to="/leaderboard"
-          className="card card-hover text-center group overflow-hidden relative"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="relative">
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors"
-            >
-              <span className="text-2xl">🏆</span>
-            </motion.div>
-            <h3 className="font-semibold text-gray-900 mb-2">Leaderboard</h3>
-            <p className="text-sm text-gray-600">See top contributors</p>
-          </div>
-        </Link>
-      </div>
-
-      {/* Recent Reports */}
-      <div className="card">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">
-            Your Recent Reports
-          </h2>
           <Link
             to="/reports"
-            className="text-primary-600 hover:text-primary-700 font-medium"
+            className="card card-hover text-center group overflow-hidden relative"
           >
-            View All →
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors"
+              >
+                <ChartBarIcon className="w-6 h-6 text-blue-600" />
+              </motion.div>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                View All Reports
+              </h3>
+              <p className="text-sm text-gray-600">Browse community reports</p>
+            </div>
+          </Link>
+
+          <Link
+            to="/map"
+            className="card card-hover text-center group overflow-hidden relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors"
+              >
+                <span className="text-2xl">🗺️</span>
+              </motion.div>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                Interactive Map
+              </h3>
+              <p className="text-sm text-gray-600">View reports on map</p>
+            </div>
+          </Link>
+
+          <Link
+            to="/leaderboard"
+            className="card card-hover text-center group overflow-hidden relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors"
+              >
+                <span className="text-2xl">🏆</span>
+              </motion.div>
+              <h3 className="font-semibold text-gray-900 mb-2">Leaderboard</h3>
+              <p className="text-sm text-gray-600">See top contributors</p>
+            </div>
           </Link>
         </div>
 
-        {recentReports.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            <MapPinIcon className="w-16 h-16 mx-auto mb-4 opacity-50" />
-            <p>No reports yet. Start making a difference today!</p>
+        {/* Recent Reports */}
+        <div className="card">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Your Recent Reports
+            </h2>
             <Link
-              to="/create-report"
-              className="btn btn-primary mt-4 inline-block"
+              to="/reports"
+              className="text-primary-600 hover:text-primary-700 font-medium"
             >
-              Create Your First Report
+              View All →
             </Link>
           </div>
-        ) : (
-          <div className="space-y-4">
-            {recentReports.map((report) => (
+
+          {recentReports.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <MapPinIcon className="w-16 h-16 mx-auto mb-4 opacity-50" />
+              <p>No reports yet. Start making a difference today!</p>
               <Link
-                key={report._id}
-                to={`/reports/${report._id}`}
-                className="block p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                to="/create-report"
+                className="btn btn-primary mt-4 inline-block"
               >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">
-                      {report.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {report.description}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-2">
-                      {new Date(report.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <span className={`badge badge-${report.status}`}>
-                    {report.status}
-                  </span>
-                </div>
+                Create Your First Report
               </Link>
-            ))}
-          </div>
-        )}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {recentReports.map((report) => (
+                <Link
+                  key={report._id}
+                  to={`/reports/${report._id}`}
+                  className="block p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-900">
+                        {report.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {report.description}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-2">
+                        {new Date(report.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <span className={`badge badge-${report.status}`}>
+                      {report.status}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
