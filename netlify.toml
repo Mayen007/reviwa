@@ -1,0 +1,13 @@
+[build]
+  base = "client"
+  publish = "client/dist"
+  command = "npm ci && npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# SPA redirect rule (backup to _redirects file)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
