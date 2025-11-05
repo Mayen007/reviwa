@@ -9,6 +9,7 @@ import {
   getDashboardStats
 } from '../controllers/report.controller.js';
 import { protect } from '../middleware/auth.js';
+import requireAdmin from '../middleware/adminAuth.js';
 import upload from '../middleware/upload.js';
 
 const router = express.Router();
@@ -21,7 +22,7 @@ router.get('/:id', getReport);
 
 // Protected routes
 router.post('/', protect, upload.array('images', 5), createReport);
-router.patch('/:id/status', protect, updateReportStatus);
+router.patch('/:id/status', protect, requireAdmin, updateReportStatus);
 router.delete('/:id', protect, deleteReport);
 
 export default router;

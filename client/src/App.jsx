@@ -21,6 +21,7 @@ const ReportDetail = lazy(() => import("./pages/ReportDetail"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Leaderboard = lazy(() => import("./pages/Leaderboard"));
 const Map = lazy(() => import("./pages/Map"));
+const Admin = lazy(() => import("./pages/Admin"));
 
 // Components
 import PrivateRoute from "./components/PrivateRoute";
@@ -101,6 +102,16 @@ function App() {
                   <PrivateRoute>
                     <Suspense fallback={<PageLoader />}>
                       <Profile />
+                    </Suspense>
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <PrivateRoute>
+                    <Suspense fallback={<PageLoader />}>
+                      <Admin />
                     </Suspense>
                   </PrivateRoute>
                 }

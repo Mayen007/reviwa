@@ -5,6 +5,13 @@ The platform empowers citizens to **report waste sites**, **track cleanup progre
 
 ---
 
+## 🔗 Links
+
+- **🌐 Live Demo:** [https://reviwa.netlify.app/](https://reviwa.netlify.app/)
+- **📊 Pitch Deck:** [REVIWA - Reviving Cities, One Report at a Time](https://gamma.app/docs/REVIWA-Reviving-Cities-One-Report-at-a-Time-71g1khnubjgsaf0)
+
+---
+
 ## 🌍 SDG Alignment
 
 **Primary Goal:**
@@ -36,16 +43,22 @@ The MVP focuses on waste reporting and community engagement.
 
 - 🗑️ **Report Waste Sites:** Upload photos (up to 5 images with auto-compression), add description, and mark location
 - 📍 **Geolocation Tracking:** Browser-based GPS to identify exact dump sites
-- �️ **Interactive Map:** Visualize all waste reports on an interactive map with color-coded markers and clustering
-- �📊 **User Dashboard:** Track your reports, eco-points, and community impact
-- ⭐ **Eco-Points System:** Earn points for verified cleanup actions (10 points per report)
+- 🗺️ **Interactive Map:** Visualize all waste reports on an interactive map with color-coded markers and clustering
+- 📊 **User Dashboard:** Track your reports, eco-points, and community impact
+- ⭐ **Eco-Points System:** Earn points for verified cleanup actions (10 points per report, 20 for verification, 50 for resolution)
 - 👤 **User Profiles:** View account details and environmental impact stats
-- 🏅 **Leaderboard:** Top contributors ranked by eco-points
-- 🔐 **Secure Authentication:** JWT-based auth with protected routes
-- 🔄 **Report Management:** View, update status, and delete reports
+- 🏅 **Leaderboard:** Top contributors ranked by eco-points (admins excluded from competition)
+- 🛡️ **Admin Dashboard:** Comprehensive admin control panel with role-based access
+  - Overview stats (users, reports, status breakdown)
+  - User management (view, promote/demote roles)
+  - Report management with admin notes system
+  - Admin-only report status updates
+- 📝 **Admin Notes:** Internal notes system for tracking report investigations
+- 🔐 **Secure Authentication:** JWT-based auth with protected routes and role-based access control
+- 🔄 **Report Management:** View, update status (admin-only), and delete reports
 - 📱 **Mobile Responsive:** Works seamlessly on desktop, tablet, and mobile devices
 - ⚡ **Real-time Updates:** Dynamic data fetching with loading states
-- 🎨 **Modern UI/UX:** Glassmorphism effects, smooth Framer Motion animations, emerald color scheme
+- 🎨 **Modern UI/UX:** Glassmorphism effects, smooth Framer Motion animations, emerald/purple color scheme
 - 🔍 **Advanced Filters:** Filter reports by status, waste type, and severity
 
 ---
@@ -212,13 +225,14 @@ reviwa/
   - [x] Modern UI with Tailwind CSS + Framer Motion animations
   - [x] Mobile-responsive design with hamburger menu
   - [x] Form validation & error handling
-- [ ] 🔄 **Phase 4**: Testing & Deployment (In Progress)
+- [x] ✅ **Phase 4**: Testing & Deployment (Completed)
   - [x] Local development environment working
   - [x] MongoDB Atlas connection configured
   - [x] Cloudinary integration tested
+  - [x] Production deployment (Netlify + Render)
+  - [x] Live application accessible
   - [ ] End-to-end testing
-  - [ ] Production deployment
-  - [ ] Domain & SSL setup
+  - [ ] Domain & SSL setup (using Netlify default)
 
 ## 🦯 Roadmap (MVP → Expansion)
 
@@ -226,23 +240,26 @@ reviwa/
 - ✅ Waste site reporting with image uploads and compression
 - ✅ User authentication & authorization (JWT)
 - ✅ Geolocation-based reporting (browser GPS)
-- ✅ Eco-points reward system (10 points per report)
+- ✅ Eco-points reward system (10 points per report, 20 for verification, 50 for resolution)
 - ✅ Interactive dashboard with user statistics
 - ✅ Reports list with filtering capabilities
-- ✅ Leaderboard showing top contributors
+- ✅ Leaderboard showing top contributors (admins excluded)
 - ✅ User profiles with impact tracking
 - ✅ Report status management (pending, verified, in-progress, resolved, rejected)
 - ✅ Interactive map visualization with Leaflet (color-coded markers, clustering, popups)
+- ✅ Admin dashboard with role-based access control
+- ✅ Admin notes system for internal report tracking
+- ✅ User role management (admin promotion/demotion)
 
 **Phase 2 – Enhanced Features (Q1 2026):**
-- ⏳ Advanced admin dashboard for report verification workflow
-- ⏳ User role system expansion (citizen, verifier, admin roles)
 - ⏳ Report comments & community engagement features
 - ⏳ Email notifications for report updates
-- ⏳ Advanced analytics and insights
+- ⏳ User suspension/ban system for moderation
+- ⏳ Advanced analytics with charts and trends
 - ⏳ Bulk actions for report management
 - ⏳ Heat map view for hotspot analysis
 - ⏳ Route optimization for cleanup crews
+- ⏳ Export reports to CSV/PDF
 
 **Phase 3 – Smart Expansion (Q2 2026):**
 - ⏳ Mobile app version (React Native)
@@ -258,6 +275,8 @@ reviwa/
 - Node.js 18+ and npm
 - MongoDB Atlas account (or local MongoDB)
 - Cloudinary account (for image uploads)
+
+> **💡 Try it live:** You can access the deployed application at [https://reviwa.netlify.app/](https://reviwa.netlify.app/) without any installation.
 
 ### Installation
 

@@ -65,6 +65,10 @@ const reportSchema = new mongoose.Schema({
   likesCount: {
     type: Number,
     default: 0
+  },
+  adminNotes: {
+    type: String,
+    default: ''
   }
 }, {
   timestamps: true

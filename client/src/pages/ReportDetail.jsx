@@ -319,9 +319,15 @@ const ReportDetail = () => {
                   <p className="text-sm text-gray-600">
                     {report.reportedBy?.email}
                   </p>
-                  <p className="text-sm text-primary-600 font-medium mt-1">
-                    🌱 {report.reportedBy?.ecoPoints} eco points
-                  </p>
+                  {report.reportedBy?.role === "admin" ? (
+                    <p className="text-sm text-purple-600 font-medium mt-1">
+                      🛡️ Administrator
+                    </p>
+                  ) : (
+                    <p className="text-sm text-primary-600 font-medium mt-1">
+                      🌱 {report.reportedBy?.ecoPoints} eco points
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="text-right">

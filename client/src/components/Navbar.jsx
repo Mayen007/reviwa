@@ -59,55 +59,110 @@ const Navbar = () => {
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center space-x-1">
-              {isAuthenticated && (
+              {/* Admin-only navigation when on admin page */}
+              {location.pathname === "/admin" ? (
                 <Link
-                  to="/dashboard"
-                  className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                    "/dashboard"
-                  )}`}
+                  to="/admin"
+                  className="px-3 py-2 rounded-lg font-medium transition-all relative bg-purple-600 text-white shadow-lg shadow-purple-500/50"
                 >
-                  <ChartBarIcon className="w-5 h-5 inline mr-1" />
-                  Dashboard
+                  <svg
+                    className="w-5 h-5 inline mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                  Admin Control Panel
                 </Link>
-              )}
-              <Link
-                to="/reports"
-                className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                  "/reports"
-                )}`}
-              >
-                <MapPinIcon className="w-5 h-5 inline mr-1" />
-                Reports
-              </Link>
-              <Link
-                to="/map"
-                className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                  "/map"
-                )}`}
-              >
-                <MapIcon className="w-5 h-5 inline mr-1" />
-                Map
-              </Link>
-              <Link
-                to="/leaderboard"
-                className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                  "/leaderboard"
-                )}`}
-              >
-                <TrophyIcon className="w-5 h-5 inline mr-1" />
-                Leaderboard
-              </Link>
+              ) : (
+                <>
+                  {/* Regular user navigation */}
+                  {isAuthenticated && (
+                    <Link
+                      to="/dashboard"
+                      className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
+                        "/dashboard"
+                      )}`}
+                    >
+                      <ChartBarIcon className="w-5 h-5 inline mr-1" />
+                      Dashboard
+                    </Link>
+                  )}
+                  {isAuthenticated && user?.role === "admin" && (
+                    <Link
+                      to="/admin"
+                      className={`px-3 py-2 rounded-lg font-medium transition-all relative ${
+                        location.pathname === "/admin"
+                          ? "bg-purple-600 text-white shadow-lg shadow-purple-500/50"
+                          : "text-gray-600 hover:bg-purple-50 hover:text-purple-600"
+                      }`}
+                    >
+                      <svg
+                        className="w-5 h-5 inline mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                        />
+                      </svg>
+                      Admin
+                      <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-purple-500"></span>
+                      </span>
+                    </Link>
+                  )}
+                  <Link
+                    to="/reports"
+                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
+                      "/reports"
+                    )}`}
+                  >
+                    <MapPinIcon className="w-5 h-5 inline mr-1" />
+                    Reports
+                  </Link>
+                  <Link
+                    to="/map"
+                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
+                      "/map"
+                    )}`}
+                  >
+                    <MapIcon className="w-5 h-5 inline mr-1" />
+                    Map
+                  </Link>
+                  <Link
+                    to="/leaderboard"
+                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
+                      "/leaderboard"
+                    )}`}
+                  >
+                    <TrophyIcon className="w-5 h-5 inline mr-1" />
+                    Leaderboard
+                  </Link>
 
-              {isAuthenticated && (
-                <Link
-                  to="/create-report"
-                  className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                    "/create-report"
-                  )}`}
-                >
-                  <PlusCircleIcon className="w-5 h-5 inline mr-1" />
-                  Report Waste
-                </Link>
+                  {isAuthenticated && (
+                    <Link
+                      to="/create-report"
+                      className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
+                        "/create-report"
+                      )}`}
+                    >
+                      <PlusCircleIcon className="w-5 h-5 inline mr-1" />
+                      Report Waste
+                    </Link>
+                  )}
+                </>
               )}
             </div>
 
@@ -139,9 +194,16 @@ const Navbar = () => {
                         <p className="text-sm font-medium text-gray-900">
                           {user?.name}
                         </p>
-                        <p className="text-xs text-primary-600">
-                          {user?.ecoPoints || 0} points
-                        </p>
+                        {user?.role !== "admin" && (
+                          <p className="text-xs text-primary-600">
+                            {user?.ecoPoints || 0} points
+                          </p>
+                        )}
+                        {user?.role === "admin" && (
+                          <p className="text-xs text-purple-600 font-semibold">
+                            Administrator
+                          </p>
+                        )}
                       </div>
                     </Link>
                     <button
@@ -182,62 +244,122 @@ const Navbar = () => {
             >
               <div className="px-4 py-6 space-y-3">
                 {/* Mobile Navigation Links */}
-                {isAuthenticated && (
+                {location.pathname === "/admin" ? (
                   <Link
-                    to="/dashboard"
+                    to="/admin"
                     onClick={closeMobileMenu}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                      "/dashboard"
-                    )}`}
+                    className="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-all relative bg-purple-600 text-white shadow-lg shadow-purple-500/50"
                   >
-                    <ChartBarIcon className="w-5 h-5" />
-                    <span>Dashboard</span>
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
+                    </svg>
+                    <span>Admin Control Panel</span>
                   </Link>
+                ) : (
+                  <>
+                    {/* Regular mobile navigation */}
+                    {isAuthenticated && (
+                      <Link
+                        to="/dashboard"
+                        onClick={closeMobileMenu}
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
+                          "/dashboard"
+                        )}`}
+                      >
+                        <ChartBarIcon className="w-5 h-5" />
+                        <span>Dashboard</span>
+                      </Link>
+                    )}
+                    {isAuthenticated && user?.role === "admin" && (
+                      <Link
+                        to="/admin"
+                        onClick={closeMobileMenu}
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-all relative ${
+                          location.pathname === "/admin"
+                            ? "bg-purple-600 text-white shadow-lg shadow-purple-500/50"
+                            : "text-gray-600 hover:bg-purple-50 hover:text-purple-600"
+                        }`}
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                          />
+                        </svg>
+                        <span>Admin</span>
+                        <span className="flex h-2 w-2 ml-auto">
+                          <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-purple-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                        </span>
+                      </Link>
+                    )}
+                    <Link
+                      to="/reports"
+                      onClick={closeMobileMenu}
+                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
+                        "/reports"
+                      )}`}
+                    >
+                      <MapPinIcon className="w-5 h-5" />
+                      <span>Reports</span>
+                    </Link>
+                    <Link
+                      to="/map"
+                      onClick={closeMobileMenu}
+                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
+                        "/map"
+                      )}`}
+                    >
+                      <MapIcon className="w-5 h-5" />
+                      <span>Map</span>
+                    </Link>
+                    <Link
+                      to="/leaderboard"
+                      onClick={closeMobileMenu}
+                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
+                        "/leaderboard"
+                      )}`}
+                    >
+                      <TrophyIcon className="w-5 h-5" />
+                      <span>Leaderboard</span>
+                    </Link>
+
+                    {isAuthenticated && (
+                      <>
+                        <Link
+                          to="/create-report"
+                          onClick={closeMobileMenu}
+                          className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
+                            "/create-report"
+                          )}`}
+                        >
+                          <PlusCircleIcon className="w-5 h-5" />
+                          <span>Report Waste</span>
+                        </Link>
+                      </>
+                    )}
+                  </>
                 )}
-                <Link
-                  to="/reports"
-                  onClick={closeMobileMenu}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                    "/reports"
-                  )}`}
-                >
-                  <MapPinIcon className="w-5 h-5" />
-                  <span>Reports</span>
-                </Link>
-                <Link
-                  to="/map"
-                  onClick={closeMobileMenu}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                    "/map"
-                  )}`}
-                >
-                  <MapIcon className="w-5 h-5" />
-                  <span>Map</span>
-                </Link>
-                <Link
-                  to="/leaderboard"
-                  onClick={closeMobileMenu}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                    "/leaderboard"
-                  )}`}
-                >
-                  <TrophyIcon className="w-5 h-5" />
-                  <span>Leaderboard</span>
-                </Link>
 
                 {isAuthenticated && (
                   <>
-                    <Link
-                      to="/create-report"
-                      onClick={closeMobileMenu}
-                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                        "/create-report"
-                      )}`}
-                    >
-                      <PlusCircleIcon className="w-5 h-5" />
-                      <span>Report Waste</span>
-                    </Link>
-
                     <div className="border-t border-gray-200 pt-3 mt-3">
                       <Link
                         to="/profile"
@@ -249,9 +371,16 @@ const Navbar = () => {
                           <p className="text-sm font-medium text-gray-900">
                             {user?.name}
                           </p>
-                          <p className="text-xs text-primary-600">
-                            {user?.ecoPoints || 0} points
-                          </p>
+                          {user?.role !== "admin" && (
+                            <p className="text-xs text-primary-600">
+                              {user?.ecoPoints || 0} points
+                            </p>
+                          )}
+                          {user?.role === "admin" && (
+                            <p className="text-xs text-purple-600 font-semibold">
+                              Administrator
+                            </p>
+                          )}
                         </div>
                       </Link>
                       <button

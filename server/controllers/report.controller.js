@@ -124,10 +124,12 @@ export const createReport = async (req, res, next) => {
       reportedBy: req.user.id
     });
 
-    // Update user's report count
-    await User.findByIdAndUpdate(req.user.id, {
-      $inc: { reportsCount: 1, ecoPoints: 10 } // Award 10 points for reporting
-    });
+    // Update user's report count (only award points to non-admin users)
+    const updateData = { $inc: { reportsCount: 1 } };
+    if (req.user.role !== 'admin') {
+      updateData.$inc.ecoPoints = 10; // Award 10 points for reporting
+    }
+    await User.findByIdAndUpdate(req.user.id, updateData);
 
     // Populate user info
     await report.populate('reportedBy', 'name email avatar');
@@ -231,34 +233,32 @@ export const updateReportStatus = async (req, res, next) => {
       });
     }
 
-    // Check authorization
-    const isOwner = report.reportedBy.toString() === req.user.id;
-    const isAdmin = req.user.role === 'admin';
-
-    if (!isOwner && !isAdmin) {
-      return res.status(403).json({
-        success: false,
-        message: 'Not authorized to update this report'
-      });
-    }
+    // Only admins can update report status (enforced by requireAdmin middleware)
+    // No need for additional authorization checks here
 
     // Update status
     report.status = status;
 
     if (status === 'verified' && !report.verifiedBy) {
       report.verifiedBy = req.user.id;
-      // Award bonus points for verification
-      await User.findByIdAndUpdate(report.reportedBy, {
-        $inc: { ecoPoints: 20 }
-      });
+      // Award bonus points for verification (only to non-admin users)
+      const reportUser = await User.findById(report.reportedBy);
+      if (reportUser && reportUser.role !== 'admin') {
+        await User.findByIdAndUpdate(report.reportedBy, {
+          $inc: { ecoPoints: 20 }
+        });
+      }
     }
 
     if (status === 'resolved') {
       report.resolvedAt = new Date();
-      // Award completion points
-      await User.findByIdAndUpdate(report.reportedBy, {
-        $inc: { ecoPoints: 50 }
-      });
+      // Award completion points (only to non-admin users)
+      const reportUser = await User.findById(report.reportedBy);
+      if (reportUser && reportUser.role !== 'admin') {
+        await User.findByIdAndUpdate(report.reportedBy, {
+          $inc: { ecoPoints: 50 }
+        });
+      }
     }
 
     await report.save();

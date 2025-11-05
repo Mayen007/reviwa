@@ -8,6 +8,7 @@ import {
   MapPinIcon,
   CheckCircleIcon,
   ClockIcon,
+  ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
 
 const Dashboard = () => {
@@ -69,12 +70,22 @@ const Dashboard = () => {
 
         {/* Stats Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard
-            icon={<ChartBarIcon className="w-8 h-8 text-primary-600" />}
-            title="Your Eco Points"
-            value={user?.ecoPoints || 0}
-            color="primary"
-          />
+          {user?.role !== "admin" && (
+            <StatCard
+              icon={<ChartBarIcon className="w-8 h-8 text-primary-600" />}
+              title="Your Eco Points"
+              value={user?.ecoPoints || 0}
+              color="primary"
+            />
+          )}
+          {user?.role === "admin" && (
+            <StatCard
+              icon={<ShieldCheckIcon className="w-8 h-8 text-purple-600" />}
+              title="Administrator"
+              value="Platform Manager"
+              color="purple"
+            />
+          )}
           <StatCard
             icon={<MapPinIcon className="w-8 h-8 text-blue-600" />}
             title="Reports Submitted"
@@ -231,24 +242,35 @@ const Dashboard = () => {
   );
 };
 
-const StatCard = ({ icon, title, value, color }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.9 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    viewport={{ once: true }}
-    whileHover={{ y: -4 }}
-    className="card group cursor-pointer"
-  >
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-sm text-gray-600 mb-1">{title}</p>
-        <p className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent group-hover:from-primary-600 group-hover:to-primary-400 transition-all duration-300">
-          {value}
-        </p>
+const StatCard = ({ icon, title, value, color }) => {
+  const getGradientClasses = () => {
+    if (color === "purple") {
+      return "from-purple-600 to-purple-400";
+    }
+    return "from-gray-900 to-gray-700 group-hover:from-primary-600 group-hover:to-primary-400";
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -4 }}
+      className="card group cursor-pointer"
+    >
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-gray-600 mb-1">{title}</p>
+          <p
+            className={`text-3xl font-bold bg-gradient-to-r ${getGradientClasses()} bg-clip-text text-transparent transition-all duration-300`}
+          >
+            {value}
+          </p>
+        </div>
+        <motion.div whileHover={{ scale: 1.1, rotate: 5 }}>{icon}</motion.div>
       </div>
-      <motion.div whileHover={{ scale: 1.1, rotate: 5 }}>{icon}</motion.div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 export default Dashboard;

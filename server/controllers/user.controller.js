@@ -67,7 +67,8 @@ export const getLeaderboard = async (req, res, next) => {
   try {
     const limit = parseInt(req.query.limit) || 10;
 
-    const users = await User.find()
+    // Exclude admins from leaderboard
+    const users = await User.find({ role: { $ne: 'admin' } })
       .select('name email avatar ecoPoints reportsCount')
       .sort({ ecoPoints: -1 })
       .limit(limit);
