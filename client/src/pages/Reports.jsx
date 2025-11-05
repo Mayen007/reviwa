@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { MapPinIcon, FunnelIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon, FunnelIcon, MapIcon } from "@heroicons/react/24/outline";
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState({
-    status: "",
-    wasteType: "",
-    severity: "",
+    status: searchParams.get("status") || "",
+    wasteType: searchParams.get("wasteType") || "",
+    severity: searchParams.get("severity") || "",
   });
 
   useEffect(() => {
@@ -34,6 +35,15 @@ const Reports = () => {
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
+
+    // Update URL params
+    const newParams = new URLSearchParams(searchParams);
+    if (value) {
+      newParams.set(key, value);
+    } else {
+      newParams.delete(key);
+    }
+    setSearchParams(newParams);
   };
 
   if (loading) {
@@ -46,11 +56,20 @@ const Reports = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Waste Reports</h1>
-        <p className="text-gray-600 mt-2">
-          Community-reported waste sites across the city
-        </p>
+      <div className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Waste Reports</h1>
+          <p className="text-gray-600 mt-2">
+            Community-reported waste sites across the city
+          </p>
+        </div>
+        <Link
+          to={`/map?${searchParams.toString()}`}
+          className="btn btn-primary inline-flex items-center gap-2 whitespace-nowrap"
+        >
+          <MapIcon className="w-5 h-5" />
+          View on Map
+        </Link>
       </div>
 
       {/* Filters */}
@@ -130,11 +149,7 @@ const Reports = () => {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {reports.map((report) => (
-            <Link
-              key={report._id}
-              to={`/reports/${report._id}`}
-              className="card card-hover"
-            >
+            <div key={report._id} className="card card-hover">
               {report.images && report.images.length > 0 && (
                 <img
                   src={report.images[0].url}
@@ -175,7 +190,25 @@ const Reports = () => {
                   {new Date(report.createdAt).toLocaleDateString()}
                 </span>
               </div>
-            </Link>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 mt-4">
+                <Link
+                  to={`/reports/${report._id}`}
+                  className="flex-1 btn btn-outline text-sm py-2"
+                >
+                  View Details
+                </Link>
+                <Link
+                  to={`/map?report=${report._id}`}
+                  className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors whitespace-nowrap"
+                  title="View on map"
+                >
+                  <MapPinIcon className="w-4 h-4" />
+                  Map
+                </Link>
+              </div>
+            </div>
           ))}
         </div>
       )}

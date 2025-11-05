@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import {
   HomeIcon,
   MapIcon,
+  MapPinIcon,
   PlusCircleIcon,
   TrophyIcon,
   UserCircleIcon,
@@ -71,8 +72,17 @@ const Navbar = () => {
                   "/reports"
                 )}`}
               >
-                <MapIcon className="w-5 h-5 inline mr-1" />
+                <MapPinIcon className="w-5 h-5 inline mr-1" />
                 Reports
+              </Link>
+              <Link
+                to="/map"
+                className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
+                  "/map"
+                )}`}
+              >
+                <MapIcon className="w-5 h-5 inline mr-1" />
+                Map
               </Link>
               <Link
                 to="/leaderboard"
@@ -185,8 +195,18 @@ const Navbar = () => {
                     "/reports"
                   )}`}
                 >
-                  <MapIcon className="w-5 h-5" />
+                  <MapPinIcon className="w-5 h-5" />
                   <span>Reports</span>
+                </Link>
+                <Link
+                  to="/map"
+                  onClick={closeMobileMenu}
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
+                    "/map"
+                  )}`}
+                >
+                  <MapIcon className="w-5 h-5" />
+                  <span>Map</span>
                 </Link>
                 <Link
                   to="/leaderboard"
@@ -201,7 +221,7 @@ const Navbar = () => {
 
                 {isAuthenticated && (
                   <>
-                    <Link   
+                    <Link
                       to="/create-report"
                       onClick={closeMobileMenu}
                       className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(

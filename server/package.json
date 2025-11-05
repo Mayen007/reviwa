@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "seed:reports": "node scripts/seedDummyReports.js",
+    "seed:cities": "node scripts/seedMultipleCities.js",
+    "seed:africa": "node scripts/seedPanAfrica.js"
   },
   "keywords": [
     "waste-management",

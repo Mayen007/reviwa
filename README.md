@@ -36,31 +36,34 @@ The MVP focuses on waste reporting and community engagement.
 
 - 🗑️ **Report Waste Sites:** Upload photos (up to 5 images with auto-compression), add description, and mark location
 - 📍 **Geolocation Tracking:** Browser-based GPS to identify exact dump sites
-- 📊 **User Dashboard:** Track your reports, eco-points, and community impact
-- � **Eco-Points System:** Earn points for verified cleanup actions (10 points per report)
+- �️ **Interactive Map:** Visualize all waste reports on an interactive map with color-coded markers and clustering
+- �📊 **User Dashboard:** Track your reports, eco-points, and community impact
+- ⭐ **Eco-Points System:** Earn points for verified cleanup actions (10 points per report)
 - 👤 **User Profiles:** View account details and environmental impact stats
 - 🏅 **Leaderboard:** Top contributors ranked by eco-points
 - 🔐 **Secure Authentication:** JWT-based auth with protected routes
-- � **Report Management:** View, update status, and delete reports
-- �📱 **Mobile Responsive:** Works seamlessly on desktop, tablet, and mobile devices
+- 🔄 **Report Management:** View, update status, and delete reports
+- 📱 **Mobile Responsive:** Works seamlessly on desktop, tablet, and mobile devices
 - ⚡ **Real-time Updates:** Dynamic data fetching with loading states
 - 🎨 **Modern UI/UX:** Glassmorphism effects, smooth Framer Motion animations, emerald color scheme
+- 🔍 **Advanced Filters:** Filter reports by status, waste type, and severity
 
 ---
 
 ## 🧠 Technology Stack
 
-| Layer               | Technology                                  |
-| ------------------- | ------------------------------------------- |
-| **Frontend**        | React 18.3.1, Vite 6.0.1, Tailwind CSS 3.4  |
-| **Backend**         | Node.js, Express 4.19.2, ES6 Modules        |
-| **Database**        | MongoDB 8.3.0 (Atlas)                       |
-| **Auth**            | JWT (bcryptjs, jsonwebtoken)                |
-| **File Storage**    | Cloudinary (image uploads & optimization)   |
-| **UI/Animations**   | Framer Motion 11.11, Heroicons 2.2          |
-| **API Client**      | Axios 1.7.7                                 |
-| **Hosting**         | Vercel (client) + Render / Railway (server) |
-| **Version Control** | Git & GitHub                                |
+| Layer               | Technology                                     |
+| ------------------- | ---------------------------------------------- |
+| **Frontend**        | React 18.3.1, Vite 6.0.1, Tailwind CSS 3.4     |
+| **Backend**         | Node.js, Express 4.19.2, ES6 Modules           |
+| **Database**        | MongoDB 8.3.0 (Atlas) with Geospatial Indexing |
+| **Auth**            | JWT (bcryptjs, jsonwebtoken)                   |
+| **File Storage**    | Cloudinary (image uploads & optimization)      |
+| **Maps**            | React Leaflet 4.x, Leaflet, OpenStreetMap      |
+| **UI/Animations**   | Framer Motion 11.11, Heroicons 2.2             |
+| **API Client**      | Axios 1.7.7                                    |
+| **Hosting**         | Vercel (client) + Render / Railway (server)    |
+| **Version Control** | Git & GitHub                                   |
 
 ---
 
@@ -229,22 +232,24 @@ reviwa/
 - ✅ Leaderboard showing top contributors
 - ✅ User profiles with impact tracking
 - ✅ Report status management (pending, verified, in-progress, resolved, rejected)
+- ✅ Interactive map visualization with Leaflet (color-coded markers, clustering, popups)
 
 **Phase 2 – Enhanced Features (Q1 2026):**
-- ⏳ Interactive map visualization with Leaflet (reports plotted on map with markers/popups)
 - ⏳ Advanced admin dashboard for report verification workflow
 - ⏳ User role system expansion (citizen, verifier, admin roles)
 - ⏳ Report comments & community engagement features
 - ⏳ Email notifications for report updates
 - ⏳ Advanced analytics and insights
 - ⏳ Bulk actions for report management
+- ⏳ Heat map view for hotspot analysis
+- ⏳ Route optimization for cleanup crews
 
 **Phase 3 – Smart Expansion (Q2 2026):**
 - ⏳ Mobile app version (React Native)
 - ⏳ AI waste classification using image recognition
 - ⏳ IoT bin integration for smart monitoring
 - ⏳ Analytics dashboard for municipalities
-- ⏳ Gamification features (leaderboards, badges)
+- ⏳ Advanced gamification features (badges, achievements)
 - ⏳ Multi-language support
 
 ## 🛠️ Quick Start for Developers

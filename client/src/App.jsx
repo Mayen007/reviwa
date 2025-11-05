@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,20 +8,30 @@ import {
 import { AuthProvider } from "./context/AuthContext";
 import { LoadingProvider } from "./context/LoadingContext";
 
-// Pages
+// Pages (eager loading for critical routes)
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Reports from "./pages/Reports";
-import CreateReport from "./pages/CreateReport";
-import ReportDetail from "./pages/ReportDetail";
-import Profile from "./pages/Profile";
-import Leaderboard from "./pages/Leaderboard";
+
+// Lazy loaded pages (non-critical routes)
+const CreateReport = lazy(() => import("./pages/CreateReport"));
+const ReportDetail = lazy(() => import("./pages/ReportDetail"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Leaderboard = lazy(() => import("./pages/Leaderboard"));
+const Map = lazy(() => import("./pages/Map"));
 
 // Components
 import PrivateRoute from "./components/PrivateRoute";
 import Navbar from "./components/Navbar";
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600"></div>
+  </div>
+);
 
 function App() {
   return (
@@ -40,8 +51,30 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/reports" element={<Reports />} />
-              <Route path="/reports/:id" element={<ReportDetail />} />
-              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route
+                path="/reports/:id"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <ReportDetail />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/leaderboard"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Leaderboard />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/map"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Map />
+                  </Suspense>
+                }
+              />
 
               {/* Protected Routes */}
               <Route
@@ -56,7 +89,9 @@ function App() {
                 path="/create-report"
                 element={
                   <PrivateRoute>
-                    <CreateReport />
+                    <Suspense fallback={<PageLoader />}>
+                      <CreateReport />
+                    </Suspense>
                   </PrivateRoute>
                 }
               />
@@ -64,7 +99,9 @@ function App() {
                 path="/profile"
                 element={
                   <PrivateRoute>
-                    <Profile />
+                    <Suspense fallback={<PageLoader />}>
+                      <Profile />
+                    </Suspense>
                   </PrivateRoute>
                 }
               />

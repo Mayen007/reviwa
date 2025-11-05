@@ -93,7 +93,7 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
+      <div className="grid md:grid-cols-4 gap-6 mb-8">
         <Link
           to="/create-report"
           className="card card-hover text-center group overflow-hidden relative"
@@ -129,6 +129,25 @@ const Dashboard = () => {
               View All Reports
             </h3>
             <p className="text-sm text-gray-600">Browse community reports</p>
+          </div>
+        </Link>
+
+        <Link
+          to="/map"
+          className="card card-hover text-center group overflow-hidden relative"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="relative">
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors"
+            >
+              <span className="text-2xl">🗺️</span>
+            </motion.div>
+            <h3 className="font-semibold text-gray-900 mb-2">
+              Interactive Map
+            </h3>
+            <p className="text-sm text-gray-600">View reports on map</p>
           </div>
         </Link>
 

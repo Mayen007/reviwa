@@ -12,5 +12,18 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['react', 'react-dom', 'react-router-dom'],
+          'leaflet': ['leaflet', 'react-leaflet'],
+          'animations': ['framer-motion'],
+          'icons': ['@heroicons/react']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 600
   }
 })
