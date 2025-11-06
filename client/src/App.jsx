@@ -26,6 +26,8 @@ const Admin = lazy(() => import("./pages/Admin"));
 
 // Components
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
+import UserRoute from "./components/UserRoute";
 import Navbar from "./components/Navbar";
 
 // Loading fallback component
@@ -79,25 +81,27 @@ function App() {
                   }
                 />
 
-                {/* Protected Routes */}
+                {/* Protected User Routes (regular users only, admins redirected) */}
                 <Route
                   path="/dashboard"
                   element={
-                    <PrivateRoute>
+                    <UserRoute>
                       <Dashboard />
-                    </PrivateRoute>
+                    </UserRoute>
                   }
                 />
                 <Route
                   path="/create-report"
                   element={
-                    <PrivateRoute>
+                    <UserRoute>
                       <Suspense fallback={<PageLoader />}>
                         <CreateReport />
                       </Suspense>
-                    </PrivateRoute>
+                    </UserRoute>
                   }
                 />
+
+                {/* Profile - Both users and admins can access */}
                 <Route
                   path="/profile"
                   element={
@@ -108,14 +112,16 @@ function App() {
                     </PrivateRoute>
                   }
                 />
+
+                {/* Admin-Only Route */}
                 <Route
                   path="/admin"
                   element={
-                    <PrivateRoute>
+                    <AdminRoute>
                       <Suspense fallback={<PageLoader />}>
                         <Admin />
                       </Suspense>
-                    </PrivateRoute>
+                    </AdminRoute>
                   }
                 />
 

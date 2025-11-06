@@ -17,6 +17,7 @@ const Admin = () => {
   const [adminNotes, setAdminNotes] = useState("");
   const [showNotesModal, setShowNotesModal] = useState(false);
   const [activeTab, setActiveTab] = useState("overview"); // overview, users, reports
+  const [reportFilter, setReportFilter] = useState("all"); // all, pending, verified, in-progress, resolved
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -72,7 +73,11 @@ const Admin = () => {
     const fetchReports = async () => {
       try {
         showLoading("Loading reports...");
-        const { data } = await axios.get("/api/admin/reports?limit=50");
+        const statusParam =
+          reportFilter !== "all" ? `status=${reportFilter}&` : "";
+        const { data } = await axios.get(
+          `/api/admin/reports?${statusParam}limit=1000`
+        );
         setReports(data.data.reports);
       } catch (error) {
         setError(error.response?.data?.message || "Failed to load reports");
@@ -85,7 +90,7 @@ const Admin = () => {
       fetchReports();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, user]);
+  }, [activeTab, user, reportFilter]);
 
   const handleUpdateUserRole = async (userId, newRole) => {
     try {
@@ -747,6 +752,60 @@ const Admin = () => {
                 </div>
               </div>
 
+              {/* Filter Buttons */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <button
+                  onClick={() => setReportFilter("all")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    reportFilter === "all"
+                      ? "bg-purple-600 text-white"
+                      : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  }`}
+                >
+                  All Reports
+                </button>
+                <button
+                  onClick={() => setReportFilter("pending")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    reportFilter === "pending"
+                      ? "bg-amber-600 text-white"
+                      : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  }`}
+                >
+                  Pending
+                </button>
+                <button
+                  onClick={() => setReportFilter("verified")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    reportFilter === "verified"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  }`}
+                >
+                  Verified
+                </button>
+                <button
+                  onClick={() => setReportFilter("in-progress")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    reportFilter === "in-progress"
+                      ? "bg-purple-600 text-white"
+                      : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  }`}
+                >
+                  In Progress
+                </button>
+                <button
+                  onClick={() => setReportFilter("resolved")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    reportFilter === "resolved"
+                      ? "bg-emerald-600 text-white"
+                      : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  }`}
+                >
+                  Resolved
+                </button>
+              </div>
+
               {/* Desktop Table View */}
               <div className="hidden md:block overflow-x-auto">
                 <table className="w-full">
@@ -776,10 +835,11 @@ const Admin = () => {
                     {reports.map((report) => (
                       <tr
                         key={report._id}
-                        className="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors"
+                        className="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors cursor-pointer"
+                        onClick={() => navigate(`/reports/${report._id}`)}
                       >
                         <td className="py-4 px-4">
-                          <div className="text-white font-medium">
+                          <div className="text-white font-medium hover:text-purple-400 transition-colors">
                             {report.title}
                           </div>
                           <div className="text-sm text-gray-400">
@@ -833,7 +893,10 @@ const Admin = () => {
                             {report.adminNotes || "No notes"}
                           </div>
                         </td>
-                        <td className="py-4 px-4">
+                        <td
+                          className="py-4 px-4"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <button
                             onClick={() => handleOpenNotesModal(report)}
                             className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
@@ -865,11 +928,12 @@ const Admin = () => {
                 {reports.map((report) => (
                   <div
                     key={report._id}
-                    className="bg-gray-700/30 border border-gray-600 rounded-lg p-4"
+                    onClick={() => navigate(`/reports/${report._id}`)}
+                    className="bg-gray-700/30 border border-gray-600 rounded-lg p-4 cursor-pointer hover:bg-gray-700/50 transition-colors"
                   >
                     <div className="flex justify-between items-start mb-3">
                       <div>
-                        <h4 className="text-white font-medium mb-1">
+                        <h4 className="text-white font-medium mb-1 hover:text-purple-400 transition-colors">
                           {report.title}
                         </h4>
                         <p className="text-sm text-gray-400">
@@ -909,7 +973,10 @@ const Admin = () => {
                       </p>
                     </div>
                     <button
-                      onClick={() => handleOpenNotesModal(report)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenNotesModal(report);
+                      }}
                       className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
                     >
                       <svg

@@ -41,7 +41,14 @@ const Login = () => {
     const result = await login(formData.email, formData.password);
 
     if (result.success) {
-      navigate("/dashboard");
+      // Redirect based on user role
+      // Admin users go to admin panel, regular users go to dashboard
+      const user = result.user;
+      if (user?.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     } else {
       setError(result.message);
     }

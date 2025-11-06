@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -13,7 +13,15 @@ import {
 const LandingPage = () => {
   const [userInitials, setUserInitials] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, user, loading: authLoading } = useAuth();
+
+  // Redirect authenticated users to their appropriate dashboard
+  if (isAuthenticated && !authLoading) {
+    if (user?.role === "admin") {
+      return <Navigate to="/admin" replace />;
+    }
+    return <Navigate to="/dashboard" replace />;
+  }
 
   useEffect(() => {
     fetchUserInitials();

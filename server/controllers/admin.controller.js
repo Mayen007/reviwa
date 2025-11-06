@@ -112,11 +112,31 @@ export const getAllUsers = async (req, res) => {
       .select('-password')
       .sort(sort)
       .limit(parseInt(limit))
-      .skip(skip);
+      .skip(skip)
+      .lean(); // Use lean() for better performance
+
+    // Get actual report counts for each user
+    const userIds = users.map(u => u._id);
+    const reportCounts = await Report.aggregate([
+      { $match: { reportedBy: { $in: userIds } } },
+      { $group: { _id: '$reportedBy', count: { $sum: 1 } } }
+    ]);
+
+    // Create a map of userId -> reportCount
+    const countMap = {};
+    reportCounts.forEach(rc => {
+      countMap[rc._id.toString()] = rc.count;
+    });
+
+    // Add actual report counts to users
+    const usersWithCounts = users.map(user => ({
+      ...user,
+      reportsCount: countMap[user._id.toString()] || 0
+    }));
 
     res.json({
       success: true,
-      data: users
+      data: usersWithCounts
     });
   } catch (error) {
     res.status(500).json({

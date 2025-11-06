@@ -9,6 +9,8 @@ import {
   CalendarIcon,
   UserIcon,
   TrashIcon,
+  PencilIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 
 const ReportDetail = () => {
@@ -20,6 +22,9 @@ const ReportDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [adminNotes, setAdminNotes] = useState("");
+  const [isSavingNotes, setIsSavingNotes] = useState(false);
+  const [notesSaved, setNotesSaved] = useState(false);
 
   useEffect(() => {
     fetchReport();
@@ -29,6 +34,7 @@ const ReportDetail = () => {
     try {
       const response = await axios.get(`/api/reports/${id}`);
       setReport(response.data.data.report);
+      setAdminNotes(response.data.data.report.adminNotes || "");
     } catch (error) {
       console.error("Failed to fetch report:", error);
     } finally {
@@ -79,6 +85,43 @@ const ReportDetail = () => {
       hideLoading();
       console.error("Failed to delete report:", error);
       setError(error.response?.data?.message || "Failed to delete report");
+    }
+  };
+
+  const handleSaveNotes = async () => {
+    if (!user || user.role !== "admin") return;
+
+    setIsSavingNotes(true);
+    setNotesSaved(false);
+    setError("");
+
+    try {
+      const response = await axios.patch(
+        `/api/admin/reports/${id}/notes`,
+        { adminNotes },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setReport(response.data.data.report);
+      setAdminNotes(response.data.data.report.adminNotes || "");
+
+      // Show success feedback
+      setIsSavingNotes(false);
+      setNotesSaved(true);
+
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setNotesSaved(false);
+      }, 3000);
+    } catch (error) {
+      setIsSavingNotes(false);
+      setNotesSaved(false);
+      console.error("Failed to save admin notes:", error);
+      setError(error.response?.data?.message || "Failed to save admin notes");
     }
   };
 
@@ -338,6 +381,87 @@ const ReportDetail = () => {
               </div>
             </div>
           </div>
+
+          {/* Admin Notes Section - Only visible to admins */}
+          {user && user.role === "admin" && (
+            <div className="border-t border-gray-200 pt-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <PencilIcon className="w-5 h-5 text-purple-600" />
+                  Admin Notes
+                </h4>
+                <span className="text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded-full">
+                  Admin Only
+                </span>
+              </div>
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <textarea
+                  value={adminNotes}
+                  onChange={(e) => setAdminNotes(e.target.value)}
+                  placeholder="Add internal notes about this report (visible only to administrators)..."
+                  rows="6"
+                  className="w-full px-4 py-3 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none bg-white"
+                />
+                <div className="flex items-center justify-between mt-3">
+                  <div className="flex items-center gap-3">
+                    <p className="text-xs text-gray-600">
+                      These notes are only visible to administrators and will
+                      not be shown to regular users.
+                    </p>
+                    {notesSaved && (
+                      <div className="flex items-center gap-1 text-green-600 text-sm font-medium animate-fadeIn">
+                        <CheckCircleIcon className="w-5 h-5" />
+                        <span>Notes saved!</span>
+                      </div>
+                    )}
+                  </div>
+                  <button
+                    onClick={handleSaveNotes}
+                    disabled={isSavingNotes}
+                    className={`px-6 py-2 rounded-lg font-medium transition-all ${
+                      isSavingNotes
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : notesSaved
+                        ? "bg-green-600 hover:bg-green-700 text-white"
+                        : "bg-purple-600 hover:bg-purple-700 text-white"
+                    }`}
+                  >
+                    {isSavingNotes ? (
+                      <span className="flex items-center gap-2">
+                        <svg
+                          className="animate-spin h-4 w-4"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          />
+                        </svg>
+                        Saving...
+                      </span>
+                    ) : notesSaved ? (
+                      <span className="flex items-center gap-2">
+                        <CheckCircleIcon className="w-5 h-5" />
+                        Saved!
+                      </span>
+                    ) : (
+                      "Save Notes"
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Status Update Actions */}
           {canEdit && (

@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      return { success: true };
+      return { success: true, user }; // Return user object
     } catch (error) {
       return {
         success: false,
