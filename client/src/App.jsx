@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { LoadingProvider } from "./context/LoadingContext";
+import { ActivityProvider } from "./context/ActivityContext";
 
 // Pages (eager loading for critical routes)
 import LandingPage from "./pages/LandingPage";
@@ -44,83 +45,85 @@ function App() {
             v7_relativeSplatPath: true,
           }}
         >
-          <div className="min-h-screen bg-gray-50">
-            <Navbar />
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/reports" element={<Reports />} />
-              <Route
-                path="/reports/:id"
-                element={
-                  <Suspense fallback={<PageLoader />}>
-                    <ReportDetail />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/leaderboard"
-                element={
-                  <Suspense fallback={<PageLoader />}>
-                    <Leaderboard />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/map"
-                element={
-                  <Suspense fallback={<PageLoader />}>
-                    <Map />
-                  </Suspense>
-                }
-              />
+          <ActivityProvider>
+            <div className="min-h-screen bg-gray-50">
+              <Navbar />
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/reports" element={<Reports />} />
+                <Route
+                  path="/reports/:id"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <ReportDetail />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/leaderboard"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Leaderboard />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/map"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Map />
+                    </Suspense>
+                  }
+                />
 
-              {/* Protected Routes */}
-              <Route
-                path="/dashboard"
-                element={
-                  <PrivateRoute>
-                    <Dashboard />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/create-report"
-                element={
-                  <PrivateRoute>
-                    <Suspense fallback={<PageLoader />}>
-                      <CreateReport />
-                    </Suspense>
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <PrivateRoute>
-                    <Suspense fallback={<PageLoader />}>
-                      <Profile />
-                    </Suspense>
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/admin"
-                element={
-                  <PrivateRoute>
-                    <Suspense fallback={<PageLoader />}>
-                      <Admin />
-                    </Suspense>
-                  </PrivateRoute>
-                }
-              />
+                {/* Protected Routes */}
+                <Route
+                  path="/dashboard"
+                  element={
+                    <PrivateRoute>
+                      <Dashboard />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/create-report"
+                  element={
+                    <PrivateRoute>
+                      <Suspense fallback={<PageLoader />}>
+                        <CreateReport />
+                      </Suspense>
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <Suspense fallback={<PageLoader />}>
+                        <Profile />
+                      </Suspense>
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/admin"
+                  element={
+                    <PrivateRoute>
+                      <Suspense fallback={<PageLoader />}>
+                        <Admin />
+                      </Suspense>
+                    </PrivateRoute>
+                  }
+                />
 
-              {/* 404 */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </div>
+                {/* 404 */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </div>
+          </ActivityProvider>
         </Router>
       </LoadingProvider>
     </AuthProvider>

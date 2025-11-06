@@ -47,9 +47,13 @@ const Navbar = () => {
               className="flex items-center space-x-2 group"
               onClick={closeMobileMenu}
             >
-              <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-lg">
+              <div className="w-9 h-9 flex items-center justify-center">
                 <span className="text-white font-bold text-xl">
-                  <img src="/logo.svg" alt="Reviwa logo" className="w-6 h-6" />
+                  <img
+                    src="/logo.svg"
+                    alt="Reviwa logo"
+                    className="w-8 h-6"
+                  />
                 </span>
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
