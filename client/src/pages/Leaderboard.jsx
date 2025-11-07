@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { TrophyIcon } from "@heroicons/react/24/outline";
+import { TrophyIcon, StarIcon } from "@heroicons/react/24/solid";
+import { TrophyIcon as TrophyOutline } from "@heroicons/react/24/outline";
 
 const Leaderboard = () => {
   const [users, setUsers] = useState([]);
@@ -38,7 +39,7 @@ const Leaderboard = () => {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -48,7 +49,7 @@ const Leaderboard = () => {
             animate={{ rotate: [0, -10, 10, -10, 0] }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <TrophyIcon className="w-16 h-16 text-primary-600 mx-auto mb-4" />
+            <TrophyOutline className="w-16 h-16 text-primary-600 mx-auto mb-4" />
           </motion.div>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
             Leaderboard
@@ -85,28 +86,28 @@ const Leaderboard = () => {
                   {/* Rank */}
                   <div className="w-12 h-12 flex items-center justify-center">
                     {index === 0 && (
-                      <motion.span
-                        whileHover={{ scale: 1.2 }}
-                        className="text-4xl"
+                      <motion.div
+                        whileHover={{ scale: 1.2, rotate: 15 }}
+                        className="relative"
                       >
-                        🥇
-                      </motion.span>
+                        <TrophyIcon className="w-10 h-10 text-yellow-500" />
+                      </motion.div>
                     )}
                     {index === 1 && (
-                      <motion.span
-                        whileHover={{ scale: 1.2 }}
-                        className="text-4xl"
+                      <motion.div
+                        whileHover={{ scale: 1.2, rotate: 15 }}
+                        className="relative"
                       >
-                        🥈
-                      </motion.span>
+                        <TrophyIcon className="w-10 h-10 text-gray-400" />
+                      </motion.div>
                     )}
                     {index === 2 && (
-                      <motion.span
-                        whileHover={{ scale: 1.2 }}
-                        className="text-4xl"
+                      <motion.div
+                        whileHover={{ scale: 1.2, rotate: 15 }}
+                        className="relative"
                       >
-                        🥉
-                      </motion.span>
+                        <TrophyIcon className="w-10 h-10 text-amber-600" />
+                      </motion.div>
                     )}
                     {index > 2 && (
                       <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">

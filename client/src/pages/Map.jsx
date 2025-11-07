@@ -224,7 +224,7 @@ const Map = () => {
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                <MapPinIcon className="w-7 h-7 text-primary-600" />
+                <MapPinIcon className="w-7 h-7 text-primary-600 inline" />
                 Waste Reports Map
               </h1>
               <p className="text-sm text-gray-600 mt-1">

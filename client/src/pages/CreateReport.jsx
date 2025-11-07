@@ -412,18 +412,32 @@ const CreateReport = () => {
                 Photos <span className="text-gray-500">(Max 5)</span>
               </label>
               <div className="space-y-4">
-                <label className="btn btn-outline w-full flex items-center justify-center gap-2 cursor-pointer">
-                  <PhotoIcon className="w-5 h-5" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
+                  className="hidden"
+                  disabled={images.length >= 5}
+                  id="image-upload"
+                  ref={(input) => (window.imageInput = input)}
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    document.getElementById("image-upload").click()
+                  }
+                  disabled={images.length >= 5}
+                  className="btn btn-outline w-full inline-flex items-center justify-center gap-2"
+                >
+                  <PhotoIcon className="w-5 h-5 inline mr-1" />
                   Choose Images
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageChange}
-                    className="hidden"
-                    disabled={images.length >= 5}
-                  />
-                </label>
+                  {images.length > 0 && (
+                    <span className="ml-2 text-sm text-gray-500">
+                      ({images.length}/5)
+                    </span>
+                  )}
+                </button>
 
                 {imagePreviews.length > 0 && (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -458,7 +472,7 @@ const CreateReport = () => {
                 onClick={handleGetLocation}
                 className="btn btn-outline w-full flex items-center justify-center gap-2"
               >
-                <MapPinIcon className="w-5 h-5" />
+                <MapPinIcon className="w-5 h-5 inline mr-1" />
                 Get Current Location
               </button>
               {formData.location.coordinates[0] !== 0 ||
@@ -498,11 +512,11 @@ const CreateReport = () => {
               />
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex justify-between gap-4">
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="btn btn-secondary flex-1"
+                className="btn btn-secondary flex"
               >
                 Cancel
               </button>
@@ -511,7 +525,7 @@ const CreateReport = () => {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={loading.isLoading}
-                className="btn btn-primary flex-1"
+                className="btn btn-primary"
               >
                 {loading.isLoading ? "Submitting..." : "Submit Report"}
               </motion.button>

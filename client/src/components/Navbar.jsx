@@ -44,7 +44,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link
               to="/"
-              className="flex items-center space-x-2 group"
+              className="flex items-center space-x-0 group"
               onClick={closeMobileMenu}
             >
               <div className="w-9 h-9 flex items-center justify-center">

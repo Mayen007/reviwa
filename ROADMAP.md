@@ -50,11 +50,23 @@ Reviwa is a smart waste management platform transforming urban environmental sus
 
 **Immediate Next Steps (Starting Now):**
 
-- [ ] Email notification system (report updates, verifications) - **PRIORITY 1**
-- [ ] Report comments & community engagement - **PRIORITY 2**
-- [ ] Advanced analytics dashboard with charts - **PRIORITY 3**
+- [ ] Report comments & community engagement - **PRIORITY 1**
+- [ ] Advanced analytics dashboard with charts - **PRIORITY 2**
+- [ ] User moderation system (suspend/ban) - **PRIORITY 3**
 
 **Recently Completed (November 2025):**
+
+- [x] **Email Notification System** (November 7, 2025) ✅
+
+  - ✅ Welcome email on user registration with onboarding information
+  - ✅ Report status update notifications (verified, in-progress, resolved, rejected)
+  - ✅ Eco-points milestone celebrations (10, 50, 100, 250, 500 points)
+  - ✅ Admin notifications for new reports requiring verification
+  - ✅ Nodemailer integration with Gmail SMTP support
+  - ✅ Responsive HTML email templates with Reviwa branding & logo
+  - ✅ Environment-based configuration (development/production)
+  - ✅ Graceful fallback to console logging in development
+  - ✅ Non-blocking async email sending
 
 - [x] Image carousel with thumbnail navigation (November 7, 2025)
   - Main image display with smooth transitions

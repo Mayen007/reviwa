@@ -187,7 +187,7 @@ const ReportDetail = () => {
   if (!report) {
     return (
       <>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8 py-8">
           <div className="card text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Report Not Found
@@ -210,7 +210,7 @@ const ReportDetail = () => {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-1 lg:px-8 py-8">
         <button
           onClick={() => navigate(-1)}
           className="text-gray-600 hover:text-gray-900 mb-6 flex items-center gap-2"
@@ -225,7 +225,7 @@ const ReportDetail = () => {
           </div>
         )}
 
-        <div className="card mb-6">
+        <div className="card mb-6 px-1">
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div>
@@ -642,7 +642,7 @@ const ReportDetail = () => {
                   {report.status === "rejected" &&
                     "This report was not accepted. Please check admin notes for details."}
                 </p>
-                <div className="flex gap-3">
+                <div className="flex gap-2 justify-between items-center">
                   <button
                     onClick={handleDelete}
                     className="btn bg-red-600 text-white hover:bg-red-700 inline-flex items-center gap-2"
