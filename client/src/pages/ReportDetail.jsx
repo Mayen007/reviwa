@@ -642,15 +642,18 @@ const ReportDetail = () => {
                   {report.status === "rejected" &&
                     "This report was not accepted. Please check admin notes for details."}
                 </p>
-                <div className="flex gap-2 justify-between items-center">
+                <div className="flex gap-2 justify-between items-center sm:flex-row flex-col">
                   <button
                     onClick={handleDelete}
-                    className="btn bg-red-600 text-white hover:bg-red-700 inline-flex items-center gap-2"
+                    className="btn bg-red-600 text-white hover:bg-red-700 inline-flex items-center gap-2 sm:w-auto w-full justify-center"
                   >
                     <TrashIcon className="w-5 h-5 inline mr-1" />
                     Delete Report
                   </button>
-                  <Link to="/create-report" className="btn btn-outline">
+                  <Link
+                    to="/create-report"
+                    className="btn btn-outline sm:w-auto w-full text-center"
+                  >
                     Report Another Issue
                   </Link>
                 </div>

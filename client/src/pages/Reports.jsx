@@ -59,7 +59,7 @@ const Reports = () => {
   return (
     <>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8 flex justify-between items-center">
+        <div className="mb-8 flex gap-4 justify-between items-center sm:flex-row flex-col">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Waste Reports</h1>
             <p className="text-gray-600 mt-2">
@@ -68,7 +68,7 @@ const Reports = () => {
           </div>
           <Link
             to={`/map?${searchParams.toString()}`}
-            className="btn btn-primary inline-flex items-center gap-2 whitespace-nowrap"
+            className="btn btn-primary inline-flex text-center gap-2 w-44"
           >
             <MapIcon className="w-5 h-5 inline mr-1" />
             View on Map

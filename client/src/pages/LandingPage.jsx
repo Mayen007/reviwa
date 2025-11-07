@@ -45,14 +45,14 @@ const LandingPage = () => {
 
   return (
     <>
-      <div className="min-h-screen">
+      <div className="min-h-screen overflow-x-hidden">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white py-12 md:py-16 lg:py-20 overflow-hidden min-h-screen flex items-center">
           {/* Animated Background Elements */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-            <div className="absolute top-40 right-10 w-72 h-72 bg-primary-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-            <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-primary-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-20 left-10 w-48 h-48 md:w-72 md:h-72 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+            <div className="absolute top-40 right-10 w-48 h-48 md:w-72 md:h-72 bg-primary-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-20 left-1/2 w-48 h-48 md:w-72 md:h-72 bg-primary-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -176,8 +176,8 @@ const LandingPage = () => {
 
               {/* Right Side - Cleanup Illustration */}
               <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
                 className="hidden md:flex justify-center items-center"
               >
@@ -466,8 +466,8 @@ const LandingPage = () => {
 
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
@@ -511,8 +511,8 @@ const LandingPage = () => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
                 className="space-y-6"
