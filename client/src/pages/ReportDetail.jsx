@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useLoading } from "../context/LoadingContext";
 import ConfirmDialog from "../components/ConfirmDialog";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPinIcon,
   CalendarIcon,
@@ -11,6 +12,9 @@ import {
   TrashIcon,
   PencilIcon,
   CheckCircleIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 
 const ReportDetail = () => {
@@ -25,6 +29,8 @@ const ReportDetail = () => {
   const [adminNotes, setAdminNotes] = useState("");
   const [isSavingNotes, setIsSavingNotes] = useState(false);
   const [notesSaved, setNotesSaved] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showLightbox, setShowLightbox] = useState(false);
 
   useEffect(() => {
     fetchReport();
@@ -125,6 +131,49 @@ const ReportDetail = () => {
     }
   };
 
+  // Carousel navigation functions
+  const nextImage = () => {
+    if (report?.images) {
+      setCurrentImageIndex((prev) =>
+        prev === report.images.length - 1 ? 0 : prev + 1
+      );
+    }
+  };
+
+  const prevImage = () => {
+    if (report?.images) {
+      setCurrentImageIndex((prev) =>
+        prev === 0 ? report.images.length - 1 : prev - 1
+      );
+    }
+  };
+
+  const handleThumbnailClick = (index) => {
+    setCurrentImageIndex(index);
+  };
+
+  const openLightbox = () => {
+    setShowLightbox(true);
+  };
+
+  const closeLightbox = () => {
+    setShowLightbox(false);
+  };
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!showLightbox) return;
+
+      if (e.key === "ArrowLeft") prevImage();
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "Escape") closeLightbox();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showLightbox, currentImageIndex]);
+
   if (loading) {
     return (
       <>
@@ -187,7 +236,7 @@ const ReportDetail = () => {
                 {report.status}
               </span>
             </div>
-            {canEdit && (
+            {isAdmin && (
               <button
                 onClick={handleDelete}
                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
@@ -198,31 +247,75 @@ const ReportDetail = () => {
             )}
           </div>
 
-          {/* Images Gallery */}
+          {/* Images Carousel */}
           {report.images && report.images.length > 0 && (
             <div className="mb-6">
-              <div
-                className={`grid gap-4 ${
-                  report.images.length === 1
-                    ? "grid-cols-1"
-                    : report.images.length === 2
-                    ? "grid-cols-2"
-                    : "grid-cols-2 md:grid-cols-3"
-                }`}
-              >
-                {report.images.map((image, index) => (
-                  <img
-                    key={image.publicId || index}
-                    src={image.url}
-                    alt={`${report.title} - Image ${index + 1}`}
-                    className={`w-full object-cover rounded-lg ${
-                      index === 0 && report.images.length > 1
-                        ? "col-span-2 h-96"
-                        : "h-64"
-                    }`}
-                  />
-                ))}
+              {/* Main Image Display */}
+              <div className="relative bg-gray-100 rounded-lg overflow-hidden mb-4 group">
+                <motion.img
+                  key={currentImageIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  src={report.images[currentImageIndex].url}
+                  alt={`${report.title} - Image ${currentImageIndex + 1}`}
+                  className="w-full h-96 object-cover cursor-zoom-in"
+                  onClick={openLightbox}
+                />
+
+                {/* Image Counter */}
+                <div className="absolute top-4 right-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  {currentImageIndex + 1} / {report.images.length}
+                </div>
+
+                {/* Navigation Arrows - Only show if more than 1 image */}
+                {report.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label="Previous image"
+                    >
+                      <ChevronLeftIcon className="w-6 h-6" />
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label="Next image"
+                    >
+                      <ChevronRightIcon className="w-6 h-6" />
+                    </button>
+                  </>
+                )}
+
+                {/* Zoom Hint */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click to enlarge
+                </div>
               </div>
+
+              {/* Thumbnail Strip - Only show if more than 1 image */}
+              {report.images.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {report.images.map((image, index) => (
+                    <button
+                      key={image.publicId || index}
+                      onClick={() => handleThumbnailClick(index)}
+                      className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                        index === currentImageIndex
+                          ? "border-primary-600 ring-2 ring-primary-200"
+                          : "border-gray-300 hover:border-gray-400"
+                      }`}
+                    >
+                      <img
+                        src={image.url}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -463,16 +556,17 @@ const ReportDetail = () => {
             </div>
           )}
 
-          {/* Status Update Actions */}
-          {canEdit && (
+          {/* Status Update Actions - Admin Only */}
+          {isAdmin && (
             <div className="border-t border-gray-200 pt-6">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                Update Status
+              <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <span className="text-purple-600">Admin:</span> Update Status
               </h4>
               {report.status === "resolved" ? (
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <p className="text-green-800 font-medium">
-                    ✓ This issue has been resolved
+                  <p className="text-green-800 font-medium flex items-center gap-2">
+                    <CheckCircleIcon className="w-5 h-5" />
+                    This issue has been resolved
                   </p>
                 </div>
               ) : (
@@ -507,8 +601,60 @@ const ReportDetail = () => {
                       Mark as Resolved
                     </button>
                   )}
+                  {/* Any status can be marked as rejected */}
+                  {report.status !== "rejected" &&
+                    report.status !== "resolved" && (
+                      <button
+                        onClick={() => handleStatusUpdate("rejected")}
+                        disabled={loadingState.isLoading}
+                        className="btn bg-red-600 text-white hover:bg-red-700"
+                      >
+                        Mark as Rejected
+                      </button>
+                    )}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* User Actions - Report Owner Only (Non-Admin) */}
+          {isOwner && !isAdmin && (
+            <div className="border-t border-gray-200 pt-6">
+              <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                Your Report
+              </h4>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="text-blue-800 mb-4">
+                  <strong>Current Status:</strong>{" "}
+                  <span className={`badge badge-${report.status} ml-2`}>
+                    {report.status}
+                  </span>
+                </p>
+                <p className="text-sm text-blue-700 mb-4">
+                  {report.status === "pending" &&
+                    "Your report is awaiting admin verification."}
+                  {report.status === "verified" &&
+                    "Your report has been verified and is pending action."}
+                  {report.status === "in-progress" &&
+                    "Cleanup is in progress! Thanks for reporting."}
+                  {report.status === "resolved" &&
+                    "Great news! This issue has been resolved. You earned eco-points!"}
+                  {report.status === "rejected" &&
+                    "This report was not accepted. Please check admin notes for details."}
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleDelete}
+                    className="btn bg-red-600 text-white hover:bg-red-700 inline-flex items-center gap-2"
+                  >
+                    <TrashIcon className="w-5 h-5 inline mr-1" />
+                    Delete Report
+                  </button>
+                  <Link to="/create-report" className="btn btn-outline">
+                    Report Another Issue
+                  </Link>
+                </div>
+              </div>
             </div>
           )}
 
@@ -523,6 +669,103 @@ const ReportDetail = () => {
             type="danger"
           />
         </div>
+
+        {/* Lightbox Modal */}
+        <AnimatePresence>
+          {showLightbox && report?.images && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+              onClick={closeLightbox}
+            >
+              {/* Close Button */}
+              <button
+                onClick={closeLightbox}
+                className="absolute top-4 right-4 text-white hover:text-gray-300 bg-black/50 hover:bg-black/70 p-2 rounded-full transition-colors z-10"
+                aria-label="Close lightbox"
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+
+              {/* Image Counter */}
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-medium z-10">
+                {currentImageIndex + 1} / {report.images.length}
+              </div>
+
+              {/* Main Image */}
+              <motion.img
+                key={currentImageIndex}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                src={report.images[currentImageIndex].url}
+                alt={`${report.title} - Image ${currentImageIndex + 1}`}
+                className="max-h-[90vh] max-w-[90vw] object-contain"
+                onClick={(e) => e.stopPropagation()}
+              />
+
+              {/* Navigation Arrows - Only show if more than 1 image */}
+              {report.images.length > 1 && (
+                <>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      prevImage();
+                    }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeftIcon className="w-8 h-8" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      nextImage();
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
+                    aria-label="Next image"
+                  >
+                    <ChevronRightIcon className="w-8 h-8" />
+                  </button>
+                </>
+              )}
+
+              {/* Thumbnail Strip */}
+              {report.images.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto max-w-[90vw] pb-2 px-4">
+                  {report.images.map((image, index) => (
+                    <button
+                      key={image.publicId || index}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleThumbnailClick(index);
+                      }}
+                      className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                        index === currentImageIndex
+                          ? "border-white ring-2 ring-white/50"
+                          : "border-white/30 hover:border-white/60"
+                      }`}
+                    >
+                      <img
+                        src={image.url}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Keyboard Hints */}
+              <div className="absolute bottom-24 left-1/2 -translate-x-1/2 text-white/70 text-xs text-center hidden sm:block">
+                Use arrow keys to navigate • Press ESC to close
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </>
   );

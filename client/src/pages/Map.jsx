@@ -236,14 +236,14 @@ const Map = () => {
                 to={`/reports?${searchParams.toString()}`}
                 className="btn btn-outline flex items-center gap-2"
               >
-                <ListBulletIcon className="w-5 h-5" />
+                <ListBulletIcon className="w-5 h-5 inline mr-1" />
                 <span className="hidden sm:inline">View List</span>
               </Link>
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className="btn btn-outline flex items-center gap-2"
               >
-                <FunnelIcon className="w-5 h-5" />
+                <FunnelIcon className="w-5 h-5 inline mr-1" />
                 <span className="hidden sm:inline">Filters</span>
                 {(filters.status || filters.wasteType || filters.severity) && (
                   <span className="bg-primary-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">

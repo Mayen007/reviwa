@@ -70,7 +70,7 @@ const Reports = () => {
             to={`/map?${searchParams.toString()}`}
             className="btn btn-primary inline-flex items-center gap-2 whitespace-nowrap"
           >
-            <MapIcon className="w-5 h-5" />
+            <MapIcon className="w-5 h-5 inline mr-1" />
             View on Map
           </Link>
         </div>
@@ -163,11 +163,13 @@ const Reports = () => {
                   />
                 )}
 
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-gray-900 text-lg">
+                <div className="flex justify-between items-start gap-3 mb-2">
+                  <h3 className="font-semibold text-gray-900 text-lg flex-1 break-words">
                     {report.title}
                   </h3>
-                  <span className={`badge badge-${report.status}`}>
+                  <span
+                    className={`badge badge-${report.status} flex-shrink-0`}
+                  >
                     {report.status}
                   </span>
                 </div>
@@ -197,10 +199,10 @@ const Reports = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-2 mt-4">
+                <div className="flex gap-2 mt-4 justify-between">
                   <Link
                     to={`/reports/${report._id}`}
-                    className="flex-1 btn btn-outline text-sm py-2"
+                    className="flex btn btn-outline text-sm py-2 align-middle text-center"
                   >
                     View Details
                   </Link>
@@ -209,7 +211,7 @@ const Reports = () => {
                     className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors whitespace-nowrap"
                     title="View on map"
                   >
-                    <MapPinIcon className="w-4 h-4" />
+                    <MapPinIcon className="w-4 h-4 inline mr-1" />
                     Map
                   </Link>
                 </div>

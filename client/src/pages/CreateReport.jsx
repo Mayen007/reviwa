@@ -112,8 +112,40 @@ const CreateReport = () => {
       return;
     }
 
+    // Check for duplicate file names
+    const existingFileNames = images.map((img) => img.name);
+    const duplicates = files.filter((file) =>
+      existingFileNames.includes(file.name)
+    );
+
+    if (duplicates.length > 0) {
+      setError(
+        `Duplicate image(s) detected: ${duplicates
+          .map((f) => f.name)
+          .join(", ")}. Please select different images.`
+      );
+      return;
+    }
+
+    // Filter out duplicate files in current selection
+    const uniqueFiles = files.filter(
+      (file, index, self) =>
+        index === self.findIndex((f) => f.name === file.name)
+    );
+
+    if (uniqueFiles.length !== files.length) {
+      setError(
+        `Removed ${
+          files.length - uniqueFiles.length
+        } duplicate image(s) from selection.`
+      );
+      // Continue with unique files only
+    }
+
     showLoading(
-      `Compressing ${files.length} image${files.length > 1 ? "s" : ""}...`,
+      `Compressing ${uniqueFiles.length} image${
+        uniqueFiles.length > 1 ? "s" : ""
+      }...`,
       "upload",
       0
     );
@@ -121,13 +153,13 @@ const CreateReport = () => {
     const newPreviews = [];
 
     try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+      for (let i = 0; i < uniqueFiles.length; i++) {
+        const file = uniqueFiles[i];
 
         // Update progress
-        const progress = ((i + 1) / files.length) * 100;
+        const progress = ((i + 1) / uniqueFiles.length) * 100;
         updateProgress(progress);
-        updateMessage(`Compressing image ${i + 1} of ${files.length}...`);
+        updateMessage(`Compressing image ${i + 1} of ${uniqueFiles.length}...`);
 
         // Check file size
         const fileSizeMB = file.size / (1024 * 1024);
@@ -148,7 +180,11 @@ const CreateReport = () => {
 
       setImagePreviews((prev) => [...prev, ...newPreviews]);
       setImages((prev) => [...prev, ...compressedFiles]);
-      setError("");
+
+      // Clear error only if no duplicates were found
+      if (uniqueFiles.length === files.length) {
+        setError("");
+      }
     } catch (error) {
       console.error("Image compression error:", error);
       setError("Failed to process images. Please try again.");
