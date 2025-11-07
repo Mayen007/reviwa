@@ -15,14 +15,6 @@ const LandingPage = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const { isAuthenticated, user, loading: authLoading } = useAuth();
 
-  // Redirect authenticated users to their appropriate dashboard
-  if (isAuthenticated && !authLoading) {
-    if (user?.role === "admin") {
-      return <Navigate to="/admin" replace />;
-    }
-    return <Navigate to="/dashboard" replace />;
-  }
-
   useEffect(() => {
     fetchUserInitials();
   }, []);
@@ -50,6 +42,7 @@ const LandingPage = () => {
       setTotalUsers(12000);
     }
   };
+
   return (
     <>
       <div className="min-h-screen">
@@ -82,14 +75,14 @@ const LandingPage = () => {
                   </span>
                 </motion.div>
 
-                <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight text-dark">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight text-dark">
                   Building Cleaner Cities,
                   <br />
                   <span className="bg-gradient-to-r from-green-200 to-primary-200 bg-clip-text text-transparent">
                     Together
                   </span>
                 </h1>
-                <p className="text-xl md:text-2xl mb-10 text-primary-100 max-w-3xl leading-relaxed">
+                <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 text-primary-100 max-w-3xl leading-relaxed">
                   Report illegal waste dumping, track cleanup progress, and earn
                   rewards for making your community cleaner.
                 </p>
@@ -100,13 +93,13 @@ const LandingPage = () => {
                     <>
                       <Link
                         to="/create-report"
-                        className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-4 text-lg font-bold shadow-2xl hover:shadow-3xl"
+                        className="btn bg-white text-primary-700 hover:bg-primary-50 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold shadow-2xl hover:shadow-3xl"
                       >
                         Create Report
                       </Link>
                       <Link
                         to="/reports"
-                        className="btn bg-transparent hover:bg-white/10 px-8 py-4 text-lg font-bold border-2 border-white backdrop-blur-sm"
+                        className="btn bg-transparent hover:bg-white/10 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold border-2 border-white backdrop-blur-sm"
                       >
                         View Reports
                       </Link>
@@ -115,13 +108,13 @@ const LandingPage = () => {
                     <>
                       <Link
                         to="/register"
-                        className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-4 text-lg font-bold shadow-2xl hover:shadow-3xl"
+                        className="btn bg-white text-primary-700 hover:bg-primary-50 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold shadow-2xl hover:shadow-3xl"
                       >
                         Get Started Free →
                       </Link>
                       <Link
                         to="/login"
-                        className="btn bg-transparent hover:bg-white/10 px-8 py-4 text-lg font-bold border-2 border-white backdrop-blur-sm"
+                        className="btn bg-transparent hover:bg-white/10 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold border-2 border-white backdrop-blur-sm"
                       >
                         Sign in
                       </Link>
@@ -406,34 +399,40 @@ const LandingPage = () => {
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
                 How It Works
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-lg sm:text-xl text-gray-600">
                 Simple, effective, and rewarding
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               <FeatureCard
-                icon={<MapPinIcon className="w-12 h-12 text-primary-600" />}
+                icon={
+                  <MapPinIcon className="w-10 h-10 sm:w-12 sm:h-12 text-primary-600" />
+                }
                 title="Report Waste"
                 description="Spot illegal dumping? Take a photo and pin it on the map with details."
               />
               <FeatureCard
                 icon={
-                  <CheckCircleIcon className="w-12 h-12 text-primary-600" />
+                  <CheckCircleIcon className="w-10 h-10 sm:w-12 sm:h-12 text-primary-600" />
                 }
                 title="Get Verified"
                 description="Our community and admins verify reports to ensure accuracy."
               />
               <FeatureCard
-                icon={<ChartBarIcon className="w-12 h-12 text-primary-600" />}
+                icon={
+                  <ChartBarIcon className="w-10 h-10 sm:w-12 sm:h-12 text-primary-600" />
+                }
                 title="Track Progress"
                 description="Watch as your city gets cleaner with real-time updates and stats."
               />
               <FeatureCard
-                icon={<TrophyIcon className="w-12 h-12 text-primary-600" />}
+                icon={
+                  <TrophyIcon className="w-10 h-10 sm:w-12 sm:h-12 text-primary-600" />
+                }
                 title="Earn Rewards"
                 description="Get eco-points for every verified report and climb the leaderboard."
               />
@@ -455,11 +454,11 @@ const LandingPage = () => {
         {/* Impact Section */}
         <section className="py-20 bg-gradient-to-br from-primary-50 to-accent-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
                 Real Impact, Real Change
               </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
                 See how communities are transforming their neighborhoods with
                 Reviwa
               </p>
@@ -472,11 +471,11 @@ const LandingPage = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <div className="bg-white rounded-2xl shadow-xl p-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
                     Contributing to SDG 11
                   </h3>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-sm sm:text-base text-gray-600 mb-6">
                     Our platform directly supports the United Nations
                     Sustainable Development Goal 11: Making cities inclusive,
                     safe, resilient and sustainable. Every report you make
@@ -518,9 +517,11 @@ const LandingPage = () => {
                 transition={{ duration: 0.6 }}
                 className="space-y-6"
               >
-                <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl shadow-xl p-8 text-white">
-                  <h4 className="text-3xl font-bold mb-2">2.5 Tons</h4>
-                  <p className="text-primary-100 mb-4">
+                <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
+                  <h4 className="text-2xl sm:text-3xl font-bold mb-2">
+                    2.5 Tons
+                  </h4>
+                  <p className="text-sm sm:text-base text-primary-100 mb-4">
                     Waste Collected This Month
                   </p>
                   <div className="h-2 bg-white/20 rounded-full overflow-hidden">
@@ -534,9 +535,11 @@ const LandingPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-xl p-8">
-                  <h4 className="text-3xl font-bold text-gray-900 mb-2">94%</h4>
-                  <p className="text-gray-600 mb-4">
+                <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+                  <h4 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                    94%
+                  </h4>
+                  <p className="text-sm sm:text-base text-gray-600 mb-4">
                     Reports Resolved Within 7 Days
                   </p>
                   <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -550,9 +553,11 @@ const LandingPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-secondary-800 to-secondary-900 rounded-2xl shadow-xl p-8 text-white">
-                  <h4 className="text-3xl font-bold mb-2">150+</h4>
-                  <p className="text-gray-300">Communities Participating</p>
+                <div className="bg-gradient-to-r from-secondary-800 to-secondary-900 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
+                  <h4 className="text-2xl sm:text-3xl font-bold mb-2">150+</h4>
+                  <p className="text-sm sm:text-base text-gray-300">
+                    Communities Participating
+                  </p>
                 </div>
               </motion.div>
             </div>
@@ -562,11 +567,11 @@ const LandingPage = () => {
         {/* Testimonials Section */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
                 What Our Community Says
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-lg sm:text-xl text-gray-600">
                 Real stories from real change-makers
               </p>
             </div>
@@ -577,18 +582,22 @@ const LandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-gray-50 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-shadow"
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold mr-3 sm:mr-4 text-sm sm:text-base">
                     SA
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900">Sarah Anderson</h4>
-                    <p className="text-sm text-gray-600">Community Volunteer</p>
+                    <h4 className="text-base sm:text-lg font-bold text-gray-900">
+                      Sarah Anderson
+                    </h4>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      Community Volunteer
+                    </p>
                   </div>
                 </div>
-                <p className="text-gray-700 italic">
+                <p className="text-sm sm:text-base text-gray-700 italic">
                   "Reviwa has transformed how our neighborhood tackles waste.
                   We've cleaned up 15 illegal dumping sites in just 3 months!"
                 </p>
@@ -599,20 +608,22 @@ const LandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-gray-50 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-shadow"
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold mr-3 sm:mr-4 text-sm sm:text-base">
                     MK
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900">Michael Kim</h4>
-                    <p className="text-sm text-gray-600">
+                    <h4 className="text-base sm:text-lg font-bold text-gray-900">
+                      Michael Kim
+                    </h4>
+                    <p className="text-xs sm:text-sm text-gray-600">
                       Environmental Activist
                     </p>
                   </div>
                 </div>
-                <p className="text-gray-700 italic">
+                <p className="text-sm sm:text-base text-gray-700 italic">
                   "The gamification aspect is genius! My students compete to
                   report and clean up waste. It's education and action
                   combined."
@@ -624,18 +635,22 @@ const LandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-gray-50 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-shadow"
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold mr-3 sm:mr-4 text-sm sm:text-base">
                     PN
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900">Priya Nair</h4>
-                    <p className="text-sm text-gray-600">City Council Member</p>
+                    <h4 className="text-base sm:text-lg font-bold text-gray-900">
+                      Priya Nair
+                    </h4>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      City Council Member
+                    </p>
                   </div>
                 </div>
-                <p className="text-gray-700 italic">
+                <p className="text-sm sm:text-base text-gray-700 italic">
                   "Reviwa provides invaluable data for urban planning. We can
                   now prioritize cleanup efforts based on real community input."
                 </p>
@@ -645,12 +660,12 @@ const LandingPage = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
+        <section className="py-16 sm:py-20 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl font-bold mb-6">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
               Ready to Make a Difference?
             </h2>
-            <p className="text-xl mb-8 text-gray-200">
+            <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-gray-200">
               Join thousands of citizens working together to create cleaner,
               healthier communities.
             </p>
@@ -659,14 +674,14 @@ const LandingPage = () => {
             ) : isAuthenticated ? (
               <Link
                 to="/create-report"
-                className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-3 text-lg inline-block"
+                className="btn bg-white text-primary-700 hover:bg-primary-50 px-6 sm:px-8 py-3 text-base sm:text-lg inline-block"
               >
                 Start Reporting Today
               </Link>
             ) : (
               <Link
                 to="/register"
-                className="btn bg-white text-primary-700 hover:bg-primary-50 px-8 py-3 text-lg inline-block"
+                className="btn bg-white text-primary-700 hover:bg-primary-50 px-6 sm:px-8 py-3 text-base sm:text-lg inline-block"
               >
                 Start Reporting Today
               </Link>
@@ -743,13 +758,17 @@ const FeatureCard = ({ icon, title, description }) => (
   >
     <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
     <div className="relative z-10">
-      <div className="flex justify-center mb-4">
-        <div className="p-4 bg-primary-50 rounded-2xl group-hover:bg-primary-100 transition-all duration-300 group-hover:scale-110 transform">
+      <div className="flex justify-center mb-3 sm:mb-4">
+        <div className="p-3 sm:p-4 bg-primary-50 rounded-2xl group-hover:bg-primary-100 transition-all duration-300 group-hover:scale-110 transform">
           {icon}
         </div>
       </div>
-      <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
+      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">
+        {title}
+      </h3>
+      <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+        {description}
+      </p>
     </div>
   </motion.div>
 );
@@ -762,10 +781,12 @@ const StatCard = ({ number, label }) => (
     transition={{ duration: 0.5 }}
     className="group"
   >
-    <div className="text-6xl font-extrabold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform duration-300">
+    <div className="text-4xl sm:text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300">
       {number}
     </div>
-    <div className="text-gray-600 text-lg font-medium">{label}</div>
+    <div className="text-gray-600 text-base sm:text-lg font-medium">
+      {label}
+    </div>
   </motion.div>
 );
 

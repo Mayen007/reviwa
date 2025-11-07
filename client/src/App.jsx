@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { LoadingProvider } from "./context/LoadingContext";
@@ -37,6 +38,20 @@ const PageLoader = () => (
   </div>
 );
 
+// Layout wrapper to conditionally show Navbar
+const Layout = ({ children }) => {
+  const location = useLocation();
+  const hideNavbarRoutes = ["/login", "/register"];
+  const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
+
+  return (
+    <>
+      {shouldShowNavbar && <Navbar />}
+      {children}
+    </>
+  );
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -49,85 +64,86 @@ function App() {
         >
           <ActivityProvider>
             <div className="min-h-screen bg-gray-50">
-              <Navbar />
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route
-                  path="/reports/:id"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <ReportDetail />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/leaderboard"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <Leaderboard />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/map"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <Map />
-                    </Suspense>
-                  }
-                />
-
-                {/* Protected User Routes (regular users only, admins redirected) */}
-                <Route
-                  path="/dashboard"
-                  element={
-                    <UserRoute>
-                      <Dashboard />
-                    </UserRoute>
-                  }
-                />
-                <Route
-                  path="/create-report"
-                  element={
-                    <UserRoute>
+              <Layout>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/reports" element={<Reports />} />
+                  <Route
+                    path="/reports/:id"
+                    element={
                       <Suspense fallback={<PageLoader />}>
-                        <CreateReport />
+                        <ReportDetail />
                       </Suspense>
-                    </UserRoute>
-                  }
-                />
-
-                {/* Profile - Both users and admins can access */}
-                <Route
-                  path="/profile"
-                  element={
-                    <PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/leaderboard"
+                    element={
                       <Suspense fallback={<PageLoader />}>
-                        <Profile />
+                        <Leaderboard />
                       </Suspense>
-                    </PrivateRoute>
-                  }
-                />
-
-                {/* Admin-Only Route */}
-                <Route
-                  path="/admin"
-                  element={
-                    <AdminRoute>
+                    }
+                  />
+                  <Route
+                    path="/map"
+                    element={
                       <Suspense fallback={<PageLoader />}>
-                        <Admin />
+                        <Map />
                       </Suspense>
-                    </AdminRoute>
-                  }
-                />
+                    }
+                  />
 
-                {/* 404 */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
+                  {/* Protected User Routes (regular users only, admins redirected) */}
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <UserRoute>
+                        <Dashboard />
+                      </UserRoute>
+                    }
+                  />
+                  <Route
+                    path="/create-report"
+                    element={
+                      <UserRoute>
+                        <Suspense fallback={<PageLoader />}>
+                          <CreateReport />
+                        </Suspense>
+                      </UserRoute>
+                    }
+                  />
+
+                  {/* Profile - Both users and admins can access */}
+                  <Route
+                    path="/profile"
+                    element={
+                      <PrivateRoute>
+                        <Suspense fallback={<PageLoader />}>
+                          <Profile />
+                        </Suspense>
+                      </PrivateRoute>
+                    }
+                  />
+
+                  {/* Admin-Only Route */}
+                  <Route
+                    path="/admin"
+                    element={
+                      <AdminRoute>
+                        <Suspense fallback={<PageLoader />}>
+                          <Admin />
+                        </Suspense>
+                      </AdminRoute>
+                    }
+                  />
+
+                  {/* 404 */}
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </Layout>
             </div>
           </ActivityProvider>
         </Router>
