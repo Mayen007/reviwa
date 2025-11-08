@@ -10,6 +10,7 @@ import {
   ClockIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
+import { HandRaisedIcon } from "@heroicons/react/24/solid";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -60,8 +61,19 @@ const Dashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
-            Welcome back, {user?.name}! 👋
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent flex items-center gap-2">
+            Welcome back, {user?.name}!{" "}
+            <motion.div
+              animate={{ rotate: [0, 14, -8, 14, -4, 10, 0] }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                repeatDelay: 1,
+                ease: "easeInOut",
+              }}
+            >
+              <HandRaisedIcon className="w-8 h-8 text-primary-500" />
+            </motion.div>
           </h1>
           <p className="text-gray-600 mt-2">
             Here's what's happening with your environmental impact
