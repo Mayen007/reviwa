@@ -48,7 +48,8 @@ The MVP focuses on waste reporting and community engagement.
 - ⭐ **Eco-Points System:** Earn points for verified cleanup actions (10 points per report, 20 for verification, 50 for resolution)
 - 👤 **User Profiles:** View account details and environmental impact stats
 - 🏅 **Leaderboard:** Top contributors ranked by eco-points (admins excluded from competition)
-- 🛡️ **Admin Dashboard:** Comprehensive admin control panel with role-based access
+- � **Email Notifications:** Automated emails for welcome, status updates, milestones, and admin alerts
+- �🛡️ **Admin Dashboard:** Comprehensive admin control panel with role-based access
   - Overview stats (users, reports, status breakdown)
   - User management (view, promote/demote roles)
   - Report management with admin notes system
@@ -72,10 +73,11 @@ The MVP focuses on waste reporting and community engagement.
 | **Database**        | MongoDB 8.3.0 (Atlas) with Geospatial Indexing |
 | **Auth**            | JWT (bcryptjs, jsonwebtoken)                   |
 | **File Storage**    | Cloudinary (image uploads & optimization)      |
+| **Email**           | Nodemailer 7.0.10 with Gmail SMTP              |
 | **Maps**            | React Leaflet 4.x, Leaflet, OpenStreetMap      |
 | **UI/Animations**   | Framer Motion 11.11, Heroicons 2.2             |
 | **API Client**      | Axios 1.7.7                                    |
-| **Hosting**         | Vercel (client) + Render / Railway (server)    |
+| **Hosting**         | Netlify (client) + Render (server)             |
 | **Version Control** | Git & GitHub                                   |
 
 ---
@@ -150,6 +152,7 @@ reviwa/
 - **Geospatial Indexing:** 2dsphere indexes for location-based queries
 - **Multer Middleware:** File upload handling with memory storage
 - **Cloudinary Integration:** Cloud-based image storage with automatic optimization
+- **Email Service:** Nodemailer with Gmail SMTP for transactional emails
 - **Error Handling:** Centralized error middleware with detailed messages
 - **CORS Configuration:** Cross-origin resource sharing for API security
 
@@ -250,10 +253,10 @@ reviwa/
 - ✅ Admin dashboard with role-based access control
 - ✅ Admin notes system for internal report tracking
 - ✅ User role management (admin promotion/demotion)
+- ✅ Email notification system (welcome, status updates, milestones, admin alerts)
 
 **Phase 2 – Enhanced Features (Q1 2026):**
 - ⏳ Report comments & community engagement features
-- ⏳ Email notifications for report updates
 - ⏳ User suspension/ban system for moderation
 - ⏳ Advanced analytics with charts and trends
 - ⏳ Bulk actions for report management

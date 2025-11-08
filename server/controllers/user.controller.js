@@ -1,4 +1,5 @@
 import User from '../models/User.model.js';
+import Report from '../models/Report.model.js';
 
 /**
  * @desc    Get user profile
@@ -16,9 +17,25 @@ export const getUserProfile = async (req, res, next) => {
       });
     }
 
+    // Get actual report count from Report collection
+    const reportsCount = await Report.countDocuments({ reportedBy: user._id });
+
+    // Return user with dynamic report count
+    const userProfile = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      ecoPoints: user.ecoPoints,
+      role: user.role,
+      reportsCount,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    };
+
     res.json({
       success: true,
-      data: { user }
+      data: { user: userProfile }
     });
   } catch (error) {
     next(error);
@@ -69,13 +86,28 @@ export const getLeaderboard = async (req, res, next) => {
 
     // Exclude admins from leaderboard
     const users = await User.find({ role: { $ne: 'admin' } })
-      .select('name email avatar ecoPoints reportsCount')
+      .select('name email avatar ecoPoints')
       .sort({ ecoPoints: -1 })
       .limit(limit);
 
+    // Get actual report count from Report collection for each user
+    const usersWithReportCount = await Promise.all(
+      users.map(async (user) => {
+        const reportsCount = await Report.countDocuments({ reportedBy: user._id });
+        return {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+          ecoPoints: user.ecoPoints,
+          reportsCount
+        };
+      })
+    );
+
     res.json({
       success: true,
-      data: { users }
+      data: { users: usersWithReportCount }
     });
   } catch (error) {
     next(error);

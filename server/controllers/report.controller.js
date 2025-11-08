@@ -1,6 +1,12 @@
 import Report from '../models/Report.model.js';
 import User from '../models/User.model.js';
 import cloudinary from '../config/cloudinary.js';
+import {
+  sendReportStatusUpdate,
+  sendEcoPointsMilestone,
+  sendNewReportNotification,
+  getAdminEmails
+} from '../services/email.service.js';
 
 /**
  * @desc    Create new report
@@ -124,15 +130,37 @@ export const createReport = async (req, res, next) => {
       reportedBy: req.user.id
     });
 
-    // Update user's report count (only award points to non-admin users)
-    const updateData = { $inc: { reportsCount: 1 } };
+    // Award eco-points for reporting (only to non-admin users)
     if (req.user.role !== 'admin') {
-      updateData.$inc.ecoPoints = 10; // Award 10 points for reporting
+      await User.findByIdAndUpdate(req.user.id, { $inc: { ecoPoints: 10 } });
     }
-    await User.findByIdAndUpdate(req.user.id, updateData);
 
     // Populate user info
     await report.populate('reportedBy', 'name email avatar');
+
+    // Send notification to admins (asynchronously)
+    getAdminEmails(User).then(adminEmails => {
+      if (adminEmails.length > 0) {
+        const locationStr = location.address ||
+          `${location.coordinates[1].toFixed(4)}, ${location.coordinates[0].toFixed(4)}`;
+
+        adminEmails.forEach(adminEmail => {
+          sendNewReportNotification(
+            adminEmail,
+            title,
+            report.reportedBy.name,
+            wasteType,
+            severity,
+            report._id,
+            locationStr
+          ).catch(err => {
+            console.error('Failed to send admin notification:', err.message);
+          });
+        });
+      }
+    }).catch(err => {
+      console.error('Failed to get admin emails:', err.message);
+    });
 
     res.status(201).json({
       success: true,
@@ -224,7 +252,8 @@ export const getReport = async (req, res, next) => {
 export const updateReportStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
-    const report = await Report.findById(req.params.id);
+    const report = await Report.findById(req.params.id)
+      .populate('reportedBy', 'name email ecoPoints role');
 
     if (!report) {
       return res.status(404).json({
@@ -233,35 +262,84 @@ export const updateReportStatus = async (req, res, next) => {
       });
     }
 
+    // Store old status for email notification
+    const oldStatus = report.status;
+
     // Only admins can update report status (enforced by requireAdmin middleware)
     // No need for additional authorization checks here
 
     // Update status
     report.status = status;
 
+    let pointsAwarded = 0;
+    let newEcoPoints = report.reportedBy.ecoPoints;
+
     if (status === 'verified' && !report.verifiedBy) {
       report.verifiedBy = req.user.id;
       // Award bonus points for verification (only to non-admin users)
-      const reportUser = await User.findById(report.reportedBy);
-      if (reportUser && reportUser.role !== 'admin') {
-        await User.findByIdAndUpdate(report.reportedBy, {
-          $inc: { ecoPoints: 20 }
+      if (report.reportedBy.role !== 'admin') {
+        pointsAwarded = 20;
+        await User.findByIdAndUpdate(report.reportedBy._id, {
+          $inc: { ecoPoints: pointsAwarded }
         });
+        newEcoPoints += pointsAwarded;
       }
     }
 
     if (status === 'resolved') {
       report.resolvedAt = new Date();
       // Award completion points (only to non-admin users)
-      const reportUser = await User.findById(report.reportedBy);
-      if (reportUser && reportUser.role !== 'admin') {
-        await User.findByIdAndUpdate(report.reportedBy, {
-          $inc: { ecoPoints: 50 }
+      if (report.reportedBy.role !== 'admin') {
+        pointsAwarded = 50;
+        await User.findByIdAndUpdate(report.reportedBy._id, {
+          $inc: { ecoPoints: pointsAwarded }
         });
+        newEcoPoints += pointsAwarded;
       }
     }
 
     await report.save();
+
+    // Send email notification to report owner (if not admin)
+    if (report.reportedBy.role !== 'admin' && oldStatus !== status) {
+      try {
+        await sendReportStatusUpdate(
+          report.reportedBy.email,
+          report.reportedBy.name,
+          report.title,
+          oldStatus,
+          status,
+          report._id,
+          report.adminNotes || ''
+        );
+      } catch (emailError) {
+        console.error('Failed to send status update email:', emailError.message);
+        // Don't fail the request if email fails
+      }
+    }
+
+    // Check for eco-points milestones and send celebration email
+    if (pointsAwarded > 0 && report.reportedBy.role !== 'admin') {
+      const milestones = [10, 50, 100, 250, 500];
+      const reachedMilestone = milestones.find(
+        m => newEcoPoints >= m && (newEcoPoints - pointsAwarded) < m
+      );
+
+      if (reachedMilestone) {
+        try {
+          await sendEcoPointsMilestone(
+            report.reportedBy.email,
+            report.reportedBy.name,
+            newEcoPoints,
+            reachedMilestone
+          );
+        } catch (emailError) {
+          console.error('Failed to send milestone email:', emailError.message);
+        }
+      }
+    }
+
+    // Refresh populated data
     await report.populate('reportedBy', 'name email avatar');
 
     res.json({
