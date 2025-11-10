@@ -8,7 +8,8 @@ console.log('Environment loaded:', {
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
   CLOUDINARY_URL: process.env.CLOUDINARY_URL ? 'SET ✓' : 'NOT SET ✗',
-  EMAIL_CONFIG: process.env.EMAIL_USER ? 'SET ✓' : 'NOT SET ✗'
+  EMAIL_CONFIG: process.env.EMAIL_USER ? 'SET ✓' : 'NOT SET ✗',
+  EMAIL_FROM: process.env.EMAIL_FROM ? `SET: ${process.env.EMAIL_FROM}` : 'NOT SET (will use EMAIL_USER)'
 });
 
 export const NODE_ENV = process.env.NODE_ENV || 'development';
