@@ -1073,7 +1073,7 @@ const Admin = () => {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">
-                          Admin Notes (Internal Only)
+                          Admin Notes
                         </label>
                         <textarea
                           value={adminNotes}
@@ -1082,9 +1082,16 @@ const Admin = () => {
                           className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                           rows="6"
                         />
-                        <p className="text-xs text-gray-500 mt-2">
-                          These notes are only visible to administrators
-                        </p>
+                        <div className="mt-2 space-y-1">
+                          <p className="text-xs text-gray-500">
+                            These notes are for internal tracking and reference.
+                          </p>
+                          <p className="text-xs text-yellow-400 font-medium">
+                            \u26a0\ufe0f Important: If you plan to reject this
+                            report, add a clear reason here. The user will see
+                            your notes as the rejection reason.
+                          </p>
+                        </div>
                       </div>
                     </div>
 

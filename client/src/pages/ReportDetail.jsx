@@ -26,6 +26,7 @@ const ReportDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showRejectConfirm, setShowRejectConfirm] = useState(false);
   const [adminNotes, setAdminNotes] = useState("");
   const [isSavingNotes, setIsSavingNotes] = useState(false);
   const [notesSaved, setNotesSaved] = useState(false);
@@ -51,12 +52,40 @@ const ReportDetail = () => {
   const handleStatusUpdate = async (newStatus) => {
     if (!isAuthenticated) return;
 
+    // If rejecting, check if admin notes exist
+    if (newStatus === "rejected" && !adminNotes.trim()) {
+      setShowRejectConfirm(true);
+      return;
+    }
+
     showLoading(`Updating status to ${newStatus}...`, "submit");
     setError("");
 
     try {
       const response = await axios.patch(`/api/reports/${id}/status`, {
         status: newStatus,
+      });
+      setReport(response.data.data.report);
+
+      // Brief success delay
+      setTimeout(() => {
+        hideLoading();
+      }, 300);
+    } catch (error) {
+      hideLoading();
+      console.error("Failed to update status:", error);
+      setError(error.response?.data?.message || "Failed to update status");
+    }
+  };
+
+  const handleRejectWithoutNotes = async () => {
+    setShowRejectConfirm(false);
+    showLoading("Updating status to rejected...", "submit");
+    setError("");
+
+    try {
+      const response = await axios.patch(`/api/reports/${id}/status`, {
+        status: "rejected",
       });
       setReport(response.data.data.report);
 
@@ -569,6 +598,31 @@ const ReportDetail = () => {
                     This issue has been resolved
                   </p>
                 </div>
+              ) : report.status === "rejected" ? (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <p className="text-red-800 font-medium flex items-center gap-2">
+                    <XMarkIcon className="w-5 h-5" />
+                    This report has been rejected
+                  </p>
+                  {report.adminNotes && (
+                    <div className="mt-3 pt-3 border-t border-red-200">
+                      <p className="text-sm font-semibold text-red-900 mb-1">
+                        Rejection reason provided to user:
+                      </p>
+                      <p className="text-sm text-red-700 whitespace-pre-wrap bg-white p-2 rounded">
+                        {report.adminNotes}
+                      </p>
+                    </div>
+                  )}
+                  {!report.adminNotes && (
+                    <div className="mt-3 p-2 bg-yellow-100 border border-yellow-300 rounded">
+                      <p className="text-sm text-yellow-800">
+                        ⚠️ No rejection reason was provided. The user will not
+                        know why their report was rejected.
+                      </p>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <div className="flex flex-wrap gap-3">
                   {/* pending → verified */}
@@ -623,14 +677,32 @@ const ReportDetail = () => {
               <h4 className="text-lg font-semibold text-gray-900 mb-4">
                 Your Report
               </h4>
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-blue-800 mb-4">
+              <div
+                className={`border rounded-lg p-4 ${
+                  report.status === "rejected"
+                    ? "bg-red-50 border-red-200"
+                    : "bg-blue-50 border-blue-200"
+                }`}
+              >
+                <p
+                  className={
+                    report.status === "rejected"
+                      ? "text-red-800 mb-4"
+                      : "text-blue-800 mb-4"
+                  }
+                >
                   <strong>Current Status:</strong>{" "}
                   <span className={`badge badge-${report.status} ml-2`}>
                     {report.status}
                   </span>
                 </p>
-                <p className="text-sm text-blue-700 mb-4">
+                <p
+                  className={`text-sm mb-4 ${
+                    report.status === "rejected"
+                      ? "text-red-700"
+                      : "text-blue-700"
+                  }`}
+                >
                   {report.status === "pending" &&
                     "Your report is awaiting admin verification."}
                   {report.status === "verified" &&
@@ -640,8 +712,30 @@ const ReportDetail = () => {
                   {report.status === "resolved" &&
                     "Great news! This issue has been resolved. You earned eco-points!"}
                   {report.status === "rejected" &&
-                    "This report was not accepted. Please check admin notes for details."}
+                    "This report was not accepted."}
                 </p>
+
+                {/* Show rejection reason to user */}
+                {report.status === "rejected" && report.adminNotes && (
+                  <div className="mb-4 p-3 bg-white border border-red-300 rounded-lg">
+                    <p className="text-sm font-semibold text-red-900 mb-1">
+                      Reason for rejection:
+                    </p>
+                    <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                      {report.adminNotes}
+                    </p>
+                  </div>
+                )}
+
+                {report.status === "rejected" && !report.adminNotes && (
+                  <div className="mb-4 p-3 bg-yellow-50 border border-yellow-300 rounded-lg">
+                    <p className="text-sm text-yellow-800">
+                      ⚠️ No reason provided. Please contact support if you need
+                      more information.
+                    </p>
+                  </div>
+                )}
+
                 <div className="flex gap-2 justify-between items-center sm:flex-row flex-col">
                   <button
                     onClick={handleDelete}
@@ -669,6 +763,17 @@ const ReportDetail = () => {
             message="Are you sure you want to delete this report? This action cannot be undone."
             confirmText="Delete"
             cancelText="Cancel"
+            type="danger"
+          />
+
+          <ConfirmDialog
+            isOpen={showRejectConfirm}
+            onClose={() => setShowRejectConfirm(false)}
+            onConfirm={handleRejectWithoutNotes}
+            title="Reject Without Reason?"
+            message="You haven't added any admin notes explaining why this report is being rejected. The user will not know why their report was rejected. Are you sure you want to proceed without adding a reason?"
+            confirmText="Reject Anyway"
+            cancelText="Add Notes First"
             type="danger"
           />
         </div>
