@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { MapPinIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import {
+  MapPinIcon,
+  PhotoIcon,
+  CameraIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { useLoading } from "../context/LoadingContext";
 
 const CreateReport = () => {
@@ -19,6 +24,8 @@ const CreateReport = () => {
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [error, setError] = useState("");
+  const [showCamera, setShowCamera] = useState(false);
+  const [stream, setStream] = useState(null);
   const navigate = useNavigate();
   const { loading, showLoading, hideLoading, updateProgress, updateMessage } =
     useLoading();
@@ -200,6 +207,89 @@ const CreateReport = () => {
       return prev.filter((_, i) => i !== index);
     });
   };
+
+  // Camera capture functions
+  const startCamera = async () => {
+    if (images.length >= 5) {
+      setError("Maximum 5 images allowed");
+      return;
+    }
+
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" }, // Use back camera on mobile
+        audio: false,
+      });
+      setStream(mediaStream);
+      setShowCamera(true);
+      setError("");
+    } catch (err) {
+      console.error("Camera access error:", err);
+      setError(
+        "Unable to access camera. Please check permissions or use file upload."
+      );
+    }
+  };
+
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+    setShowCamera(false);
+  };
+
+  const capturePhoto = async () => {
+    const video = document.getElementById("camera-video");
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
+
+    // Convert canvas to blob
+    canvas.toBlob(
+      async (blob) => {
+        const timestamp = Date.now();
+        const file = new File([blob], `camera-photo-${timestamp}.jpg`, {
+          type: "image/jpeg",
+          lastModified: timestamp,
+        });
+
+        showLoading("Processing captured photo...", "upload", 0);
+
+        try {
+          // Compress the captured image
+          const compressed = await compressImage(file);
+          const preview = URL.createObjectURL(compressed);
+
+          setImages((prev) => [...prev, compressed]);
+          setImagePreviews((prev) => [...prev, preview]);
+          setError("");
+
+          // Stop camera after successful capture
+          stopCamera();
+        } catch (error) {
+          console.error("Image processing error:", error);
+          setError("Failed to process captured photo. Please try again.");
+        } finally {
+          hideLoading();
+        }
+      },
+      "image/jpeg",
+      0.9
+    );
+  };
+
+  // Cleanup camera stream on unmount
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+      imagePreviews.forEach((preview) => URL.revokeObjectURL(preview));
+    };
+  }, [stream, imagePreviews]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -412,6 +502,7 @@ const CreateReport = () => {
                 Photos <span className="text-gray-500">(Max 5)</span>
               </label>
               <div className="space-y-4">
+                {/* Hidden file input */}
                 <input
                   type="file"
                   accept="image/*"
@@ -422,23 +513,83 @@ const CreateReport = () => {
                   id="image-upload"
                   ref={(input) => (window.imageInput = input)}
                 />
-                <button
-                  type="button"
-                  onClick={() =>
-                    document.getElementById("image-upload").click()
-                  }
-                  disabled={images.length >= 5}
-                  className="btn btn-outline w-full inline-flex items-center justify-center gap-2"
-                >
-                  <PhotoIcon className="w-5 h-5 inline mr-1" />
-                  Choose Images
-                  {images.length > 0 && (
-                    <span className="ml-2 text-sm text-gray-500">
-                      ({images.length}/5)
-                    </span>
-                  )}
-                </button>
 
+                {/* Button group for Choose Images and Take Photo */}
+                <div className="flex justify-evenly align-center gap-1 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("image-upload").click()
+                    }
+                    disabled={images.length >= 5}
+                    className="btn btn-outline items-center justify-center gap-2 w-full sm:w-auto"
+                  >
+                    <PhotoIcon className="w-5 h-5 inline mr-2" />
+                    Choose Images
+                  </button>
+                  <button
+                    type="button"
+                    onClick={startCamera}
+                    disabled={images.length >= 5}
+                    className="btn btn-outline items-center justify-center gap-2 w-full sm:w-auto"
+                  >
+                    <CameraIcon className="w-5 h-5 inline mr-2" />
+                    Take Photo
+                  </button>
+                </div>
+
+                {/* Image count indicator */}
+                {images.length > 0 && (
+                  <p className="text-sm text-gray-600 text-center">
+                    {images.length}/5 images added
+                  </p>
+                )}
+
+                {/* Camera Modal */}
+                {showCamera && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+                  >
+                    <div className="relative w-full max-w-2xl">
+                      {/* Close button */}
+                      <button
+                        onClick={stopCamera}
+                        className="absolute top-4 right-4 z-10 bg-white text-gray-800 rounded-full p-2 hover:bg-gray-100 transition-colors"
+                      >
+                        <XMarkIcon className="w-6 h-6" />
+                      </button>
+
+                      {/* Video preview */}
+                      <video
+                        id="camera-video"
+                        autoPlay
+                        playsInline
+                        ref={(video) => {
+                          if (video && stream) {
+                            video.srcObject = stream;
+                          }
+                        }}
+                        className="w-full rounded-lg"
+                      />
+
+                      {/* Capture button */}
+                      <div className="flex justify-center mt-4">
+                        <button
+                          type="button"
+                          onClick={capturePhoto}
+                          className="btn btn-primary px-8 py-3 text-lg inline-flex items-center gap-2"
+                        >
+                          <CameraIcon className="w-6 h-6" />
+                          Capture Photo
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Image previews */}
                 {imagePreviews.length > 0 && (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {imagePreviews.map((preview, index) => (
