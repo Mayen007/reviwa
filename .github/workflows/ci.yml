@@ -52,3 +52,7 @@ jobs:
       - name: Run client tests
         working-directory: client
         run: npm run test --if-present
+        env:
+          # Preload test shim so modules that inspect ArrayBuffer/SharedArrayBuffer
+          # descriptors don't crash during import (webidl-conversions / whatwg-url).
+          NODE_OPTIONS: "--require ./src/vitest-preload.cjs"
