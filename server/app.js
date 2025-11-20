@@ -16,6 +16,7 @@ const app = express();
 if (process.env.SENTRY_DSN) {
   try {
     app.use(Sentry.Handlers.requestHandler());
+    app.use(Sentry.Handlers.tracingHandler());
   } catch (err) {
     console.warn('Sentry requestHandler not applied:', err?.message || err);
   }
@@ -43,6 +44,7 @@ app.use(
       }
     },
     credentials: true,
+    exposedHeaders: ['sentry-trace', 'baggage'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     // Include Sentry trace headers so browser SDK can attach tracing headers
     // (sentry-trace and baggage) without being blocked by CORS preflight.

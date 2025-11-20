@@ -48,8 +48,8 @@ The MVP focuses on waste reporting and community engagement.
 - ⭐ **Eco-Points System:** Earn points for verified cleanup actions (10 points per report, 20 for verification, 50 for resolution)
 - 👤 **User Profiles:** View account details and environmental impact stats
 - 🏅 **Leaderboard:** Top contributors ranked by eco-points (admins excluded from competition)
-- � **Email Notifications:** Automated emails for welcome, status updates, milestones, and admin alerts
-- �🛡️ **Admin Dashboard:** Comprehensive admin control panel with role-based access
+- **Email Notifications:** Automated emails for welcome, status updates, milestones, and admin alerts
+- 🛡️ **Admin Dashboard:** Comprehensive admin control panel with role-based access
   - Overview stats (users, reports, status breakdown)
   - User management (view, promote/demote roles)
   - Report management with admin notes system
@@ -133,18 +133,12 @@ reviwa/
 └── LICENSE              # MIT License
 ```
 
-├── .env.example
-├── package.json
-├── README.md
-└── LICENSE
-
-````
-
 ---
 
-## � Key Technical Features
+## Key Technical Features
 
 ### Backend Architecture
+
 - **Clean MVC Pattern:** Separation of concerns with controllers, models, and routes
 - **ES6 Modules:** Modern JavaScript with import/export syntax
 - **JWT Authentication:** Secure token-based auth with bcrypt password hashing
@@ -157,6 +151,7 @@ reviwa/
 - **CORS Configuration:** Cross-origin resource sharing for API security
 
 ### Frontend Architecture
+
 - **React 18.3:** Modern React with Hooks (useState, useEffect, useContext)
 - **Vite Build Tool:** Fast development server with HMR (Hot Module Replacement)
 - **React Router 6:** Client-side routing with protected routes
@@ -169,10 +164,12 @@ reviwa/
 - **Heroicons:** Beautiful SVG icons for UI elements
 
 ### Data Models
+
 - **User Model:** name, email, password (hashed), avatar, ecoPoints, reportsCount
 - **Report Model:** title, description, location (GeoJSON Point), images[], wasteType, severity, status, reportedBy (ref: User)
 
 ### Security Features
+
 - Password hashing with bcryptjs (10 salt rounds)
 - JWT tokens with expiration (30 days)
 - Protected API routes with auth middleware
@@ -187,11 +184,13 @@ reviwa/
 ## 📱 API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
 - `GET /api/auth/me` - Get current user (protected)
 
 ### Reports
+
 - `GET /api/reports` - Get all reports (with filters)
 - `GET /api/reports/:id` - Get single report
 - `POST /api/reports` - Create report (protected, multipart/form-data)
@@ -200,20 +199,21 @@ reviwa/
 - `GET /api/reports/user/:userId` - Get user's reports
 
 ### Users
+
 - `GET /api/users/:id` - Get user profile
 - `GET /api/users/:id/initials` - Get user initials for avatar
 
 ---
 
-## �🚀 Implementation Status
+## 🚀 Implementation Status
 
 **Current Phase:** MVP Development (V2 Architecture Complete)
 
 ### MVP Development Progress (Q4 2025)
 
-- [x] ✅ **Phase 1**: Requirements & Planning Complete
-- [x] ✅ **Phase 2**: System Design & Architecture Complete
-- [x] ✅ **Phase 3**: Core Implementation Complete
+- ✅ **Phase 1**: Requirements & Planning Complete
+- ✅ **Phase 2**: System Design & Architecture Complete
+- ✅ **Phase 3**: Core Implementation Complete
   - [x] Clean V2 architecture with ES6 modules
   - [x] JWT authentication system (register, login, protected routes)
   - [x] User management (profiles, eco-points, reports count)
@@ -228,7 +228,7 @@ reviwa/
   - [x] Modern UI with Tailwind CSS + Framer Motion animations
   - [x] Mobile-responsive design with hamburger menu
   - [x] Form validation & error handling
-- [x] ✅ **Phase 4**: Testing & Deployment (Completed)
+- ✅ **Phase 4**: Testing & Deployment (Completed)
   - [x] Local development environment working
   - [x] MongoDB Atlas connection configured
   - [x] Cloudinary integration tested
@@ -240,6 +240,7 @@ reviwa/
 ## 🦯 Roadmap (MVP → Expansion)
 
 **Phase 1 – MVP (Q4 2025) ✅:**
+
 - ✅ Waste site reporting with image uploads and compression
 - ✅ User authentication & authorization (JWT)
 - ✅ Geolocation-based reporting (browser GPS)
@@ -256,6 +257,7 @@ reviwa/
 - ✅ Email notification system (welcome, status updates, milestones, admin alerts)
 
 **Phase 2 – Enhanced Features (Q1 2026):**
+
 - ⏳ Report comments & community engagement features
 - ⏳ User suspension/ban system for moderation
 - ⏳ Advanced analytics with charts and trends
@@ -265,6 +267,7 @@ reviwa/
 - ⏳ Export reports to CSV/PDF
 
 **Phase 3 – Smart Expansion (Q2 2026):**
+
 - ⏳ Mobile app version (React Native)
 - ⏳ AI waste classification using image recognition
 - ⏳ IoT bin integration for smart monitoring
@@ -275,6 +278,7 @@ reviwa/
 ## 🛠️ Quick Start for Developers
 
 ### Prerequisites
+
 - Node.js 18+ and npm
 - MongoDB Atlas account (or local MongoDB)
 - Cloudinary account (for image uploads)
@@ -397,4 +401,3 @@ Interested in collaborating, funding, or integrating Reviwa into your city progr
 🌐 Coming soon: [reviwa.io](#)
 
 > _"Cleaner cities start with informed citizens." – Reviwa Team_
-````
