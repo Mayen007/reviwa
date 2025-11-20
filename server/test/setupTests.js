@@ -5,6 +5,8 @@ import { beforeAll, afterAll, beforeEach, vi } from 'vitest';
 let mongo;
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'test';
+// Ensure a JWT secret is available for tests
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'vitest-test-secret';
 
 // Mock external services to avoid network calls
 vi.mock('../services/email.service.js', () => ({
@@ -30,7 +32,8 @@ vi.mock('../config/cloudinary.js', () => ({
 beforeAll(async () => {
   mongo = await MongoMemoryServer.create();
   const uri = mongo.getUri();
-  await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  // Connect without deprecated options
+  await mongoose.connect(uri);
 });
 
 afterAll(async () => {

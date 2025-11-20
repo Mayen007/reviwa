@@ -1,5 +1,7 @@
+import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import Dashboard from "../../src/pages/Dashboard.jsx";
+import { MemoryRouter } from "react-router-dom";
 import axios from "axios";
 import { vi } from "vitest";
 
@@ -32,7 +34,11 @@ describe("Dashboard page", () => {
       return Promise.resolve({ data: {} });
     });
 
-    render(<Dashboard />);
+    render(
+      <MemoryRouter>
+        <Dashboard />
+      </MemoryRouter>
+    );
 
     // Wait for component to finish loading and render content
     await waitFor(() =>
