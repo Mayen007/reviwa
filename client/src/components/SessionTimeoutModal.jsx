@@ -37,7 +37,12 @@ const SessionTimeoutModal = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center"
+          onKeyDown={(e) => {
+            if (e.key === "Escape") onStayLoggedIn();
+          }}
+        >
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -53,6 +58,10 @@ const SessionTimeoutModal = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="session-timeout-title"
+            aria-describedby="session-timeout-desc"
           >
             {/* Warning Header */}
             <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-4">
@@ -86,12 +95,21 @@ const SessionTimeoutModal = ({
             {/* Content */}
             <div className="px-6 py-6">
               <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-amber-100 rounded-full mb-4">
-                  <span className="text-3xl font-bold text-amber-600">
+                <div
+                  className="inline-flex items-center justify-center w-20 h-20 bg-amber-100 rounded-full mb-4"
+                  aria-live="polite"
+                >
+                  <span
+                    id="session-timeout-countdown"
+                    className="text-3xl font-bold text-amber-600"
+                  >
                     {formatTime(timeLeft)}
                   </span>
                 </div>
-                <p className="text-gray-700 text-lg mb-2">
+                <p
+                  id="session-timeout-desc"
+                  className="text-gray-700 text-lg mb-2"
+                >
                   Your session will expire due to inactivity
                 </p>
                 <p className="text-gray-500 text-sm">

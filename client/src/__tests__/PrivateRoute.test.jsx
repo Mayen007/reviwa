@@ -1,37 +1,42 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import PrivateRoute from "../../src/components/PrivateRoute.jsx";
+import { MemoryRouter } from "react-router-dom";
+import PrivateRoute from "../components/PrivateRoute";
 
-// Mock AuthContext
-vi.mock("../../src/context/AuthContext", () => ({
-  useAuth: () => ({ isAuthenticated: true, loading: false }),
+// Mutable auth state for tests
+let authState = { isAuthenticated: true, loading: false };
+
+vi.mock("../context/AuthContext", () => ({
+  useAuth: () => authState,
 }));
 
 describe("PrivateRoute", () => {
   it("renders children when authenticated", () => {
-    const { container } = render(
-      <PrivateRoute>
-        <div>Protected</div>
-      </PrivateRoute>
+    authState = { isAuthenticated: true, loading: false };
+
+    render(
+      <MemoryRouter>
+        <PrivateRoute>
+          <div>Protected</div>
+        </PrivateRoute>
+      </MemoryRouter>
     );
 
     expect(screen.getByText("Protected")).toBeInTheDocument();
   });
 
   it("hides children when not authenticated", () => {
-    // Override mock for this test
-    vi.mocked(require("../../src/context/AuthContext")).useAuth = () => ({
-      isAuthenticated: false,
-      loading: false,
-    });
+    authState = { isAuthenticated: false, loading: false };
 
-    const { queryByText } = render(
-      <PrivateRoute>
-        <div>Protected</div>
-      </PrivateRoute>
+    render(
+      <MemoryRouter initialEntries={["/protected"]}>
+        <PrivateRoute>
+          <div>Protected</div>
+        </PrivateRoute>
+      </MemoryRouter>
     );
 
-    expect(queryByText("Protected")).toBeNull();
+    expect(screen.queryByText("Protected")).toBeNull();
   });
 });

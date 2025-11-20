@@ -48,6 +48,9 @@ const AdminNotifications = () => {
         }}
         className="relative p-2 rounded-md text-gray-600 hover:bg-gray-100 transition-colors"
         title="Notifications"
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-controls="admin-notifications-panel"
       >
         <svg
           className="w-6 h-6 text-gray-600"
@@ -70,7 +73,12 @@ const AdminNotifications = () => {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-96 max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+        <div
+          id="admin-notifications-panel"
+          role="region"
+          aria-label="Admin notifications"
+          className="absolute right-0 mt-2 w-96 max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+        >
           <div className="px-4 py-2 flex items-center justify-between border-b border-gray-100">
             <div className="text-sm font-semibold text-gray-900">
               Notifications
@@ -88,58 +96,61 @@ const AdminNotifications = () => {
             {notifications.length === 0 && (
               <div className="p-4 text-sm text-gray-500">No notifications</div>
             )}
-            {notifications.map((n) => (
-              <div
-                key={n.id}
-                className={`p-3 border-b ${
-                  n.read ? "bg-white" : "bg-gray-50"
-                } border-gray-100`}
-              >
-                <div className="flex items-start justify-between">
-                  <button
-                    onClick={() => {
-                      const reportId = n.meta?.reportId;
-                      try {
-                        if (reportId) {
-                          navigate(`/reports/${reportId}`);
-                        }
-                      } catch (err) {
-                        console.warn("Navigation failed", err);
-                      }
-                      markAsRead(n.id);
-                      setOpen(false);
-                    }}
-                    className="text-left flex-1"
-                  >
-                    <div className="text-sm font-medium text-gray-900">
-                      {n.title}
-                    </div>
-                    <div className="text-xs text-gray-600 mt-1">
-                      {n.message}
-                    </div>
-                    <div className="text-xxs text-gray-400 mt-1">
-                      {new Date(n.createdAt).toLocaleString()}
-                    </div>
-                  </button>
-                  <div className="flex flex-col items-end gap-2 ml-3">
+            <ul role="list">
+              {notifications.map((n) => (
+                <li
+                  key={n.id}
+                  role="listitem"
+                  className={`p-3 border-b ${
+                    n.read ? "bg-white" : "bg-gray-50"
+                  } border-gray-100`}
+                >
+                  <div className="flex items-start justify-between">
                     <button
-                      onClick={() => remove(n.id)}
-                      className="text-xs text-gray-500 hover:text-gray-700"
+                      onClick={() => {
+                        const reportId = n.meta?.reportId;
+                        try {
+                          if (reportId) {
+                            navigate(`/reports/${reportId}`);
+                          }
+                        } catch (err) {
+                          console.warn("Navigation failed", err);
+                        }
+                        markAsRead(n.id);
+                        setOpen(false);
+                      }}
+                      className="text-left flex-1"
                     >
-                      Dismiss
+                      <div className="text-sm font-medium text-gray-900">
+                        {n.title}
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        {n.message}
+                      </div>
+                      <div className="text-xxs text-gray-400 mt-1">
+                        {new Date(n.createdAt).toLocaleString()}
+                      </div>
                     </button>
-                    {!n.read && (
+                    <div className="flex flex-col items-end gap-2 ml-3">
                       <button
-                        onClick={() => markAsRead(n.id)}
+                        onClick={() => remove(n.id)}
                         className="text-xs text-gray-500 hover:text-gray-700"
                       >
-                        Mark read
+                        Dismiss
                       </button>
-                    )}
+                      {!n.read && (
+                        <button
+                          onClick={() => markAsRead(n.id)}
+                          className="text-xs text-gray-500 hover:text-gray-700"
+                        >
+                          Mark read
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       )}

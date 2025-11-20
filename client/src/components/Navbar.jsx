@@ -92,7 +92,11 @@ const Navbar = () => {
                       "/map"
                     )}`}
                   >
-                    <MapIcon className="w-5 h-5 inline mr-1" />
+                    <MapIcon
+                      className="w-5 h-5 inline mr-1"
+                      aria-hidden="true"
+                      focusable="false"
+                    />
                     Map
                   </Link>
                   <Link
@@ -101,7 +105,11 @@ const Navbar = () => {
                       "/reports"
                     )}`}
                   >
-                    <MapPinIcon className="w-5 h-5 inline mr-1" />
+                    <MapPinIcon
+                      className="w-5 h-5 inline mr-1"
+                      aria-hidden="true"
+                      focusable="false"
+                    />
                     Reports
                   </Link>
                 </>
@@ -116,7 +124,11 @@ const Navbar = () => {
                         "/create-report"
                       )}`}
                     >
-                      <PlusCircleIcon className="w-5 h-5 inline mr-1" />
+                      <PlusCircleIcon
+                        className="w-5 h-5 inline mr-1"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       Report Waste
                     </Link>
                   )}
@@ -126,7 +138,11 @@ const Navbar = () => {
                       "/map"
                     )}`}
                   >
-                    <MapIcon className="w-5 h-5 inline mr-1" />
+                    <MapIcon
+                      className="w-5 h-5 inline mr-1"
+                      aria-hidden="true"
+                      focusable="false"
+                    />
                     Map
                   </Link>
                   <Link
@@ -135,7 +151,11 @@ const Navbar = () => {
                       "/reports"
                     )}`}
                   >
-                    <MapPinIcon className="w-5 h-5 inline mr-1" />
+                    <MapPinIcon
+                      className="w-5 h-5 inline mr-1"
+                      aria-hidden="true"
+                      focusable="false"
+                    />
                     Reports
                   </Link>
                   <Link
@@ -144,7 +164,11 @@ const Navbar = () => {
                       "/leaderboard"
                     )}`}
                   >
-                    <TrophyIcon className="w-5 h-5 inline mr-1" />
+                    <TrophyIcon
+                      className="w-5 h-5 inline mr-1"
+                      aria-hidden="true"
+                      focusable="false"
+                    />
                     Leaderboard
                   </Link>
 
@@ -155,7 +179,11 @@ const Navbar = () => {
                         "/dashboard"
                       )}`}
                     >
-                      <ChartBarIcon className="w-5 h-5 inline mr-1" />
+                      <ChartBarIcon
+                        className="w-5 h-5 inline mr-1"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       Dashboard
                     </Link>
                   )}
@@ -170,11 +198,21 @@ const Navbar = () => {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
                 aria-label="Toggle menu"
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="mobile-menu"
               >
                 {isMobileMenuOpen ? (
-                  <XMarkIcon className="w-6 h-6" />
+                  <XMarkIcon
+                    className="w-6 h-6"
+                    aria-hidden="true"
+                    focusable="false"
+                  />
                 ) : (
-                  <Bars3Icon className="w-6 h-6" />
+                  <Bars3Icon
+                    className="w-6 h-6"
+                    aria-hidden="true"
+                    focusable="false"
+                  />
                 )}
               </button>
 
@@ -186,7 +224,11 @@ const Navbar = () => {
                       to="/profile"
                       className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
                     >
-                      <UserCircleIcon className="w-6 h-6 text-gray-600" />
+                      <UserCircleIcon
+                        className="w-6 h-6 text-gray-600"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       <div className="hidden sm:block text-left">
                         <p className="text-sm font-medium text-gray-900">
                           {user?.name}
@@ -213,7 +255,11 @@ const Navbar = () => {
                       className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       title="Logout"
                     >
-                      <ArrowRightOnRectangleIcon className="w-6 h-6" />
+                      <ArrowRightOnRectangleIcon
+                        className="w-6 h-6"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                     </button>
                   </>
                 ) : (
@@ -243,6 +289,7 @@ const Navbar = () => {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
               className="md:hidden bg-white border-b border-gray-200 shadow-lg overflow-hidden"
+              id="mobile-menu"
             >
               <div className="px-4 py-6 space-y-3">
                 {/* Mobile Navigation Links */}
@@ -280,7 +327,11 @@ const Navbar = () => {
                         "/map"
                       )}`}
                     >
-                      <MapIcon className="w-5 h-5" />
+                      <MapIcon
+                        className="w-5 h-5"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       <span>Map</span>
                     </Link>
                     <Link
@@ -290,7 +341,11 @@ const Navbar = () => {
                         "/reports"
                       )}`}
                     >
-                      <MapPinIcon className="w-5 h-5" />
+                      <MapPinIcon
+                        className="w-5 h-5"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       <span>Reports</span>
                     </Link>
                   </>
@@ -305,7 +360,11 @@ const Navbar = () => {
                           "/create-report"
                         )}`}
                       >
-                        <PlusCircleIcon className="w-5 h-5" />
+                        <PlusCircleIcon
+                          className="w-5 h-5"
+                          aria-hidden="true"
+                          focusable="false"
+                        />
                         <span>Report Waste</span>
                       </Link>
                     )}
@@ -316,7 +375,11 @@ const Navbar = () => {
                         "/map"
                       )}`}
                     >
-                      <MapIcon className="w-5 h-5" />
+                      <MapIcon
+                        className="w-5 h-5"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       <span>Map</span>
                     </Link>
                     <Link
@@ -326,7 +389,11 @@ const Navbar = () => {
                         "/reports"
                       )}`}
                     >
-                      <MapPinIcon className="w-5 h-5" />
+                      <MapPinIcon
+                        className="w-5 h-5"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       <span>Reports</span>
                     </Link>
                     <Link
@@ -336,7 +403,11 @@ const Navbar = () => {
                         "/leaderboard"
                       )}`}
                     >
-                      <TrophyIcon className="w-5 h-5" />
+                      <TrophyIcon
+                        className="w-5 h-5"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       <span>Leaderboard</span>
                     </Link>
 
@@ -348,7 +419,11 @@ const Navbar = () => {
                           "/dashboard"
                         )}`}
                       >
-                        <ChartBarIcon className="w-5 h-5" />
+                        <ChartBarIcon
+                          className="w-5 h-5"
+                          aria-hidden="true"
+                          focusable="false"
+                        />
                         <span>Dashboard</span>
                       </Link>
                     )}
@@ -368,7 +443,11 @@ const Navbar = () => {
                         onClick={closeMobileMenu}
                         className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
                       >
-                        <UserCircleIcon className="w-6 h-6 text-gray-600" />
+                        <UserCircleIcon
+                          className="w-6 h-6 text-gray-600"
+                          aria-hidden="true"
+                          focusable="false"
+                        />
                         <div>
                           <p className="text-sm font-medium text-gray-900">
                             {user?.name}
@@ -389,7 +468,11 @@ const Navbar = () => {
                         onClick={handleLogout}
                         className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
                       >
-                        <ArrowRightOnRectangleIcon className="w-6 h-6" />
+                        <ArrowRightOnRectangleIcon
+                          className="w-6 h-6"
+                          aria-hidden="true"
+                          focusable="false"
+                        />
                         <span className="font-medium">Logout</span>
                       </button>
                     </div>
