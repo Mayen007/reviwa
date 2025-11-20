@@ -22,6 +22,8 @@
   "author": "Mayen Akech",
   "license": "MIT",
   "dependencies": {
+    "@sentry/node": "^7.120.4",
+    "@sentry/tracing": "^7.120.4",
     "bcryptjs": "^2.4.3",
     "browser-image-compression": "^2.0.2",
     "cloudinary": "^2.0.0",

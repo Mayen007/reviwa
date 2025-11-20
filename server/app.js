@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import errorHandler from './middleware/errorHandler.js';
+import * as Sentry from '@sentry/node';
 
 // Import routes
 import authRoutes from './routes/auth.routes.js';
@@ -9,6 +10,16 @@ import userRoutes from './routes/user.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 
 const app = express();
+
+// If Sentry is available (initialized in server entry), wire request handler
+// Note: Sentry is conditionally initialized in `server.js` so `Sentry.getCurrentHub()` may be no-op when DSN not set.
+if (process.env.SENTRY_DSN) {
+  try {
+    app.use(Sentry.Handlers.requestHandler());
+  } catch (err) {
+    console.warn('Sentry requestHandler not applied:', err?.message || err);
+  }
+}
 
 // Configure CORS allowed origins (same logic as server entrypoint)
 const allowedOrigins = [
@@ -33,7 +44,15 @@ app.use(
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+    // Include Sentry trace headers so browser SDK can attach tracing headers
+    // (sentry-trace and baggage) without being blocked by CORS preflight.
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+      'sentry-trace',
+      'baggage'
+    ]
   })
 );
 
@@ -52,6 +71,15 @@ app.get('/api/health', (req, res) => {
 });
 
 // Error handling middleware (must be last)
+// Attach Sentry error handler before our custom error handler so Sentry captures exceptions
+if (process.env.SENTRY_DSN) {
+  try {
+    app.use(Sentry.Handlers.errorHandler());
+  } catch (err) {
+    console.warn('Sentry errorHandler not applied:', err?.message || err);
+  }
+}
+
 app.use(errorHandler);
 
 export default app;

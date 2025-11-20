@@ -1,11 +1,26 @@
 import './config/env.js'; // Load environment variables FIRST
 import connectDB from './config/database.js';
+import * as Sentry from '@sentry/node';
+import { Integrations } from '@sentry/tracing';
 import { createServer } from 'http';
 import { Server as IOServer } from 'socket.io';
 import registerSockets from './sockets/index.js';
 import app from './app.js';
 
 const PORT = process.env.PORT || 5000;
+
+// Initialize Sentry (if DSN provided)
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [new Integrations.Express({ app: undefined })],
+    tracesSampleRate: parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE || '0.1'),
+    environment: process.env.NODE_ENV || 'development'
+  });
+  console.log('📡 Sentry initialized');
+} else {
+  console.log('📡 Sentry not configured (SENTRY_DSN not set)');
+}
 
 // Connect to MongoDB (entrypoint only)
 connectDB();
