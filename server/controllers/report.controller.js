@@ -167,12 +167,12 @@ export const createReport = async (req, res, next) => {
       message: 'Report created successfully',
       data: { report }
     });
-    // Emit socket event for new report
+
+    // Emit socket events: notify admins only until report is verified
     try {
       const io = req.app?.locals?.io;
       if (io) {
-        // Broadcast new report to all clients (map) and admins specifically
-        io.emit('report:created', report);
+        // Notify admins with the full report payload
         io.to('admins').emit('report:created', report);
 
         // Emit updated ecoPoints for the reporting user (if non-admin)
@@ -372,9 +372,16 @@ export const updateReportStatus = async (req, res, next) => {
     try {
       const io = req.app?.locals?.io;
       if (io) {
-        // Emit to report room and broadcast for list views
+        // Always notify clients viewing the specific report
         io.to(`report:${report._id}`).emit('report:updated', report);
-        io.emit('report:updated', report);
+
+        // If the report is now public (verified/resolved) broadcast full update to everyone,
+        // otherwise notify admins only so they can take action.
+        if (['verified', 'resolved'].includes(report.status)) {
+          io.emit('report:updated', report);
+        } else {
+          io.to('admins').emit('report:updated', report);
+        }
 
         // If points were awarded, notify the user of new ecoPoints
         if (pointsAwarded > 0 && report.reportedBy && report.reportedBy._id) {

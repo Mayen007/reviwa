@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useLoading } from "../context/LoadingContext";
 import { useNavigate } from "react-router-dom";
+import { useSocket } from "../context/SocketContext";
 
 const Admin = () => {
   const { user } = useAuth();
@@ -20,6 +21,7 @@ const Admin = () => {
   const [reportFilter, setReportFilter] = useState("all"); // all, pending, verified, in-progress, resolved
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const socket = useSocket();
 
   // Redirect if not admin
   useEffect(() => {
@@ -91,6 +93,40 @@ const Admin = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, user, reportFilter]);
+
+  // Listen for new reports via socket (admins only)
+  useEffect(() => {
+    if (!socket || !user || user.role !== "admin") return;
+
+    const onNewReport = (newReport) => {
+      try {
+        // Prepend to reports list so admin sees it immediately
+        setReports((prev) => (prev ? [newReport, ...prev] : [newReport]));
+
+        // Update stats total if present
+        setStats((prev) =>
+          prev
+            ? {
+                ...prev,
+                totalReports: (prev.totalReports || prev.total || 0) + 1,
+              }
+            : prev
+        );
+
+        // Show a brief toast / success message
+        setSuccessMessage(`New report received: ${newReport.title}`);
+        setTimeout(() => setSuccessMessage(""), 5000);
+      } catch (err) {
+        console.warn("Error handling new report socket event:", err);
+      }
+    };
+
+    socket.on("report:created", onNewReport);
+
+    return () => {
+      socket.off("report:created", onNewReport);
+    };
+  }, [socket, user]);
 
   const handleUpdateUserRole = async (userId, newRole) => {
     try {
