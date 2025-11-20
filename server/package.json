@@ -9,7 +9,10 @@
     "start": "node server.js",
     "seed:reports": "node scripts/seedDummyReports.js",
     "seed:cities": "node scripts/seedMultipleCities.js",
-    "seed:africa": "node scripts/seedPanAfrica.js"
+    "seed:africa": "node scripts/seedPanAfrica.js",
+    "test": "vitest run --run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [
     "waste-management",
@@ -19,6 +22,8 @@
   "author": "Mayen Akech",
   "license": "MIT",
   "dependencies": {
+    "@sentry/node": "^7.120.4",
+    "@sentry/tracing": "^7.120.4",
     "bcryptjs": "^2.4.3",
     "browser-image-compression": "^2.0.2",
     "cloudinary": "^2.0.0",
@@ -33,6 +38,9 @@
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "mongodb-memory-server": "^10.3.0",
+    "nodemon": "^3.1.11",
+    "supertest": "^7.1.4",
+    "vitest": "^4.0.12"
   }
 }

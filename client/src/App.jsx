@@ -63,7 +63,7 @@ function App() {
           }}
         >
           <ActivityProvider>
-            <div className="min-h-screen bg-gray-50">
+            <div id="main-content" className="min-h-screen bg-gray-50">
               <Layout>
                 <Routes>
                   {/* Public Routes */}

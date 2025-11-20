@@ -1,77 +1,44 @@
 import './config/env.js'; // Load environment variables FIRST
-import express from 'express';
-import cors from 'cors';
 import connectDB from './config/database.js';
-import errorHandler from './middleware/errorHandler.js';
+import * as Sentry from '@sentry/node';
+import { Integrations } from '@sentry/tracing';
+import { createServer } from 'http';
+import { Server as IOServer } from 'socket.io';
+import registerSockets from './sockets/index.js';
+import app from './app.js';
 
-// Import routes
-import authRoutes from './routes/auth.routes.js';
-import reportRoutes from './routes/report.routes.js';
-import userRoutes from './routes/user.routes.js';
-import adminRoutes from './routes/admin.routes.js';
-
-// Create Express app
-const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
+// Initialize Sentry (if DSN provided)
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [new Integrations.Express({ app: undefined })],
+    tracesSampleRate: parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE || '0.1'),
+    environment: process.env.NODE_ENV || 'development'
+  });
+  console.log('📡 Sentry initialized');
+} else {
+  console.log('📡 Sentry not configured (SENTRY_DSN not set)');
+}
+
+// Connect to MongoDB (entrypoint only)
 connectDB();
 
-// Middleware
-// Configure CORS to allow multiple origins
+// Configure allowed origins to match app
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://reviwa.netlify.app',
   process.env.CLIENT_URL
-].filter(Boolean).map(url => url.replace(/\/$/, '')); // Remove trailing slashes
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.warn(`CORS blocked origin: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/reports', reportRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/admin', adminRoutes);
-
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    message: 'Reviwa API v2 is running',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Error handling middleware (must be last)
-app.use(errorHandler);
+]
+  .filter(Boolean)
+  .map((url) => url.replace(/\/$/, ''));
 
 // Start server with Socket.IO
-import { createServer } from 'http';
-import { Server } from 'socket.io';
-import registerSockets from './sockets/index.js';
-
 const httpServer = createServer(app);
 
-// Initialize Socket.IO with CORS matching allowed origins
-const io = new Server(httpServer, {
+const io = new IOServer(httpServer, {
   cors: {
     origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

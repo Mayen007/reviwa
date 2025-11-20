@@ -19,6 +19,26 @@
     <title>Reviwa - Smart Waste Management</title>
   </head>
   <body>
+    <!-- Skip link for keyboard users -->
+    <a
+      href="#main-content"
+      style="
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        background: #fff;
+        color: #111;
+        padding: 8px 12px;
+        z-index: 1000;
+        transform: translateY(-120%);
+        transition: transform 0.2s;
+        border-radius: 4px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      "
+      onfocus="this.style.transform='translateY(0)';"
+      onblur="this.style.transform='translateY(-120%)';"
+      >Skip to content</a
+    >
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -64,6 +64,9 @@ const LoadingModal = ({ isOpen, message, type, progress }) => {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
               className={`bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full border-2 ${borderColor}`}
+              role="dialog"
+              aria-modal="true"
+              aria-label={message || "Loading"}
             >
               {/* Icon Container */}
               <div
@@ -84,7 +87,10 @@ const LoadingModal = ({ isOpen, message, type, progress }) => {
               </div>
 
               {/* Message */}
-              <p className="text-center text-lg font-semibold text-gray-900 mb-4">
+              <p
+                className="text-center text-lg font-semibold text-gray-900 mb-4"
+                aria-live="polite"
+              >
                 {message}
               </p>
 

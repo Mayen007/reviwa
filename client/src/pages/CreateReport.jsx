@@ -515,6 +515,7 @@ const CreateReport = () => {
                   disabled={images.length >= 5}
                   id="image-upload"
                   ref={(input) => (window.imageInput = input)}
+                  aria-hidden="true"
                 />
 
                 {/* Button group for Choose Images and Take Photo */}
@@ -526,8 +527,14 @@ const CreateReport = () => {
                     }
                     disabled={images.length >= 5}
                     className="btn btn-outline items-center justify-center gap-2 w-full sm:w-auto"
+                    aria-controls="image-upload"
+                    aria-label="Choose images to attach"
                   >
-                    <PhotoIcon className="w-5 h-5 inline mr-2" />
+                    <PhotoIcon
+                      className="w-5 h-5 inline mr-2"
+                      aria-hidden="true"
+                      focusable="false"
+                    />
                     Choose Images
                   </button>
                   <button
@@ -535,8 +542,13 @@ const CreateReport = () => {
                     onClick={startCamera}
                     disabled={images.length >= 5}
                     className="btn btn-outline items-center justify-center gap-2 w-full sm:w-auto"
+                    aria-label="Open camera to take a photo"
                   >
-                    <CameraIcon className="w-5 h-5 inline mr-2" />
+                    <CameraIcon
+                      className="w-5 h-5 inline mr-2"
+                      aria-hidden="true"
+                      focusable="false"
+                    />
                     Take Photo
                   </button>
                 </div>
@@ -554,14 +566,22 @@ const CreateReport = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Camera capture dialog"
                   >
                     <div className="relative w-full max-w-2xl">
                       {/* Close button */}
                       <button
                         onClick={stopCamera}
                         className="absolute top-4 right-4 z-10 bg-white text-gray-800 rounded-full p-2 hover:bg-gray-100 transition-colors"
+                        aria-label="Close camera"
                       >
-                        <XMarkIcon className="w-6 h-6" />
+                        <XMarkIcon
+                          className="w-6 h-6"
+                          aria-hidden="true"
+                          focusable="false"
+                        />
                       </button>
 
                       {/* Video preview */}
@@ -575,6 +595,7 @@ const CreateReport = () => {
                           }
                         }}
                         className="w-full rounded-lg"
+                        aria-label="Camera preview"
                       />
 
                       {/* Capture button */}
@@ -583,8 +604,13 @@ const CreateReport = () => {
                           type="button"
                           onClick={capturePhoto}
                           className="btn btn-primary px-8 py-3 text-lg inline-flex items-center gap-2"
+                          aria-label="Capture photo"
                         >
-                          <CameraIcon className="w-6 h-6" />
+                          <CameraIcon
+                            className="w-6 h-6"
+                            aria-hidden="true"
+                            focusable="false"
+                          />
                           Capture Photo
                         </button>
                       </div>

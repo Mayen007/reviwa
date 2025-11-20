@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
@@ -58,6 +59,13 @@ const ConfirmDialog = ({
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
               className="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="confirm-dialog-title"
+              aria-describedby="confirm-dialog-desc"
+              onKeyDown={(e) => {
+                if (e.key === "Escape") onClose();
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Icon */}
@@ -68,18 +76,27 @@ const ConfirmDialog = ({
               </div>
 
               {/* Title */}
-              <h3 className="text-xl font-bold text-gray-900 text-center mb-2">
+              <h3
+                id="confirm-dialog-title"
+                className="text-xl font-bold text-gray-900 text-center mb-2"
+              >
                 {title}
               </h3>
 
               {/* Message */}
-              <p className="text-gray-600 text-center mb-6">{message}</p>
+              <p
+                id="confirm-dialog-desc"
+                className="text-gray-600 text-center mb-6"
+              >
+                {message}
+              </p>
 
               {/* Buttons */}
               <div className="flex gap-3">
                 <button
                   onClick={onClose}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                  autoFocus
                 >
                   {cancelText}
                 </button>
