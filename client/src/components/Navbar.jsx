@@ -87,15 +87,6 @@ const Navbar = () => {
                     Admin Control Panel
                   </Link>
                   <Link
-                    to="/reports"
-                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                      "/reports"
-                    )}`}
-                  >
-                    <MapPinIcon className="w-5 h-5 inline mr-1" />
-                    Reports
-                  </Link>
-                  <Link
                     to="/map"
                     className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
                       "/map"
@@ -103,31 +94,32 @@ const Navbar = () => {
                   >
                     <MapIcon className="w-5 h-5 inline mr-1" />
                     Map
+                  </Link>
+                  <Link
+                    to="/reports"
+                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
+                      "/reports"
+                    )}`}
+                  >
+                    <MapPinIcon className="w-5 h-5 inline mr-1" />
+                    Reports
                   </Link>
                 </>
               ) : (
                 <>
                   {/* Regular user navigation */}
+                  {/* Reordered for better UX: primary task earlier, dashboard grouped near user menu */}
                   {isAuthenticated && (
                     <Link
-                      to="/dashboard"
+                      to="/create-report"
                       className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                        "/dashboard"
+                        "/create-report"
                       )}`}
                     >
-                      <ChartBarIcon className="w-5 h-5 inline mr-1" />
-                      Dashboard
+                      <PlusCircleIcon className="w-5 h-5 inline mr-1" />
+                      Report Waste
                     </Link>
                   )}
-                  <Link
-                    to="/reports"
-                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                      "/reports"
-                    )}`}
-                  >
-                    <MapPinIcon className="w-5 h-5 inline mr-1" />
-                    Reports
-                  </Link>
                   <Link
                     to="/map"
                     className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
@@ -136,6 +128,15 @@ const Navbar = () => {
                   >
                     <MapIcon className="w-5 h-5 inline mr-1" />
                     Map
+                  </Link>
+                  <Link
+                    to="/reports"
+                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
+                      "/reports"
+                    )}`}
+                  >
+                    <MapPinIcon className="w-5 h-5 inline mr-1" />
+                    Reports
                   </Link>
                   <Link
                     to="/leaderboard"
@@ -149,13 +150,13 @@ const Navbar = () => {
 
                   {isAuthenticated && (
                     <Link
-                      to="/create-report"
+                      to="/dashboard"
                       className={`px-3 py-2 rounded-lg font-medium transition-colors ${isActive(
-                        "/create-report"
+                        "/dashboard"
                       )}`}
                     >
-                      <PlusCircleIcon className="w-5 h-5 inline mr-1" />
-                      Report Waste
+                      <ChartBarIcon className="w-5 h-5 inline mr-1" />
+                      Dashboard
                     </Link>
                   )}
                 </>
@@ -273,16 +274,6 @@ const Navbar = () => {
                       <span>Admin Control Panel</span>
                     </Link>
                     <Link
-                      to="/reports"
-                      onClick={closeMobileMenu}
-                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                        "/reports"
-                      )}`}
-                    >
-                      <MapPinIcon className="w-5 h-5" />
-                      <span>Reports</span>
-                    </Link>
-                    <Link
                       to="/map"
                       onClick={closeMobileMenu}
                       className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
@@ -291,6 +282,16 @@ const Navbar = () => {
                     >
                       <MapIcon className="w-5 h-5" />
                       <span>Map</span>
+                    </Link>
+                    <Link
+                      to="/reports"
+                      onClick={closeMobileMenu}
+                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
+                        "/reports"
+                      )}`}
+                    >
+                      <MapPinIcon className="w-5 h-5" />
+                      <span>Reports</span>
                     </Link>
                   </>
                 ) : (
@@ -298,26 +299,16 @@ const Navbar = () => {
                     {/* Regular mobile navigation for normal users */}
                     {isAuthenticated && (
                       <Link
-                        to="/dashboard"
+                        to="/create-report"
                         onClick={closeMobileMenu}
                         className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                          "/dashboard"
+                          "/create-report"
                         )}`}
                       >
-                        <ChartBarIcon className="w-5 h-5" />
-                        <span>Dashboard</span>
+                        <PlusCircleIcon className="w-5 h-5" />
+                        <span>Report Waste</span>
                       </Link>
                     )}
-                    <Link
-                      to="/reports"
-                      onClick={closeMobileMenu}
-                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                        "/reports"
-                      )}`}
-                    >
-                      <MapPinIcon className="w-5 h-5" />
-                      <span>Reports</span>
-                    </Link>
                     <Link
                       to="/map"
                       onClick={closeMobileMenu}
@@ -327,6 +318,16 @@ const Navbar = () => {
                     >
                       <MapIcon className="w-5 h-5" />
                       <span>Map</span>
+                    </Link>
+                    <Link
+                      to="/reports"
+                      onClick={closeMobileMenu}
+                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
+                        "/reports"
+                      )}`}
+                    >
+                      <MapPinIcon className="w-5 h-5" />
+                      <span>Reports</span>
                     </Link>
                     <Link
                       to="/leaderboard"
@@ -341,14 +342,14 @@ const Navbar = () => {
 
                     {isAuthenticated && (
                       <Link
-                        to="/create-report"
+                        to="/dashboard"
                         onClick={closeMobileMenu}
                         className={`flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(
-                          "/create-report"
+                          "/dashboard"
                         )}`}
                       >
-                        <PlusCircleIcon className="w-5 h-5" />
-                        <span>Report Waste</span>
+                        <ChartBarIcon className="w-5 h-5" />
+                        <span>Dashboard</span>
                       </Link>
                     )}
                   </>
