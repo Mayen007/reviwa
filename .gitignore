@@ -499,9 +499,6 @@ jspm_packages/
 # DynamoDB Local files
 .dynamodb/
 
-# Keep Planning Documents for now
-docs/
-
 # Copilot Instructions
 .github/copilot-instructions.md
 

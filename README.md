@@ -295,11 +295,46 @@ npm install
 # Install client dependencies
 cd ../client
 npm install
-````
+```
 
-### Environment Setup
+### Running Tests
 
-**Server (.env in `/server` directory):**
+**Server Tests**
+
+```bash
+cd server
+npm test
+```
+
+**Client Tests**
+
+```bash
+cd client
+npm test
+```
+
+### Deployment
+
+The project uses GitHub Actions for Continuous Integration (CI) and Continuous Deployment (CD).
+
+- **CI Workflow**: Defined in `.github/workflows/ci.yml`. Runs automated tests on every `push` and `pull_request` to `main` and `testing-branch`.
+- **CD Workflow**: Defined in `.github/workflows/deploy.yml`. Triggers deployment to Netlify (client) and Render (server) on `push` to `main`.
+
+**Required Secrets for Deployment**
+
+For the CD workflow to function correctly, you must configure the following repository secrets in your GitHub repository settings (`Settings > Secrets and variables > Actions`):
+
+- `NETLIFY_AUTH_TOKEN`: Your Netlify personal access token.
+- `NETLIFY_SITE_ID`: Your Netlify site ID.
+- `RENDER_API_KEY`: Your Render API key.
+- `RENDER_SERVICE_ID`: The service ID for your Render backend application.
+- `SENTRY_AUTH_TOKEN`: Your Sentry authentication token for release management.
+
+### Run Development Servers
+
+Create `.env` files in both the `server/` and `client/` directories based on the `.env.example` template provided in the root of the repository.
+
+**Server (`.env` in `/server` directory):**
 
 ```env
 MONGODB_URI=your_mongodb_connection_string_here
@@ -308,13 +343,16 @@ CLOUDINARY_URL=your_cloudinary_url_here
 PORT=5000
 NODE_ENV=development
 CLIENT_URL=http://localhost:5173
+SENTRY_DSN=your_sentry_dsn_here
+SENTRY_ENVIRONMENT=development
 ```
 
-**Client (.env in `/client` directory):**
+**Client (`.env` in `/client` directory):**
 
 ```env
 VITE_API_URL=http://localhost:5000
 VITE_APP_NAME=Reviwa
+VITE_SENTRY_DSN=your_client_sentry_dsn_here
 ```
 
 ### Run Development Servers
@@ -359,3 +397,4 @@ Interested in collaborating, funding, or integrating Reviwa into your city progr
 🌐 Coming soon: [reviwa.io](#)
 
 > _"Cleaner cities start with informed citizens." – Reviwa Team_
+````

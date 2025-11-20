@@ -70,4 +70,5 @@ jobs:
           apiKey: ${{ secrets.RENDER_API_KEY }}
           serviceId: ${{ secrets.RENDER_SERVICE_ID }}
 
-  # NOTE: Add repository secrets: NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID, RENDER_API_KEY, RENDER_SERVICE_ID
+  # CRITICAL: Configure the following repository secrets in GitHub (`Settings > Secrets and variables > Actions`):
+  # NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID, RENDER_API_KEY, RENDER_SERVICE_ID
