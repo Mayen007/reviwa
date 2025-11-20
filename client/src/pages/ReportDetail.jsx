@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useLoading } from "../context/LoadingContext";
+import { useSocket } from "../context/SocketContext";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -32,10 +33,56 @@ const ReportDetail = () => {
   const [notesSaved, setNotesSaved] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showLightbox, setShowLightbox] = useState(false);
+  const socket = useSocket();
 
   useEffect(() => {
     fetchReport();
   }, [id]);
+
+  // Subscribe to socket events for this report
+  useEffect(() => {
+    if (!socket) return;
+    if (!report) return;
+
+    // Join report room for targeted updates
+    socket.emit("joinReport", report._id);
+
+    const onReportUpdated = (updated) => {
+      if (!updated || !updated._id) return;
+      if (updated._id === report._id) {
+        setReport(updated);
+      }
+    };
+
+    const onReportDeleted = ({ id: deletedId }) => {
+      if (deletedId === report._id) {
+        // If the currently viewed report was deleted, navigate away
+        navigate("/reports");
+      }
+    };
+
+    const onUserPoints = (payload) => {
+      if (!payload || !payload.userId) return;
+      // Update ecoPoints display if the reporting user matches
+      if (report.reportedBy && payload.userId === report.reportedBy._id) {
+        setReport((prev) => ({
+          ...prev,
+          reportedBy: { ...prev.reportedBy, ecoPoints: payload.ecoPoints },
+        }));
+      }
+    };
+
+    socket.on("report:updated", onReportUpdated);
+    socket.on("report:deleted", onReportDeleted);
+    socket.on("user:points", onUserPoints);
+
+    return () => {
+      socket.emit("leaveReport", report._id);
+      socket.off("report:updated", onReportUpdated);
+      socket.off("report:deleted", onReportDeleted);
+      socket.off("user:points", onUserPoints);
+    };
+  }, [socket, report, navigate]);
 
   const fetchReport = async () => {
     try {

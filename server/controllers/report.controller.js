@@ -167,6 +167,26 @@ export const createReport = async (req, res, next) => {
       message: 'Report created successfully',
       data: { report }
     });
+    // Emit socket event for new report
+    try {
+      const io = req.app?.locals?.io;
+      if (io) {
+        // Broadcast new report to all clients (map) and admins specifically
+        io.emit('report:created', report);
+        io.to('admins').emit('report:created', report);
+
+        // Emit updated ecoPoints for the reporting user (if non-admin)
+        if (req.user.role !== 'admin') {
+          const updatedUser = await User.findById(req.user.id).select('ecoPoints');
+          io.to(`user:${req.user.id}`).emit('user:points', {
+            userId: req.user.id,
+            ecoPoints: updatedUser?.ecoPoints || 0
+          });
+        }
+      }
+    } catch (emitErr) {
+      console.warn('Socket emit error (createReport):', emitErr.message);
+    }
   } catch (error) {
     next(error);
   }
@@ -347,6 +367,26 @@ export const updateReportStatus = async (req, res, next) => {
       message: 'Report status updated',
       data: { report }
     });
+
+    // Emit socket events for report update and user points
+    try {
+      const io = req.app?.locals?.io;
+      if (io) {
+        // Emit to report room and broadcast for list views
+        io.to(`report:${report._id}`).emit('report:updated', report);
+        io.emit('report:updated', report);
+
+        // If points were awarded, notify the user of new ecoPoints
+        if (pointsAwarded > 0 && report.reportedBy && report.reportedBy._id) {
+          io.to(`user:${report.reportedBy._id}`).emit('user:points', {
+            userId: report.reportedBy._id,
+            ecoPoints: newEcoPoints
+          });
+        }
+      }
+    } catch (emitErr) {
+      console.warn('Socket emit error (updateReportStatus):', emitErr.message);
+    }
   } catch (error) {
     next(error);
   }
@@ -399,6 +439,16 @@ export const deleteReport = async (req, res, next) => {
       success: true,
       message: 'Report deleted successfully'
     });
+    // Emit socket event for deletion
+    try {
+      const io = req.app?.locals?.io;
+      if (io) {
+        io.emit('report:deleted', { id: req.params.id });
+        io.to(`report:${req.params.id}`).emit('report:deleted', { id: req.params.id });
+      }
+    } catch (emitErr) {
+      console.warn('Socket emit error (deleteReport):', emitErr.message);
+    }
   } catch (error) {
     next(error);
   }

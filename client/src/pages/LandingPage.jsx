@@ -124,7 +124,7 @@ const LandingPage = () => {
                 </motion.div>
 
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
-                  Building{" "}
+                  Building <br />
                   <span className="text-green-300">Cleaner Cities,</span>
                   <br />
                   Together
@@ -186,7 +186,7 @@ const LandingPage = () => {
                       >
                         <Link
                           to="/login"
-                          className="btn bg-white/10 hover:bg-white/20 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300"
+                          className="btn w-48 bg-white/10 hover:bg-white/20 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300"
                         >
                           Sign in
                         </Link>

@@ -128,6 +128,7 @@ const Login = () => {
                     onChange={handleChange}
                     className="input pl-11"
                     placeholder="you@example.com"
+                    autoComplete="email"
                   />
                 </div>
               </div>
@@ -150,6 +151,7 @@ const Login = () => {
                     onChange={handleChange}
                     className="input pl-11"
                     placeholder="••••••••"
+                    autoComplete="current-password"
                   />
                 </div>
               </div>

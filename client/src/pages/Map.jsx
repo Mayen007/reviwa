@@ -12,6 +12,7 @@ import {
   XMarkIcon,
   ListBulletIcon,
 } from "@heroicons/react/24/outline";
+import { useSocket } from "../context/SocketContext";
 
 // Fix for default marker icons in React Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -93,11 +94,55 @@ const Map = () => {
     wasteType: searchParams.get("wasteType") || "",
     severity: searchParams.get("severity") || "",
   });
+  const socket = useSocket();
 
   useEffect(() => {
     fetchReports();
     getUserLocation();
   }, []);
+
+  // Socket listeners to keep map in sync
+  useEffect(() => {
+    if (!socket) return;
+
+    const onReportCreated = (newReport) => {
+      if (!newReport || !newReport._id) return;
+      setReports((prev) => {
+        // Avoid duplicates
+        if (prev.find((r) => r._id === newReport._id)) return prev;
+        return [newReport, ...prev];
+      });
+    };
+
+    const onReportUpdated = (updated) => {
+      if (!updated || !updated._id) return;
+      setReports((prev) =>
+        prev.map((r) => (r._id === updated._id ? updated : r))
+      );
+    };
+
+    const onReportDeleted = ({ id }) => {
+      if (!id) return;
+      setReports((prev) => prev.filter((r) => r._id !== id));
+    };
+
+    const onBulkUpdated = ({ ids, status }) => {
+      // Simple strategy: refetch reports to keep UI consistent
+      fetchReports();
+    };
+
+    socket.on("report:created", onReportCreated);
+    socket.on("report:updated", onReportUpdated);
+    socket.on("report:deleted", onReportDeleted);
+    socket.on("reports:bulkUpdated", onBulkUpdated);
+
+    return () => {
+      socket.off("report:created", onReportCreated);
+      socket.off("report:updated", onReportUpdated);
+      socket.off("report:deleted", onReportDeleted);
+      socket.off("reports:bulkUpdated", onBulkUpdated);
+    };
+  }, [socket]);
 
   useEffect(() => {
     applyFilters();
