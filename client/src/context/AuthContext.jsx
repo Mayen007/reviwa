@@ -115,11 +115,11 @@ export const AuthProvider = ({ children }) => {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       if (shouldIsolate) {
-        console.log(
-          `[Tab ${tabId}] Isolated login as ${user.role}: ${user.email} (another session exists)`
-        );
+        // console.log(
+        //   `[Tab ${tabId}] Isolated login as ${user.role}: ${user.email} (another session exists)`
+        // );
       } else {
-        console.log(`[Tab ${tabId}] Logged in as ${user.role}: ${user.email}`);
+        // console.log(`[Tab ${tabId}] Logged in as ${user.role}: ${user.email}`);
       }
 
       return { success: true, user }; // Return user object

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
+import AdminNotifications from "./AdminNotifications";
 import {
   MapIcon,
   MapPinIcon,
@@ -201,6 +202,11 @@ const Navbar = () => {
                         )}
                       </div>
                     </Link>
+                    {user?.role === "admin" && (
+                      <div className="ml-1">
+                        <AdminNotifications />
+                      </div>
+                    )}
                     <button
                       onClick={handleLogout}
                       className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
@@ -351,6 +357,11 @@ const Navbar = () => {
                 {isAuthenticated && (
                   <>
                     <div className="border-t border-gray-200 pt-3 mt-3">
+                      {user?.role === "admin" && (
+                        <div className="px-4 pb-3">
+                          <AdminNotifications />
+                        </div>
+                      )}
                       <Link
                         to="/profile"
                         onClick={closeMobileMenu}

@@ -62,7 +62,7 @@ const Profile = () => {
               <MapPinIcon className="w-8 h-8 text-blue-600" />
             </div>
             <p className="text-3xl font-bold text-gray-900">
-              {user.reportsCount}
+              {Math.max(0, user.reportsCount ?? 0)}
             </p>
             <p className="text-gray-600">Reports Submitted</p>
           </div>

@@ -135,6 +135,13 @@ export const createReport = async (req, res, next) => {
       await User.findByIdAndUpdate(req.user.id, { $inc: { ecoPoints: 10 } });
     }
 
+    // Maintain reportsCount on the user profile
+    try {
+      await User.findByIdAndUpdate(req.user.id, { $inc: { reportsCount: 1 } });
+    } catch (err) {
+      console.warn('Failed to increment reportsCount for user', req.user.id, err.message);
+    }
+
     // Populate user info
     await report.populate('reportedBy', 'name email avatar');
 
@@ -167,6 +174,26 @@ export const createReport = async (req, res, next) => {
       message: 'Report created successfully',
       data: { report }
     });
+
+    // Emit socket events: notify admins only until report is verified
+    try {
+      const io = req.app?.locals?.io;
+      if (io) {
+        // Notify admins with the full report payload
+        io.to('admins').emit('report:created', report);
+
+        // Emit updated ecoPoints for the reporting user (if non-admin)
+        if (req.user.role !== 'admin') {
+          const updatedUser = await User.findById(req.user.id).select('ecoPoints');
+          io.to(`user:${req.user.id}`).emit('user:points', {
+            userId: req.user.id,
+            ecoPoints: updatedUser?.ecoPoints || 0
+          });
+        }
+      }
+    } catch (emitErr) {
+      console.warn('Socket emit error (createReport):', emitErr.message);
+    }
   } catch (error) {
     next(error);
   }
@@ -347,6 +374,33 @@ export const updateReportStatus = async (req, res, next) => {
       message: 'Report status updated',
       data: { report }
     });
+
+    // Emit socket events for report update and user points
+    try {
+      const io = req.app?.locals?.io;
+      if (io) {
+        // Always notify clients viewing the specific report
+        io.to(`report:${report._id}`).emit('report:updated', report);
+
+        // If the report is now public (verified/resolved) broadcast full update to everyone,
+        // otherwise notify admins only so they can take action.
+        if (['verified', 'resolved'].includes(report.status)) {
+          io.emit('report:updated', report);
+        } else {
+          io.to('admins').emit('report:updated', report);
+        }
+
+        // If points were awarded, notify the user of new ecoPoints
+        if (pointsAwarded > 0 && report.reportedBy && report.reportedBy._id) {
+          io.to(`user:${report.reportedBy._id}`).emit('user:points', {
+            userId: report.reportedBy._id,
+            ecoPoints: newEcoPoints
+          });
+        }
+      }
+    } catch (emitErr) {
+      console.warn('Socket emit error (updateReportStatus):', emitErr.message);
+    }
   } catch (error) {
     next(error);
   }
@@ -390,15 +444,32 @@ export const deleteReport = async (req, res, next) => {
 
     await Report.findByIdAndDelete(req.params.id);
 
-    // Update user's report count
-    await User.findByIdAndUpdate(report.reportedBy, {
-      $inc: { reportsCount: -1 }
-    });
+    // Update user's report count (ensure it doesn't become negative)
+    try {
+      const updated = await User.findByIdAndUpdate(report.reportedBy, { $inc: { reportsCount: -1 } }, { new: true });
+      if (updated && typeof updated.reportsCount === 'number' && updated.reportsCount < 0) {
+        // Clamp to zero if a negative value was produced
+        await User.findByIdAndUpdate(report.reportedBy, { $set: { reportsCount: 0 } });
+        console.warn(`Clamped negative reportsCount for user ${report.reportedBy} to 0`);
+      }
+    } catch (err) {
+      console.warn('Failed to decrement reportsCount for user', report.reportedBy, err.message);
+    }
 
     res.json({
       success: true,
       message: 'Report deleted successfully'
     });
+    // Emit socket event for deletion
+    try {
+      const io = req.app?.locals?.io;
+      if (io) {
+        io.emit('report:deleted', { id: req.params.id });
+        io.to(`report:${req.params.id}`).emit('report:deleted', { id: req.params.id });
+      }
+    } catch (emitErr) {
+      console.warn('Socket emit error (deleteReport):', emitErr.message);
+    }
   } catch (error) {
     next(error);
   }

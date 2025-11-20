@@ -274,6 +274,15 @@ export const bulkUpdateReports = async (req, res) => {
         modified: result.modifiedCount
       }
     });
+    // Emit a bulk update event so clients can refresh or patch state
+    try {
+      const io = req.app?.locals?.io;
+      if (io) {
+        io.emit('reports:bulkUpdated', { ids: reportIds, status });
+      }
+    } catch (emitErr) {
+      console.warn('Socket emit error (bulkUpdateReports):', emitErr.message);
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -485,6 +494,16 @@ export const updateReportNotes = async (req, res) => {
       message: 'Admin notes updated successfully',
       data: { report }
     });
+    // Emit socket event for updated report notes
+    try {
+      const io = req.app?.locals?.io;
+      if (io) {
+        io.to(`report:${report._id}`).emit('report:updated', report);
+        io.emit('report:updated', report);
+      }
+    } catch (emitErr) {
+      console.warn('Socket emit error (updateReportNotes):', emitErr.message);
+    }
   } catch (error) {
     res.status(500).json({
       success: false,

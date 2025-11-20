@@ -101,7 +101,7 @@ const Dashboard = () => {
           <StatCard
             icon={<MapPinIcon className="w-8 h-8 text-blue-600" />}
             title="Reports Submitted"
-            value={user?.reportsCount || 0}
+            value={Math.max(0, user?.reportsCount ?? 0)}
             color="blue"
           />
           <StatCard
@@ -268,7 +268,7 @@ const StatCard = ({ icon, title, value, color }) => {
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       whileHover={{ y: -4 }}
-      className="card group cursor-pointer"
+      className="card group"
     >
       <div className="flex items-center justify-between">
         <div>

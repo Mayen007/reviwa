@@ -124,7 +124,7 @@ const LandingPage = () => {
                 </motion.div>
 
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
-                  Building{" "}
+                  Building <br />
                   <span className="text-green-300">Cleaner Cities,</span>
                   <br />
                   Together
@@ -186,7 +186,7 @@ const LandingPage = () => {
                       >
                         <Link
                           to="/login"
-                          className="btn bg-white/10 hover:bg-white/20 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300"
+                          className="btn w-48 bg-white/10 hover:bg-white/20 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300"
                         >
                           Sign in
                         </Link>
@@ -1396,6 +1396,9 @@ const LandingPage = () => {
                 <div className="flex flex-col sm:flex-row gap-3 p-2 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl">
                   <input
                     type="email"
+                    id="subscribe-email"
+                    name="email"
+                    aria-label="Subscribe email"
                     placeholder="Your email address"
                     className="flex-1 px-4 sm:px-6 py-4 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 font-medium"
                   />

@@ -96,11 +96,11 @@ const CreateReport = () => {
                 type: "image/jpeg",
                 lastModified: Date.now(),
               });
-              console.log(
-                `Compressed ${file.name}: ${(file.size / 1024 / 1024).toFixed(
-                  2
-                )}MB → ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`
-              );
+              // console.log(
+              //   `Compressed ${file.name}: ${(file.size / 1024 / 1024).toFixed(
+              //     2
+              //   )}MB → ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`
+              // );
               resolve(compressedFile);
             },
             "image/jpeg",
@@ -308,7 +308,7 @@ const CreateReport = () => {
         return;
       }
 
-      console.log("Current location state:", formData.location);
+      // console.log("Current location state:", formData.location);
 
       updateMessage("Preparing data...");
 
@@ -339,10 +339,10 @@ const CreateReport = () => {
       });
 
       // Debug: Log FormData contents
-      console.log("FormData contents:");
-      for (let pair of submitData.entries()) {
-        console.log(pair[0], ":", pair[1]);
-      }
+      // console.log("FormData contents:");
+      // for (let pair of submitData.entries()) {
+      //   console.log(pair[0], ":", pair[1]);
+      // }
 
       updateMessage(
         `Uploading report${
@@ -370,7 +370,7 @@ const CreateReport = () => {
       const debugInfo = error.response?.data?.debug;
 
       if (debugInfo) {
-        console.log("Debug info from server:", debugInfo);
+        // console.log("Debug info from server:", debugInfo);
         setError(`${errorMessage} (Check console for details)`);
       } else {
         setError(errorMessage);
@@ -498,7 +498,10 @@ const CreateReport = () => {
 
             {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="image-upload"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Photos <span className="text-gray-500">(Max 5)</span>
               </label>
               <div className="space-y-4">
@@ -615,9 +618,9 @@ const CreateReport = () => {
 
             {/* Location */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="block text-sm font-medium text-gray-700 mb-2">
                 Location *
-              </label>
+              </div>
               <button
                 type="button"
                 onClick={handleGetLocation}

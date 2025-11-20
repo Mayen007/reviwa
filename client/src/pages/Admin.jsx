@@ -4,6 +4,8 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useLoading } from "../context/LoadingContext";
 import { useNavigate } from "react-router-dom";
+import { useSocket } from "../context/SocketContext";
+import { useNotifications } from "../context/NotificationContext";
 
 const Admin = () => {
   const { user } = useAuth();
@@ -20,6 +22,8 @@ const Admin = () => {
   const [reportFilter, setReportFilter] = useState("all"); // all, pending, verified, in-progress, resolved
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const socket = useSocket();
+  const { addNotification } = useNotifications();
 
   // Redirect if not admin
   useEffect(() => {
@@ -91,6 +95,49 @@ const Admin = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, user, reportFilter]);
+
+  // Listen for new reports via socket (admins only)
+  useEffect(() => {
+    if (!socket || !user || user.role !== "admin") return;
+
+    const onNewReport = (newReport) => {
+      try {
+        // Prepend to reports list so admin sees it immediately
+        setReports((prev) => (prev ? [newReport, ...prev] : [newReport]));
+
+        // Update stats total if present
+        setStats((prev) =>
+          prev
+            ? {
+                ...prev,
+                totalReports: (prev.totalReports || prev.total || 0) + 1,
+              }
+            : prev
+        );
+
+        // Persist and show admin notification (also shows toast via NotificationContext)
+        try {
+          addNotification({
+            id: newReport._id,
+            title: `New report: ${newReport.title}`,
+            message: newReport.description || "",
+            createdAt: newReport.createdAt || new Date().toISOString(),
+            meta: { reportId: newReport._id },
+          });
+        } catch (e) {
+          console.warn("Failed to add admin notification", e);
+        }
+      } catch (err) {
+        console.warn("Error handling new report socket event:", err);
+      }
+    };
+
+    socket.on("report:created", onNewReport);
+
+    return () => {
+      socket.off("report:created", onNewReport);
+    };
+  }, [socket, user]);
 
   const handleUpdateUserRole = async (userId, newRole) => {
     try {
@@ -180,36 +227,41 @@ const Admin = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-purple-600 rounded-lg">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                />
-              </svg>
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-purple-600 rounded-lg">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+                  Admin Control Panel
+                </h1>
+                <p className="text-sm sm:text-base text-gray-400">
+                  System management and user administration
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-                Admin Control Panel
-              </h1>
-              <p className="text-sm sm:text-base text-gray-400">
-                System management and user administration
-              </p>
+
+            <div className="flex items-center gap-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-600/20 border border-purple-500/30 rounded-full">
+                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                <span className="text-xs font-medium text-purple-300">
+                  Administrator Access
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-600/20 border border-purple-500/30 rounded-full">
-            <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-            <span className="text-xs font-medium text-purple-300">
-              Administrator Access
-            </span>
           </div>
         </motion.div>
 
@@ -591,7 +643,7 @@ const Admin = () => {
                     <div>
                       <div className="text-xs text-gray-400">Reports</div>
                       <div className="text-sm font-semibold text-white">
-                        {u.reportsCount}
+                        {Math.max(0, u.reportsCount ?? 0)}
                       </div>
                     </div>
                     <div>
@@ -612,10 +664,15 @@ const Admin = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">
+                    <label
+                      htmlFor={`change-role-${u._id}`}
+                      className="block text-xs text-gray-400 mb-1"
+                    >
                       Change Role
                     </label>
                     <select
+                      id={`change-role-${u._id}`}
+                      name="role"
                       value={u.role}
                       onChange={(e) =>
                         handleUpdateUserRole(u._id, e.target.value)
@@ -692,7 +749,7 @@ const Admin = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                          {u.reportsCount}
+                          {Math.max(0, u.reportsCount ?? 0)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                           {u.ecoPoints}
@@ -702,6 +759,8 @@ const Admin = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <select
+                            id={`role-table-${u._id}`}
+                            name="role"
                             value={u.role}
                             onChange={(e) =>
                               handleUpdateUserRole(u._id, e.target.value)
@@ -1072,10 +1131,15 @@ const Admin = () => {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <label
+                          htmlFor="admin-notes-admin"
+                          className="block text-sm font-medium text-gray-300 mb-2"
+                        >
                           Admin Notes
                         </label>
                         <textarea
+                          id="admin-notes-admin"
+                          name="adminNotes"
                           value={adminNotes}
                           onChange={(e) => setAdminNotes(e.target.value)}
                           placeholder="Add internal notes about this report..."

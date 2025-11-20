@@ -63,8 +63,30 @@ app.get('/api/health', (req, res) => {
 // Error handling middleware (must be last)
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
+// Start server with Socket.IO
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import registerSockets from './sockets/index.js';
+
+const httpServer = createServer(app);
+
+// Initialize Socket.IO with CORS matching allowed origins
+const io = new Server(httpServer, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    credentials: true
+  }
+});
+
+// Attach io to app locals so controllers can access it via req.app.locals.io
+app.locals.io = io;
+
+// Register socket handlers
+registerSockets(io);
+
+httpServer.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV}`);
+  console.log('⚡ Socket.IO initialized');
 });
