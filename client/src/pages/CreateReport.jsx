@@ -498,7 +498,10 @@ const CreateReport = () => {
 
             {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="image-upload"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Photos <span className="text-gray-500">(Max 5)</span>
               </label>
               <div className="space-y-4">
@@ -615,9 +618,9 @@ const CreateReport = () => {
 
             {/* Location */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="block text-sm font-medium text-gray-700 mb-2">
                 Location *
-              </label>
+              </div>
               <button
                 type="button"
                 onClick={handleGetLocation}

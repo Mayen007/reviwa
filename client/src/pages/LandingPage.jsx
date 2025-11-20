@@ -1396,6 +1396,9 @@ const LandingPage = () => {
                 <div className="flex flex-col sm:flex-row gap-3 p-2 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl">
                   <input
                     type="email"
+                    id="subscribe-email"
+                    name="email"
+                    aria-label="Subscribe email"
                     placeholder="Your email address"
                     className="flex-1 px-4 sm:px-6 py-4 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 font-medium"
                   />

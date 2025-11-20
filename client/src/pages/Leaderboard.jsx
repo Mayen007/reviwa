@@ -122,7 +122,7 @@ const Leaderboard = () => {
                   <div className="flex-1">
                     <p className="font-semibold text-gray-900">{user.name}</p>
                     <p className="text-sm text-gray-600">
-                      {user.reportsCount} reports submitted
+                      {Math.max(0, user.reportsCount ?? 0)} reports submitted
                     </p>
                   </div>
 

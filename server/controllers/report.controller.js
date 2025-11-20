@@ -135,6 +135,13 @@ export const createReport = async (req, res, next) => {
       await User.findByIdAndUpdate(req.user.id, { $inc: { ecoPoints: 10 } });
     }
 
+    // Maintain reportsCount on the user profile
+    try {
+      await User.findByIdAndUpdate(req.user.id, { $inc: { reportsCount: 1 } });
+    } catch (err) {
+      console.warn('Failed to increment reportsCount for user', req.user.id, err.message);
+    }
+
     // Populate user info
     await report.populate('reportedBy', 'name email avatar');
 
@@ -437,10 +444,17 @@ export const deleteReport = async (req, res, next) => {
 
     await Report.findByIdAndDelete(req.params.id);
 
-    // Update user's report count
-    await User.findByIdAndUpdate(report.reportedBy, {
-      $inc: { reportsCount: -1 }
-    });
+    // Update user's report count (ensure it doesn't become negative)
+    try {
+      const updated = await User.findByIdAndUpdate(report.reportedBy, { $inc: { reportsCount: -1 } }, { new: true });
+      if (updated && typeof updated.reportsCount === 'number' && updated.reportsCount < 0) {
+        // Clamp to zero if a negative value was produced
+        await User.findByIdAndUpdate(report.reportedBy, { $set: { reportsCount: 0 } });
+        console.warn(`Clamped negative reportsCount for user ${report.reportedBy} to 0`);
+      }
+    } catch (err) {
+      console.warn('Failed to decrement reportsCount for user', report.reportedBy, err.message);
+    }
 
     res.json({
       success: true,

@@ -643,7 +643,7 @@ const Admin = () => {
                     <div>
                       <div className="text-xs text-gray-400">Reports</div>
                       <div className="text-sm font-semibold text-white">
-                        {u.reportsCount}
+                        {Math.max(0, u.reportsCount ?? 0)}
                       </div>
                     </div>
                     <div>
@@ -664,10 +664,15 @@ const Admin = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">
+                    <label
+                      htmlFor={`change-role-${u._id}`}
+                      className="block text-xs text-gray-400 mb-1"
+                    >
                       Change Role
                     </label>
                     <select
+                      id={`change-role-${u._id}`}
+                      name="role"
                       value={u.role}
                       onChange={(e) =>
                         handleUpdateUserRole(u._id, e.target.value)
@@ -744,7 +749,7 @@ const Admin = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                          {u.reportsCount}
+                          {Math.max(0, u.reportsCount ?? 0)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                           {u.ecoPoints}
@@ -754,6 +759,8 @@ const Admin = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <select
+                            id={`role-table-${u._id}`}
+                            name="role"
                             value={u.role}
                             onChange={(e) =>
                               handleUpdateUserRole(u._id, e.target.value)
@@ -1124,10 +1131,15 @@ const Admin = () => {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <label
+                          htmlFor="admin-notes-admin"
+                          className="block text-sm font-medium text-gray-300 mb-2"
+                        >
                           Admin Notes
                         </label>
                         <textarea
+                          id="admin-notes-admin"
+                          name="adminNotes"
                           value={adminNotes}
                           onChange={(e) => setAdminNotes(e.target.value)}
                           placeholder="Add internal notes about this report..."

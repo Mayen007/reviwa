@@ -545,7 +545,7 @@ const ReportDetail = () => {
               <div className="text-right">
                 <p className="text-sm text-gray-500">Total Reports</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {report.reportedBy?.reportsCount || 1}
+                  {Math.max(0, report.reportedBy?.reportsCount ?? 0)}
                 </p>
               </div>
             </div>
@@ -565,6 +565,8 @@ const ReportDetail = () => {
               </div>
               <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
                 <textarea
+                  id="admin-notes"
+                  name="adminNotes"
                   value={adminNotes}
                   onChange={(e) => setAdminNotes(e.target.value)}
                   placeholder="Add internal notes about this report (visible only to administrators)..."

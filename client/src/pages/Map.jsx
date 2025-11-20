@@ -324,10 +324,15 @@ const Map = () => {
 
               <div className="grid md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="filter-status"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Status
                   </label>
                   <select
+                    id="filter-status"
+                    name="status"
                     value={filters.status}
                     onChange={(e) =>
                       handleFilterChange("status", e.target.value)
@@ -343,10 +348,15 @@ const Map = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="filter-wasteType"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Waste Type
                   </label>
                   <select
+                    id="filter-wasteType"
+                    name="wasteType"
                     value={filters.wasteType}
                     onChange={(e) =>
                       handleFilterChange("wasteType", e.target.value)
@@ -364,10 +374,15 @@ const Map = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="filter-severity"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Severity
                   </label>
                   <select
+                    id="filter-severity"
+                    name="severity"
                     value={filters.severity}
                     onChange={(e) =>
                       handleFilterChange("severity", e.target.value)
