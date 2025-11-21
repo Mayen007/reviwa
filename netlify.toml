@@ -4,7 +4,7 @@
   command = "npm ci && npm run build"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 # SPA redirect rule - redirect all routes to index.html for client-side routing
 [[redirects]]

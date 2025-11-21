@@ -11,24 +11,35 @@ import { SocketProvider } from "./context/SocketContext.jsx";
 // Optional Sentry for client-side monitoring
 // Requires VITE_SENTRY_DSN to be set in the environment (e.g., Netlify env var)
 if (import.meta.env.VITE_SENTRY_DSN) {
-  try {
-    // Dynamically import to avoid adding dependency if not configured
-    const Sentry = await import("@sentry/react");
-    const { BrowserTracing } = await import("@sentry/tracing");
-    Sentry.init({
-      dsn: import.meta.env.VITE_SENTRY_DSN,
-      integrations: [new BrowserTracing()],
-      tracesSampleRate: parseFloat(
-        import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE || "0.05"
-      ),
-      environment: import.meta.env.MODE || "development",
+  // Use Promise-based dynamic imports (no top-level await)
+  Promise.all([import("@sentry/react"), import("@sentry/tracing")])
+    .then(([SentryModule, tracingModule]) => {
+      try {
+        const Sentry = SentryModule;
+        const { BrowserTracing } = tracingModule;
+        Sentry.init({
+          dsn: import.meta.env.VITE_SENTRY_DSN,
+          integrations: [new BrowserTracing()],
+          tracesSampleRate: parseFloat(
+            import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE || "0.05"
+          ),
+          environment: import.meta.env.MODE || "development",
+        });
+        // eslint-disable-next-line no-console
+        console.log("📡 Sentry (client) initialized");
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          "Sentry (client) initialization failed:",
+          err?.message || err
+        );
+      }
+    })
+    .catch((err) => {
+      // If package not installed or import fails, log but don't break app
+      // eslint-disable-next-line no-console
+      console.warn("Sentry (client) not initialized:", err?.message || err);
     });
-    console.log("📡 Sentry (client) initialized");
-  } catch (err) {
-    // If package not installed or import fails, log but don't break app
-    // eslint-disable-next-line no-console
-    console.warn("Sentry (client) not initialized:", err?.message || err);
-  }
 }
 
 // Configure axios base URL from environment variable (set VITE_API_URL on Netlify)
