@@ -63,7 +63,7 @@ export const SocketProvider = ({ children }) => {
 
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
         const resp = await fetch(healthUrl, { signal: controller.signal });
         clearTimeout(timeoutId);
 

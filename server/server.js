@@ -30,7 +30,9 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://reviwa.netlify.app',
-  process.env.CLIENT_URL
+  process.env.CLIENT_URL,
+  // Allow all origins in development for mobile testing
+  process.env.NODE_ENV === 'development' ? '*' : null
 ]
   .filter(Boolean)
   .map((url) => url.replace(/\/$/, ''));
