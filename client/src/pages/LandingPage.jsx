@@ -144,11 +144,22 @@ const LandingPage = () => {
                       >
                         <Link
                           to="/create-report"
-                          className="btn bg-white text-primary-700 hover:bg-green-50 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold shadow-2xl hover:shadow-green-500/50 transition-all duration-300 relative overflow-hidden group"
+                          className="btn bg-white inline-flex  text-primary-700 hover:bg-green-50 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold shadow-2xl hover:shadow-green-500/50 transition-all duration-300 relative overflow-hidden group"
                         >
-                          <span className="relative z-10">
-                            Create Report ✨
-                          </span>
+                          <span className="relative z-10">Create Report</span>
+                          <svg
+                            className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform inline"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13 7l5 5m0 0l-5 5m5-5H6"
+                            />
+                          </svg>
                           <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-primary-400 opacity-0 group-hover:opacity-10 transition-opacity"></div>
                         </Link>
                       </motion.div>
@@ -158,7 +169,7 @@ const LandingPage = () => {
                       >
                         <Link
                           to="/reports"
-                          className="btn bg-white/10 hover:bg-white/20 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300"
+                          className="btn bg-white/10 w-48 inline-flex hover:bg-white/20 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300"
                         >
                           View Reports
                         </Link>
