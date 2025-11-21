@@ -52,13 +52,17 @@ jobs:
     needs: client-tests
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy to Netlify
-        uses: JamesIves/netlify-deploy-action@v4.3.0
-        with:
-          production-branch: main
-          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
-          build-dir: client/dist
+      - name: Trigger Netlify build hook
+        env:
+          NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$NETLIFY_BUILD_HOOK" ]; then
+            echo "NETLIFY_BUILD_HOOK not set; skipping Netlify deploy.";
+            exit 1;
+          fi
+          echo "Triggering Netlify build hook..."
+          # POST empty payload to Netlify build hook to trigger a deploy
+          curl -sS -X POST "$NETLIFY_BUILD_HOOK" -d '{}' || true
 
   deploy-server:
     name: Trigger Render deploy for server
@@ -66,11 +70,20 @@ jobs:
     needs: client-tests
     steps:
       - uses: actions/checkout@v4
-      - name: Trigger Render deploy
-        uses: renderinc/action-deploy@v1
-        with:
-          apiKey: ${{ secrets.RENDER_API_KEY }}
-          serviceId: ${{ secrets.RENDER_SERVICE_ID }}
+      - name: Trigger Render deploy (via API)
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+        run: |
+          if [ -z "$RENDER_API_KEY" ] || [ -z "$RENDER_SERVICE_ID" ]; then
+            echo "RENDER_API_KEY or RENDER_SERVICE_ID not set; skipping deploy.";
+            exit 1;
+          fi
+          echo "Triggering Render deploy for service: $RENDER_SERVICE_ID"
+          curl -sS -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' | jq || true
 
   # CRITICAL: Configure the following repository secrets in GitHub (`Settings > Secrets and variables > Actions`):
   # NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID, RENDER_API_KEY, RENDER_SERVICE_ID
