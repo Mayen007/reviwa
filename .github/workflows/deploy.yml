@@ -58,7 +58,8 @@ jobs:
         run: |
           if [ -z "$NETLIFY_BUILD_HOOK" ]; then
             echo "NETLIFY_BUILD_HOOK not set; skipping Netlify deploy.";
-            exit 1;
+            # Do not fail CI for missing deploy hook (useful for fork/PR runs)
+            exit 0;
           fi
           echo "Triggering Netlify build hook..."
           # POST empty payload to Netlify build hook to trigger a deploy
@@ -77,7 +78,8 @@ jobs:
         run: |
           if [ -z "$RENDER_API_KEY" ] || [ -z "$RENDER_SERVICE_ID" ]; then
             echo "RENDER_API_KEY or RENDER_SERVICE_ID not set; skipping deploy.";
-            exit 1;
+            # Don't fail CI when deploy secrets are not configured (common for forks)
+            exit 0;
           fi
           echo "Triggering Render deploy for service: $RENDER_SERVICE_ID"
           curl -sS -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
