@@ -17,19 +17,19 @@ A comprehensive testing infrastructure has been implemented for the Reviwa appli
 
 #### Test Files Created
 
-1. **`__tests__/setup.js`**
+1. **`tests/setup.js`**
 
    - Database setup and teardown utilities
    - In-memory MongoDB configuration
    - Mock helpers for email and Cloudinary services
 
-2. **`__tests__/auth.test.js`** (13 tests)
+2. **`tests/auth.test.js`** (13 tests)
 
    - User registration (success, duplicate email, missing fields)
    - User login (valid/invalid credentials, non-existent user)
    - Profile retrieval (with/without token, invalid token)
 
-3. **`__tests__/report.test.js`** (11 tests)
+3. **`tests/report.test.js`** (11 tests)
 
    - Report creation (authenticated, unauthenticated, validation)
    - Report listing (all reports, filtering by status/type)
@@ -37,12 +37,12 @@ A comprehensive testing infrastructure has been implemented for the Reviwa appli
    - Report updates (own reports, authentication)
    - Report deletion (own reports, authentication)
 
-4. **`__tests__/models.test.js`** (13 tests)
+4. **`tests/models.test.js`** (13 tests)
 
    - User model (creation, validation, password hashing, matching)
    - Report model (creation, validation, enum checks, population)
 
-5. **`__tests__/admin.test.js`** (8 tests)
+5. **`tests/admin.test.js`** (8 tests)
    - Admin authentication and authorization
    - User management operations
    - Report status management
@@ -127,7 +127,6 @@ A comprehensive testing infrastructure has been implemented for the Reviwa appli
 
 ### Documentation
 
-1. **`TESTING.md`** - Quick reference guide
 2. **`docs/TESTING_GUIDE.md`** - Comprehensive testing documentation
 3. **`docs/TEST_INSTALLATION.md`** - Step-by-step installation guide
 4. **`README.md`** - Updated with testing information
@@ -257,7 +256,7 @@ reviwa/
 │   └── workflows/
 │       └── test.yml                 # CI/CD workflow
 ├── server/
-│   ├── __tests__/                   # Backend tests
+│   ├── tests/                   # Backend tests
 │   │   ├── setup.js
 │   │   ├── auth.test.js
 │   │   ├── report.test.js

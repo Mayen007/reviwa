@@ -48,14 +48,14 @@ The Reviwa application uses a comprehensive testing strategy that includes:
 The backend testing environment is configured with:
 
 1. **jest.config.js** - Jest configuration for ES modules
-2. ****tests**/setup.js** - Test utilities and setup functions
+2. \***\*tests**/setup.js\*\* - Test utilities and setup functions
 3. **.env.test** - Test environment variables
 
 ### Test Structure
 
 ```
 server/
-  __tests__/
+  tests/
     setup.js          # Test setup utilities
     auth.test.js      # Authentication tests
     report.test.js    # Report CRUD tests

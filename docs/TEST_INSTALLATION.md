@@ -265,7 +265,7 @@ npm test -- -u
 
 ## Resources
 
-- [Backend Test Examples](../server/__tests__/)
+- [Backend Test Examples](../server/tests/)
 - [Frontend Test Examples](../client/src/__tests__/)
 - [Testing Guide](./TESTING_GUIDE.md)
 - [Jest Documentation](https://jestjs.io/)

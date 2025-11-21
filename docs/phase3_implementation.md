@@ -43,7 +43,7 @@ This phase focuses on the actual development of **Reviwa**, translating the syst
 
 ```bash
 # Clone Repository
-git clone https://github.com/username/reviwa.git
+git clone https://github.com/Mayen007/reviwa.git
 
 # Navigate to directories
 cd reviwa/frontend
