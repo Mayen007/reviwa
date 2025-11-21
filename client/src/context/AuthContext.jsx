@@ -152,7 +152,7 @@ export const AuthProvider = ({ children }) => {
 
   // Logout
   const logout = () => {
-    console.log(`[Tab ${tabId}] Logging out ${user?.role || "user"}`);
+    // console.log(`[Tab ${tabId}] Logging out ${user?.role || "user"}`);
 
     // Remove tokens using helper
     removeToken();

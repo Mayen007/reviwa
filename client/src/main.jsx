@@ -26,7 +26,7 @@ if (import.meta.env.VITE_SENTRY_DSN) {
           environment: import.meta.env.MODE || "development",
         });
         // eslint-disable-next-line no-console
-        console.log("📡 Sentry (client) initialized");
+        // console.log("📡 Sentry (client) initialized");
       } catch (err) {
         // eslint-disable-next-line no-console
         console.warn(

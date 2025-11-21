@@ -26,6 +26,10 @@ export default defineConfig({
         }
       }
     },
+    // Drop console.log in production
+    esbuild: {
+      drop: process.env.NODE_ENV === 'production' ? ['console'] : [],
+    },
     chunkSizeWarningLimit: 600
   }
 })
