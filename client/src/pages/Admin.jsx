@@ -14,7 +14,9 @@ const Admin = () => {
 
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
+  const [usersLoaded, setUsersLoaded] = useState(false);
   const [reports, setReports] = useState([]);
+  const [reportsCache, setReportsCache] = useState({}); // cache reports per filter (key: filter, value: reports[])
   const [selectedReport, setSelectedReport] = useState(null);
   const [adminNotes, setAdminNotes] = useState("");
   const [showNotesModal, setShowNotesModal] = useState(false);
@@ -59,6 +61,7 @@ const Admin = () => {
         showLoading("Loading users...");
         const { data } = await axios.get("/api/admin/users");
         setUsers(data.data);
+        setUsersLoaded(true);
       } catch (error) {
         setError(error.response?.data?.message || "Failed to load users");
       } finally {
@@ -66,7 +69,8 @@ const Admin = () => {
       }
     };
 
-    if (activeTab === "users" && user?.role === "admin") {
+    // Only fetch if users tab is active and users haven't been loaded yet
+    if (activeTab === "users" && user?.role === "admin" && !usersLoaded) {
       fetchUsers();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,6 +87,11 @@ const Admin = () => {
           `/api/admin/reports?${statusParam}limit=1000`
         );
         setReports(data.data.reports);
+        // cache fetched reports for this filter
+        setReportsCache((prev) => ({
+          ...prev,
+          [reportFilter]: data.data.reports,
+        }));
       } catch (error) {
         setError(error.response?.data?.message || "Failed to load reports");
       } finally {
@@ -91,7 +100,13 @@ const Admin = () => {
     };
 
     if (activeTab === "reports" && user?.role === "admin") {
-      fetchReports();
+      // If we have cached reports for the selected filter, use them instead of refetching
+      const cached = reportsCache[reportFilter];
+      if (cached) {
+        setReports(cached);
+      } else {
+        fetchReports();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, user, reportFilter]);
@@ -127,6 +142,19 @@ const Admin = () => {
         } catch (e) {
           console.warn("Failed to add admin notification", e);
         }
+
+        // Update reports cache: add the new report to relevant cached lists (all, and any matching status)
+        setReportsCache((prev) => {
+          if (!prev) return prev;
+          const next = { ...prev };
+          Object.keys(next).forEach((key) => {
+            // key is the filter used when caching; 'all' was used for no filter
+            if (key === "all" || key === newReport.status) {
+              next[key] = [newReport, ...(next[key] || [])];
+            }
+          });
+          return next;
+        });
       } catch (err) {
         console.warn("Error handling new report socket event:", err);
       }
@@ -147,6 +175,7 @@ const Admin = () => {
       // Refresh users list
       const { data } = await axios.get("/api/admin/users");
       setUsers(data.data);
+      setUsersLoaded(true);
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
       setError(error.response?.data?.message || "Failed to update user role");
@@ -204,6 +233,18 @@ const Admin = () => {
           r._id === selectedReport._id ? { ...r, adminNotes } : r
         )
       );
+
+      // Update the reports cache so switching filters/tabs doesn't lose the change
+      setReportsCache((prev) => {
+        if (!prev) return prev;
+        const next = { ...prev };
+        Object.keys(next).forEach((key) => {
+          next[key] = (next[key] || []).map((r) =>
+            r._id === selectedReport._id ? { ...r, adminNotes } : r
+          );
+        });
+        return next;
+      });
 
       handleCloseNotesModal();
       setTimeout(() => setSuccessMessage(""), 3000);

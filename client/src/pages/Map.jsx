@@ -163,7 +163,11 @@ const Map = () => {
 
   const fetchReports = async () => {
     try {
-      const response = await axios.get("/api/reports");
+      // Request more items from the server — server defaults to a paginated
+      // response (typically 50 items). Add a higher `limit` so the map can
+      // display more reports. For production, consider server-side bounds
+      // queries or pagination to avoid huge payloads.
+      const response = await axios.get("/api/reports?limit=1000");
       setReports(response.data.data.reports);
 
       // Center map on first report if available and no specific report is highlighted
