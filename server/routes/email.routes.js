@@ -1,6 +1,6 @@
 import express from 'express';
 import { sendTestEmail } from '../services/email.service.js';
-import { protect, admin } from '../middleware/authMiddleware.js';
+import { protect, isAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ const router = express.Router();
  * @desc    Send a test email (Admin only)
  * @access  Private/Admin
  */
-router.post('/test', protect, admin, async (req, res) => {
+router.post('/test', protect, isAdmin, async (req, res) => {
   try {
     const { email } = req.body;
     const targetEmail = email || req.user.email; // Default to admin's email
