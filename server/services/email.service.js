@@ -102,10 +102,28 @@ export const getAdminEmails = async (User) => {
   }
 };
 
+/**
+ * Send a test email to verify configuration
+ */
+export const sendTestEmail = async (email) => {
+  const subject = 'Reviwa Test Email 🚀';
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h1 style="color: #2E7D32;">It Works! 🎉</h1>
+      <p>This is a test email from the Reviwa backend.</p>
+      <p>If you received this, your email configuration is working correctly.</p>
+      <hr>
+      <p style="font-size: 12px; color: #666;">Timestamp: ${new Date().toISOString()}</p>
+    </div>
+  `;
+  return await sendEmail(email, subject, html);
+};
+
 export default {
   sendWelcomeEmail,
   sendReportStatusUpdate,
   sendNewReportNotification,
   sendEcoPointsMilestone,
-  getAdminEmails
+  getAdminEmails,
+  sendTestEmail
 };

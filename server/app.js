@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes.js';
 import reportRoutes from './routes/report.routes.js';
 import userRoutes from './routes/user.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import emailRoutes from './routes/email.routes.js';
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/email', emailRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

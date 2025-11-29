@@ -46,6 +46,7 @@ const createTransporter = () => {
 const transporter = createTransporter();
 
 // Verify connection configuration with timeout
+// Verify connection configuration with timeout
 if (transporter) {
   const verifyTimeout = setTimeout(() => {
     console.log('⚠️  Email verification taking too long, continuing anyway...');
@@ -54,8 +55,12 @@ if (transporter) {
   transporter.verify((error, success) => {
     clearTimeout(verifyTimeout);
     if (error) {
-      console.log('❌ Email configuration error:', error.message);
-      if (error.code === 'ETIMEDOUT' || error.code === 'ECONNECTION') {
+      console.error('❌ Email configuration error:', error.message);
+      console.error('   Code:', error.code);
+      console.error('   Command:', error.command);
+      console.error('   Response:', error.response);
+
+      if (error.code === 'ETIMEDOUT' || error.code === 'ECONNECTION' || error.code === 'ESOCKET') {
         console.log('💡 Tip: Check if your hosting provider blocks SMTP ports.');
         console.log('💡 For Gmail: Use port 465 with SSL or port 587 with TLS');
         console.log('💡 Consider using an App Password instead of your regular password');
