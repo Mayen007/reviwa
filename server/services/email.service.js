@@ -1,4 +1,4 @@
-import { transporter, EMAIL_FROM } from '../config/email.js';
+import { resend, EMAIL_FROM } from '../config/resend.js';
 import {
   welcomeEmail,
   reportStatusEmail,
@@ -7,32 +7,35 @@ import {
 } from '../utils/emailTemplates.js';
 
 /**
- * Send email using configured transporter
- * Falls back to console logging if email not configured
+ * Send email using Resend API
  */
 const sendEmail = async (to, subject, html) => {
   try {
-    // If no transporter (dev mode without config), just log
-    if (!transporter) {
-      console.log('\n📧 EMAIL (not sent - no config):');
+    // If no API key (dev mode without config), just log
+    if (!process.env.RESEND_API_KEY) {
+      console.log('\n📧 EMAIL (not sent - no API key):');
       console.log('To:', to);
       console.log('Subject:', subject);
       console.log('---\n');
       return { success: true, mode: 'console' };
     }
 
-    const mailOptions = {
+    const { data, error } = await resend.emails.send({
       from: EMAIL_FROM,
       to,
       subject,
       html
-    };
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Email sent:', info.messageId, '| From:', EMAIL_FROM);
-    return { success: true, messageId: info.messageId };
+    if (error) {
+      console.error('❌ Error sending email:', error);
+      return { success: false, error: error.message };
+    }
+
+    console.log('✅ Email sent:', data.id, '| From:', EMAIL_FROM);
+    return { success: true, messageId: data.id };
   } catch (error) {
-    console.error('❌ Error sending email:', error.message);
+    console.error('❌ Unexpected error sending email:', error.message);
     return { success: false, error: error.message };
   }
 };
