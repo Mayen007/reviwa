@@ -7,7 +7,12 @@ const CLIENT_ID = process.env.GMAIL_CLIENT_ID;
 const CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET;
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
 const REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN;
-export const EMAIL_FROM = process.env.EMAIL_FROM;
+
+// Ensure sender name is always "Reviwa"
+const rawFrom = process.env.EMAIL_FROM || process.env.EMAIL_USER;
+export const EMAIL_FROM = rawFrom.includes('<')
+  ? rawFrom
+  : `Reviwa <${rawFrom}>`;
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
