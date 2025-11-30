@@ -10,9 +10,11 @@ const REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN;
 
 // Ensure sender name is always "Reviwa"
 const rawFrom = process.env.EMAIL_FROM || process.env.EMAIL_USER;
-export const EMAIL_FROM = rawFrom.includes('<')
-  ? rawFrom
-  : `Reviwa <${rawFrom}>`;
+// Extract just the email address (remove any existing name)
+const emailMatch = rawFrom ? rawFrom.match(/<([^>]+)>/) : null;
+const emailAddress = emailMatch ? emailMatch[1] : (rawFrom ? rawFrom.trim() : '');
+
+export const EMAIL_FROM = `"Reviwa" <${emailAddress}>`;
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
@@ -30,27 +32,7 @@ export const sendGmail = async (to, subject, html) => {
   try {
     const accessToken = await oAuth2Client.getAccessToken();
 
-    const transport = {
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: process.env.EMAIL_USER, // Your gmail address
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken: accessToken.token,
-      },
-    };
-
-    // We need nodemailer to construct the raw email easily, 
-    // but we can also use the Gmail API directly if we want to avoid nodemailer entirely.
-    // However, using nodemailer with the gmail service and OAuth2 is the standard "Gmail API" way 
-    // that bypasses SMTP port issues because it uses HTTP under the hood via the transport.
-    // Wait, "service: gmail" in nodemailer usually uses SMTP (smtp.gmail.com). 
-    // To strictly use HTTP API, we should use 'googleapis' directly.
-
-    // Let's use googleapis directly to be 100% sure we are using HTTP.
-
+    // Use googleapis directly to be 100% sure we are using HTTP.
     const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
 
     // Create the raw email string

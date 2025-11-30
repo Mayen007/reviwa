@@ -51,8 +51,9 @@ const emailWrapper = (content, title) => `
     }
     
     .logo {
-      font-size: 32px;
-      line-height: 1;
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
     }
     
     .header h1 {
@@ -179,7 +180,7 @@ const emailWrapper = (content, title) => `
   <div class="container">
     <div class="header">
       <div class="logo-container">
-        <span class="logo">♻️</span>
+        <img src="${CLIENT_URL}/logo.png" alt="Reviwa" class="logo" />
       </div>
       <h1>Reviwa</h1>
     </div>
