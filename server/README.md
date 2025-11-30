@@ -8,7 +8,7 @@ Clean, modern backend for the Reviwa waste management platform.
 - MongoDB + Mongoose
 - JWT Authentication
 - Cloudinary (image uploads)
-- Resend (email notifications)
+- Gmail API (email notifications)
 
 ## Setup
 
@@ -26,12 +26,13 @@ cp .env.example .env
 
 3. Update `.env` with your credentials
 
-**Email Setup (Resend):**
+**Email Setup (Gmail API):**
 
-- Sign up at [Resend.com](https://resend.com)
-- Get your API Key
-- Add to `.env`: `RESEND_API_KEY=re_123...`
-- Set `EMAIL_FROM=onboarding@resend.dev` (for testing) or your verified domain.
+- Create project in Google Cloud Console
+- Enable Gmail API
+- Create OAuth2 Credentials (Client ID & Secret)
+- Generate Refresh Token via OAuth Playground
+- Add to `.env`: `GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET`, `GMAIL_REFRESH_TOKEN`
 
 4. Start server:
 

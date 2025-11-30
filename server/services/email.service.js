@@ -1,4 +1,4 @@
-import { resend, EMAIL_FROM } from '../config/resend.js';
+import { sendGmail, EMAIL_FROM } from '../config/gmail.js';
 import {
   welcomeEmail,
   reportStatusEmail,
@@ -7,33 +7,28 @@ import {
 } from '../utils/emailTemplates.js';
 
 /**
- * Send email using Resend API
+ * Send email using Gmail API
  */
 const sendEmail = async (to, subject, html) => {
   try {
-    // If no API key (dev mode without config), just log
-    if (!process.env.RESEND_API_KEY) {
-      console.log('\n📧 EMAIL (not sent - no API key):');
+    // If no Refresh Token (dev mode without config), just log
+    if (!process.env.GMAIL_REFRESH_TOKEN) {
+      console.log('\n📧 EMAIL (not sent - no Gmail config):');
       console.log('To:', to);
       console.log('Subject:', subject);
       console.log('---\n');
       return { success: true, mode: 'console' };
     }
 
-    const { data, error } = await resend.emails.send({
-      from: EMAIL_FROM,
-      to,
-      subject,
-      html
-    });
+    const result = await sendGmail(to, subject, html);
 
-    if (error) {
-      console.error('❌ Error sending email:', error);
-      return { success: false, error: error.message };
+    if (!result.success) {
+      console.error('❌ Error sending email:', result.error);
+      return { success: false, error: result.error };
     }
 
-    console.log('✅ Email sent:', data.id, '| From:', EMAIL_FROM);
-    return { success: true, messageId: data.id };
+    console.log('✅ Email sent:', result.messageId, '| From:', EMAIL_FROM);
+    return { success: true, messageId: result.messageId };
   } catch (error) {
     console.error('❌ Unexpected error sending email:', error.message);
     return { success: false, error: error.message };

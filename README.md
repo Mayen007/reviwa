@@ -73,7 +73,7 @@ The MVP focuses on waste reporting and community engagement.
 | **Database**        | MongoDB 8.3.0 (Atlas) with Geospatial Indexing |
 | **Auth**            | JWT (bcryptjs, jsonwebtoken)                   |
 | **File Storage**    | Cloudinary (image uploads & optimization)      |
-| **Email**           | Resend (HTTP API)                              |
+| **Email**           | Gmail API (HTTP via OAuth2)                    |
 | **Maps**            | React Leaflet 4.x, Leaflet, OpenStreetMap      |
 | **UI/Animations**   | Framer Motion 11.11, Heroicons 2.2             |
 | **API Client**      | Axios 1.7.7                                    |
@@ -146,7 +146,7 @@ reviwa/
 - **Geospatial Indexing:** 2dsphere indexes for location-based queries
 - **Multer Middleware:** File upload handling with memory storage
 - **Cloudinary Integration:** Cloud-based image storage with automatic optimization
-- **Email Service:** Resend (HTTP API) for reliable transactional emails
+- **Email Service:** Gmail API (HTTP) for reliable transactional emails via OAuth2
 - **Error Handling:** Centralized error middleware with detailed messages
 - **CORS Configuration:** Cross-origin resource sharing for API security
 
@@ -349,8 +349,11 @@ NODE_ENV=development
 CLIENT_URL=http://localhost:5173
 SENTRY_DSN=your_sentry_dsn_here
 SENTRY_ENVIRONMENT=development
-RESEND_API_KEY=your_resend_api_key_here
-EMAIL_FROM=onboarding@resend.dev
+GMAIL_CLIENT_ID=your_client_id
+GMAIL_CLIENT_SECRET=your_client_secret
+GMAIL_REFRESH_TOKEN=your_refresh_token
+EMAIL_USER=your-email@gmail.com
+EMAIL_FROM=Reviwa <your-email@gmail.com>
 ```
 
 **Client (`.env` in `/client` directory):**
