@@ -1,21 +1,21 @@
-# ♻️ Reviwa – Smart Waste Management & Clean City Platform
+# Reviwa – Smart Waste Management & Clean City Platform
 
 **Reviwa** is a MERN-stack web application designed to make urban waste management smarter, more transparent, and community-driven.
 The platform empowers citizens to **report waste sites**, **track cleanup progress**, and **earn eco-points** for verified contributions — creating cleaner, safer, and more sustainable cities.
 
 ---
 
-## 🔗 Links
+## Links
 
-- **🌐 Live Demo:** [https://reviwa.netlify.app/](https://reviwa.netlify.app/)
-- **📊 Pitch Deck:** [REVIWA - Reviving Cities, One Report at a Time](https://gamma.app/docs/REVIWA-Reviving-Cities-One-Report-at-a-Time-71g1khnubjgsaf0)
+- **Live Demo:** [https://reviwa.netlify.app/](https://reviwa.netlify.app/)
+- **Pitch Deck:** [REVIWA - Reviving Cities, One Report at a Time](https://gamma.app/docs/REVIWA-Reviving-Cities-One-Report-at-a-Time-71g1khnubjgsaf0)
 
 ---
 
-## 🌍 SDG Alignment
+## SDG Alignment
 
 **Primary Goal:**
-🟢 **SDG 11 – Sustainable Cities and Communities**
+**SDG 11 – Sustainable Cities and Communities**
 
 > Make cities inclusive, safe, resilient, and sustainable.
 
@@ -26,7 +26,7 @@ The platform empowers citizens to **report waste sites**, **track cleanup progre
 
 ---
 
-## 💡 Problem Statement
+## Problem Statement
 
 Urban areas across developing nations face rising challenges in **waste collection, disposal, and community awareness**.
 Overflowing dumpsites, illegal waste burning, and uncoordinated cleanup efforts threaten both the environment and public health.
@@ -35,36 +35,36 @@ Overflowing dumpsites, illegal waste burning, and uncoordinated cleanup efforts 
 
 ---
 
-## 🚀 Project Scope (MVP)
+## Project Scope (MVP)
 
 The MVP focuses on waste reporting and community engagement.
 
 ### Core Features
 
-- 🗑️ **Report Waste Sites:** Upload photos (up to 5 images with auto-compression), add description, and mark location
-- 📍 **Geolocation Tracking:** Browser-based GPS to identify exact dump sites
-- 🗺️ **Interactive Map:** Visualize all waste reports on an interactive map with color-coded markers and clustering
-- 📊 **User Dashboard:** Track your reports, eco-points, and community impact
-- ⭐ **Eco-Points System:** Earn points for verified cleanup actions (10 points per report, 20 for verification, 50 for resolution)
-- 👤 **User Profiles:** View account details and environmental impact stats
-- 🏅 **Leaderboard:** Top contributors ranked by eco-points (admins excluded from competition)
+- **Report Waste Sites:** Upload photos (up to 5 images with auto-compression), add description, and mark location
+- **Geolocation Tracking:** Browser-based GPS to identify exact dump sites
+- **Interactive Map:** Visualize all waste reports on an interactive map with color-coded markers and clustering
+- **User Dashboard:** Track your reports, eco-points, and community impact
+- **Eco-Points System:** Earn points for verified cleanup actions (10 points per report, 20 for verification, 50 for resolution)
+- **User Profiles:** View account details and environmental impact stats
+- **Leaderboard:** Top contributors ranked by eco-points (admins excluded from competition)
 - **Email Notifications:** Automated emails for welcome, status updates, milestones, and admin alerts
-- 🛡️ **Admin Dashboard:** Comprehensive admin control panel with role-based access
+- **Admin Dashboard:** Comprehensive admin control panel with role-based access
   - Overview stats (users, reports, status breakdown)
   - User management (view, promote/demote roles)
   - Report management with admin notes system
   - Admin-only report status updates
-- 📝 **Admin Notes:** Internal notes system for tracking report investigations
-- 🔐 **Secure Authentication:** JWT-based auth with protected routes and role-based access control
-- 🔄 **Report Management:** View, update status (admin-only), and delete reports
-- 📱 **Mobile Responsive:** Works seamlessly on desktop, tablet, and mobile devices
-- ⚡ **Real-time Updates:** Dynamic data fetching with loading states
-- 🎨 **Modern UI/UX:** Glassmorphism effects, smooth Framer Motion animations, emerald/purple color scheme
-- 🔍 **Advanced Filters:** Filter reports by status, waste type, and severity
+- **Admin Notes:** Internal notes system for tracking report investigations
+- **Secure Authentication:** JWT-based auth with protected routes and role-based access control
+- **Report Management:** View, update status (admin-only), and delete reports
+- **Mobile Responsive:** Works seamlessly on desktop, tablet, and mobile devices
+- **Real-time Updates:** Dynamic data fetching with loading states
+- **Modern UI/UX:** Glassmorphism effects, smooth Framer Motion animations, emerald/purple color scheme
+- **Advanced Filters:** Filter reports by status, waste type, and severity
 
 ---
 
-## 🧠 Technology Stack
+## Technology Stack
 
 | Layer               | Technology                                     |
 | ------------------- | ---------------------------------------------- |
@@ -82,7 +82,7 @@ The MVP focuses on waste reporting and community engagement.
 
 ---
 
-## 📈 Market Analysis
+## Market Analysis
 
 - **Global Smart Waste Management Market:** Expected to reach **$5.5 billion by 2027** (Allied Market Research, 2024).
 - **African Urban Waste Projection:** Expected to **triple by 2050** (World Bank).
@@ -96,7 +96,7 @@ The MVP focuses on waste reporting and community engagement.
 
 ---
 
-## 💰 Monetization Model
+## Monetization Model
 
 | Revenue Stream             | Description                                                   |
 | -------------------------- | ------------------------------------------------------------- |
@@ -107,7 +107,7 @@ The MVP focuses on waste reporting and community engagement.
 
 ---
 
-## 🧬 Repository Structure
+## Repository Structure
 
 ```
 reviwa/
@@ -181,7 +181,7 @@ reviwa/
 
 ---
 
-## 📱 API Endpoints
+## API Endpoints
 
 ### Authentication
 
@@ -205,15 +205,15 @@ reviwa/
 
 ---
 
-## 🚀 Implementation Status
+## Implementation Status
 
 **Current Phase:** MVP Development (V2 Architecture Complete)
 
 ### MVP Development Progress (Q4 2025)
 
-- ✅ **Phase 1**: Requirements & Planning Complete
-- ✅ **Phase 2**: System Design & Architecture Complete
-- ✅ **Phase 3**: Core Implementation Complete
+- **Phase 1**: Requirements & Planning Complete
+- **Phase 2**: System Design & Architecture Complete
+- **Phase 3**: Core Implementation Complete
   - [x] Clean V2 architecture with ES6 modules
   - [x] JWT authentication system (register, login, protected routes)
   - [x] User management (profiles, eco-points, reports count)
@@ -228,7 +228,7 @@ reviwa/
   - [x] Modern UI with Tailwind CSS + Framer Motion animations
   - [x] Mobile-responsive design with hamburger menu
   - [x] Form validation & error handling
-- ✅ **Phase 4**: Testing & Deployment (Completed)
+- **Phase 4**: Testing & Deployment (Completed)
   - [x] Local development environment working
   - [x] MongoDB Atlas connection configured
   - [x] Cloudinary integration tested
@@ -237,45 +237,45 @@ reviwa/
   - [ ] End-to-end testing
   - [ ] Domain & SSL setup (using Netlify default)
 
-## 🦯 Roadmap (MVP → Expansion)
+## Roadmap (MVP → Expansion)
 
-**Phase 1 – MVP (Q4 2025) ✅:**
+**Phase 1 – MVP (Q4 2025) :**
 
-- ✅ Waste site reporting with image uploads and compression
-- ✅ User authentication & authorization (JWT)
-- ✅ Geolocation-based reporting (browser GPS)
-- ✅ Eco-points reward system (10 points per report, 20 for verification, 50 for resolution)
-- ✅ Interactive dashboard with user statistics
-- ✅ Reports list with filtering capabilities
-- ✅ Leaderboard showing top contributors (admins excluded)
-- ✅ User profiles with impact tracking
-- ✅ Report status management (pending, verified, in-progress, resolved, rejected)
-- ✅ Interactive map visualization with Leaflet (color-coded markers, clustering, popups)
-- ✅ Admin dashboard with role-based access control
-- ✅ Admin notes system for internal report tracking
-- ✅ User role management (admin promotion/demotion)
-- ✅ Email notification system (welcome, status updates, milestones, admin alerts)
+- [x]Waste site reporting with image uploads and compression
+- [x] User authentication & authorization (JWT)
+- [x] Geolocation-based reporting (browser GPS)
+- [x] Eco-points reward system (10 points per report, 20 for verification, 50 for resolution)
+- [x] Interactive dashboard with user statistics
+- [x] Reports list with filtering capabilities
+- [x] Leaderboard showing top contributors (admins excluded)
+- [x] User profiles with impact tracking
+- [x] Report status management (pending, verified, in-progress, resolved, rejected)
+- [x] Interactive map visualization with Leaflet (color-coded markers, clustering, popups)
+- [x] Admin dashboard with role-based access control
+- [x] Admin notes system for internal report tracking
+- [x] User role management (admin promotion/demotion)
+- [x] Email notification system (welcome, status updates, milestones, admin alerts)
 
 **Phase 2 – Enhanced Features (Q1 2026):**
 
-- ⏳ Report comments & community engagement features
-- ⏳ User suspension/ban system for moderation
-- ⏳ Advanced analytics with charts and trends
-- ⏳ Bulk actions for report management
-- ⏳ Heat map view for hotspot analysis
-- ⏳ Route optimization for cleanup crews
-- ⏳ Export reports to CSV/PDF
+- [] Report comments & community engagement features
+- [] User suspension/ban system for moderation
+- [] Advanced analytics with charts and trends
+- [] Bulk actions for report management
+- [] Heat map view for hotspot analysis
+- [] Route optimization for cleanup crews
+- [] Export reports to CSV/PDF
 
 **Phase 3 – Smart Expansion (Q2 2026):**
 
-- ⏳ Mobile app version (React Native)
-- ⏳ AI waste classification using image recognition
-- ⏳ IoT bin integration for smart monitoring
-- ⏳ Analytics dashboard for municipalities
-- ⏳ Advanced gamification features (badges, achievements)
-- ⏳ Multi-language support
+- [] Mobile app version (React Native)
+- [] AI waste classification using image recognition
+- [] IoT bin integration for smart monitoring
+- [] Analytics dashboard for municipalities
+- [] Advanced gamification features (badges, achievements)
+- [] Multi-language support
 
-## 🛠️ Quick Start for Developers
+## Quick Start for Developers
 
 ### Prerequisites
 
@@ -283,7 +283,7 @@ reviwa/
 - MongoDB Atlas account (or local MongoDB)
 - Cloudinary account (for image uploads)
 
-> **💡 Try it live:** You can access the deployed application at [https://reviwa.netlify.app/](https://reviwa.netlify.app/) without any installation.
+> **Try it live:** You can access the deployed application at [https://reviwa.netlify.app/](https://reviwa.netlify.app/) without any installation.
 
 ### Installation
 
@@ -391,18 +391,18 @@ See [SETUP.md](SETUP.md) for detailed setup instructions.
 
 ---
 
-## 💚 License
+## License
 
 This project is licensed under the **MIT License**.
 Feel free to fork, improve, and contribute responsibly.
 
 ---
 
-## 💬 Contact & Collaboration
+## Contact & Collaboration
 
 Interested in collaborating, funding, or integrating Reviwa into your city program?
 
-📧 **[reviwa.project@gmail.com](mailto:reviwa.project@gmail.com)**
-🌐 Coming soon: [reviwa.io](#)
+**[reviwa.project@gmail.com](mailto:reviwa.project@gmail.com)**
+Coming soon: [reviwa.io](https://reviwa.netlify.app)
 
 > _"Cleaner cities start with informed citizens." – Reviwa Team_
