@@ -3,16 +3,27 @@ import dotenv from 'dotenv';
 // Load environment variables as early as possible
 dotenv.config();
 
+const resolvedNodeEnv = process.env.NODE_ENV || 'development';
+
+if (resolvedNodeEnv !== 'production') {
+  process.env.MONGODB_URI =
+    process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/reviwa-v2';
+  process.env.JWT_SECRET =
+    process.env.JWT_SECRET || 'reviwa-dev-secret';
+  process.env.CLIENT_URL =
+    process.env.CLIENT_URL || 'http://localhost:5173';
+}
+
 // Log for debugging
 console.log('Environment loaded:', {
-  NODE_ENV: process.env.NODE_ENV,
+  NODE_ENV: resolvedNodeEnv,
   PORT: process.env.PORT,
   CLOUDINARY_URL: process.env.CLOUDINARY_URL ? 'SET ✓' : 'NOT SET ✗',
   EMAIL_CONFIG: process.env.EMAIL_USER ? 'SET ✓' : 'NOT SET ✗',
   EMAIL_FROM: process.env.EMAIL_FROM ? `SET: ${process.env.EMAIL_FROM}` : 'NOT SET (will use EMAIL_USER)'
 });
 
-export const NODE_ENV = process.env.NODE_ENV || 'development';
+export const NODE_ENV = resolvedNodeEnv;
 export const PORT = process.env.PORT || 5000;
 export const MONGODB_URI = process.env.MONGODB_URI;
 export const JWT_SECRET = process.env.JWT_SECRET;

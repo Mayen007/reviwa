@@ -22,40 +22,49 @@ if (process.env.SENTRY_DSN) {
   console.log('📡 Sentry not configured (SENTRY_DSN not set)');
 }
 
-// Connect to MongoDB (entrypoint only)
-connectDB();
+const startServer = async () => {
+  try {
+    // Connect to MongoDB before accepting requests so route queries do not buffer.
+    await connectDB();
 
-// Configure allowed origins to match app
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://reviwa.netlify.app',
-  process.env.CLIENT_URL,
-  // Allow all origins in development for mobile testing
-  process.env.NODE_ENV === 'development' ? '*' : null
-]
-  .filter(Boolean)
-  .map((url) => url.replace(/\/$/, ''));
+    // Configure allowed origins to match app
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'https://reviwa.netlify.app',
+      process.env.CLIENT_URL,
+      // Allow all origins in development for mobile testing
+      process.env.NODE_ENV === 'development' ? '*' : null
+    ]
+      .filter(Boolean)
+      .map((url) => url.replace(/\/$/, ''));
 
-// Start server with Socket.IO
-const httpServer = createServer(app);
+    // Start server with Socket.IO
+    const httpServer = createServer(app);
 
-const io = new IOServer(httpServer, {
-  cors: {
-    origin: allowedOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    credentials: true
+    const io = new IOServer(httpServer, {
+      cors: {
+        origin: allowedOrigins,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+        credentials: true
+      }
+    });
+
+    // Attach io to app locals so controllers can access it via req.app.locals.io
+    app.locals.io = io;
+
+    // Register socket handlers
+    registerSockets(io);
+
+    httpServer.listen(PORT, () => {
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
+      console.log(`📍 Environment: ${process.env.NODE_ENV}`);
+      console.log('⚡ Socket.IO initialized');
+    });
+  } catch (error) {
+    console.error(`❌ Failed to start server: ${error.message}`);
+    process.exit(1);
   }
-});
+};
 
-// Attach io to app locals so controllers can access it via req.app.locals.io
-app.locals.io = io;
-
-// Register socket handlers
-registerSockets(io);
-
-httpServer.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📍 Environment: ${process.env.NODE_ENV}`);
-  console.log('⚡ Socket.IO initialized');
-});
+startServer();
