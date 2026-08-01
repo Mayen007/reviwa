@@ -402,7 +402,7 @@ Feel free to fork, improve, and contribute responsibly.
 
 Interested in collaborating, funding, or integrating Reviwa into your city program?
 
-**[reviwa.project@gmail.com](mailto:reviwa.project@gmail.com)**
+**[reviwa.project@gmail.com](mailto:mayenakech9@gmail.com)**
 Coming soon: [reviwa.io](https://reviwa.netlify.app)
 
 > _"Cleaner cities start with informed citizens." – Reviwa Team_
