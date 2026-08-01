@@ -18,6 +18,14 @@ import {
   SparklesIcon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
+import {
+  Globe,
+  AlertTriangle,
+  Wind,
+  Star,
+  Target,
+  RefreshCw,
+} from "lucide-react";
 
 const LandingPage = () => {
   const [userInitials, setUserInitials] = useState([]);
@@ -118,8 +126,9 @@ const LandingPage = () => {
                   transition={{ delay: 0.2, duration: 0.5 }}
                   className="inline-block mb-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20"
                 >
-                  <span className="text-sm font-semibold">
-                    🌍 Building Sustainable Cities - SDG 11
+                  <span className="text-sm font-semibold flex items-center gap-2">
+                    <Globe className="w-4 h-4 inline" /> Building Sustainable
+                    Cities - SDG 11
                   </span>
                 </motion.div>
 
@@ -499,9 +508,9 @@ const LandingPage = () => {
                 initial={{ opacity: 0, scale: 0.5 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="inline-block px-4 py-2 bg-red-100 text-red-700 rounded-full font-semibold text-sm mb-4"
+                className="flex items-center justify-center mx-auto px-4 py-2 bg-red-100 text-red-700 rounded-full font-semibold text-sm mb-4 gap-2"
               >
-                🚨 The Crisis
+                <AlertTriangle className="w-4 h-4 inline" /> The Crisis
               </motion.span>
               <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
                 2 Billion Tons of Waste
@@ -555,7 +564,9 @@ const LandingPage = () => {
                 className="group relative bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-100 to-transparent rounded-full -mr-16 -mt-16 opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                <div className="text-6xl mb-4 relative z-10">💨</div>
+                <div className="text-6xl mb-4 relative z-10">
+                  <Wind className="w-12 h-12 mx-auto" />
+                </div>
                 <div className="text-5xl font-black text-red-600 mb-3 relative z-10">
                   45%
                 </div>
@@ -622,9 +633,9 @@ const LandingPage = () => {
                 initial={{ opacity: 0, scale: 0.5 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold text-sm mb-4"
+                className="flex px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold text-sm mb-4 items-center gap-2"
               >
-                ✨ The Solution
+                <Star className="w-4 h-4 inline" /> The Solution
               </motion.span>
               <h2 className="text-4xl sm:text-5xl font-bold mb-4">
                 Community + Technology
@@ -1120,7 +1131,9 @@ const LandingPage = () => {
               transition={{ duration: 0.6 }}
               className="bg-white rounded-2xl shadow-xl p-8 text-center"
             >
-              <div className="text-3xl mb-3">🎯</div>
+              <div className="text-3xl mb-3">
+                <Target className="w-8 h-8 mx-auto" />
+              </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 Supporting SDG 11
               </h3>
@@ -1915,7 +1928,8 @@ const LandingPage = () => {
             <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
               <p className="text-sm text-gray-400 text-center sm:text-left">
                 &copy; {new Date().getFullYear()} Reviwa. Building sustainable
-                cities. ♻️
+                cities.{" "}
+                <RefreshCw className="inline w-4 h-4 ml-1 text-gray-400" />
               </p>
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
