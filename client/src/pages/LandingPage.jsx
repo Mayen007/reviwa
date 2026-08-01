@@ -508,7 +508,7 @@ const LandingPage = () => {
                 initial={{ opacity: 0, scale: 0.5 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="flex items-center justify-center mx-auto px-4 py-2 bg-red-100 text-red-700 rounded-full font-semibold text-sm mb-4 gap-2"
+                className="inline-flex items-center px-4 py-2 bg-red-100 text-red-700 rounded-full font-semibold text-sm mb-4 gap-2"
               >
                 <AlertTriangle className="w-4 h-4 inline" /> The Crisis
               </motion.span>
@@ -633,7 +633,7 @@ const LandingPage = () => {
                 initial={{ opacity: 0, scale: 0.5 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="flex px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold text-sm mb-4 items-center gap-2"
+                className="inline-flex px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold text-sm mb-4 items-center gap-2"
               >
                 <Star className="w-4 h-4 inline" /> The Solution
               </motion.span>
