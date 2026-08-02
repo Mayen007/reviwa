@@ -17,6 +17,7 @@ import {
   ChevronRightIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { ShieldCheck, Leaf, AlertTriangle } from "lucide-react";
 
 const ReportDetail = () => {
   const { id } = useParams();
@@ -532,12 +533,12 @@ const ReportDetail = () => {
                     {report.reportedBy?.email}
                   </p>
                   {report.reportedBy?.role === "admin" ? (
-                    <p className="text-sm text-purple-600 font-medium mt-1">
-                      🛡️ Administrator
+                    <p className="text-sm text-purple-600 font-medium mt-1 flex items-center gap-1">
+                      <ShieldCheck className="w-4 h-4" /> Administrator
                     </p>
                   ) : (
-                    <p className="text-sm text-primary-600 font-medium mt-1">
-                      🌱 {report.reportedBy?.ecoPoints} eco points
+                    <p className="text-sm text-primary-600 font-medium mt-1 flex items-center gap-1">
+                      <Leaf className="w-4 h-4" /> {report.reportedBy?.ecoPoints} eco points
                     </p>
                   )}
                 </div>
@@ -665,8 +666,8 @@ const ReportDetail = () => {
                   )}
                   {!report.adminNotes && (
                     <div className="mt-3 p-2 bg-yellow-100 border border-yellow-300 rounded">
-                      <p className="text-sm text-yellow-800">
-                        ⚠️ No rejection reason was provided. The user will not
+                      <p className="text-sm text-yellow-800 flex items-start gap-1">
+                        <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" /> No rejection reason was provided. The user will not
                         know why their report was rejected.
                       </p>
                     </div>
@@ -778,8 +779,8 @@ const ReportDetail = () => {
 
                 {report.status === "rejected" && !report.adminNotes && (
                   <div className="mb-4 p-3 bg-yellow-50 border border-yellow-300 rounded-lg">
-                    <p className="text-sm text-yellow-800">
-                      ⚠️ No reason provided. Please contact support if you need
+                    <p className="text-sm text-yellow-800 flex items-start gap-1">
+                      <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" /> No reason provided. Please contact support if you need
                       more information.
                     </p>
                   </div>

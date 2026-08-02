@@ -8,6 +8,7 @@ import {
   CameraIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { Check } from "lucide-react";
 import { useLoading } from "../context/LoadingContext";
 
 const CreateReport = () => {
@@ -657,8 +658,8 @@ const CreateReport = () => {
               </button>
               {formData.location.coordinates[0] !== 0 ||
               formData.location.coordinates[1] !== 0 ? (
-                <p className="text-sm text-green-600 mt-2">
-                  ✓ Location captured: Lat{" "}
+                <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
+                  <Check className="w-4 h-4" /> Location captured: Lat{" "}
                   {formData.location.coordinates[1].toFixed(6)}, Lon{" "}
                   {formData.location.coordinates[0].toFixed(6)}
                 </p>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Crown } from "lucide-react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
@@ -951,8 +952,8 @@ const Admin = () => {
                             {report.reportedBy?.name}
                           </div>
                           {report.reportedBy?.role === "admin" && (
-                            <span className="text-xs text-purple-400">
-                              👑 Admin
+                            <span className="text-xs text-purple-400 flex items-center gap-1">
+                              <Crown className="w-3 h-3" /> Admin
                             </span>
                           )}
                         </td>
@@ -1061,7 +1062,9 @@ const Admin = () => {
                         By: {report.reportedBy?.name}
                       </span>
                       {report.reportedBy?.role === "admin" && (
-                        <span className="text-xs text-purple-400">👑</span>
+                        <span className="text-xs text-purple-400">
+                          <Crown className="w-3 h-3 inline" />
+                        </span>
                       )}
                     </div>
                     <div className="mb-3">

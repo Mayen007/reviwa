@@ -1,4 +1,5 @@
 import { useAuth } from "../context/AuthContext";
+import { Leaf } from "lucide-react";
 import {
   UserCircleIcon,
   MapPinIcon,
@@ -70,7 +71,7 @@ const Profile = () => {
           {user.role !== "admin" && (
             <div className="card text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🌱</span>
+                <Leaf className="w-8 h-8 text-green-600" />
               </div>
               <p className="text-3xl font-bold text-gray-900">
                 {Math.floor((user.ecoPoints || 0) / 50)}

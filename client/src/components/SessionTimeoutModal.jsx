@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Lightbulb } from "lucide-react";
 
 const SessionTimeoutModal = ({
   isOpen,
@@ -164,8 +165,8 @@ const SessionTimeoutModal = ({
                 </button>
               </div>
 
-              <p className="text-xs text-gray-400 text-center mt-4">
-                💡 Tip: Any activity will automatically extend your session
+              <p className="text-xs text-gray-400 text-center mt-4 flex items-center justify-center gap-1">
+                <Lightbulb className="w-3.5 h-3.5" /> Tip: Any activity will automatically extend your session
               </p>
             </div>
           </motion.div>

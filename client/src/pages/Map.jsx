@@ -12,6 +12,7 @@ import {
   XMarkIcon,
   ListBulletIcon,
 } from "@heroicons/react/24/outline";
+import { MapPin } from "lucide-react";
 import { useSocket } from "../context/SocketContext";
 
 // Fix for default marker icons in React Leaflet
@@ -58,7 +59,7 @@ const createCustomIcon = (status) => {
           align-items: center;
           justify-content: center;
           height: 100%;
-        ">📍</div>
+        "></div>
       </div>
     `,
     iconSize: [30, 30],
@@ -442,8 +443,8 @@ const Map = () => {
               >
                 <Popup>
                   <div className="text-center">
-                    <p className="font-semibold text-blue-600">
-                      📍 You are here
+                    <p className="font-semibold text-blue-600 flex items-center justify-center gap-1">
+                      <MapPin className="w-4 h-4" /> You are here
                     </p>
                   </div>
                 </Popup>

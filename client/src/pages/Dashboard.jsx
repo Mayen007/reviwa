@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Map, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -168,7 +169,7 @@ const Dashboard = () => {
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors"
               >
-                <span className="text-2xl">🗺️</span>
+                <Map className="w-6 h-6 text-green-600" />
               </motion.div>
               <h3 className="font-semibold text-gray-900 mb-2">
                 Interactive Map
@@ -187,7 +188,7 @@ const Dashboard = () => {
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors"
               >
-                <span className="text-2xl">🏆</span>
+                <Trophy className="w-6 h-6 text-purple-600" />
               </motion.div>
               <h3 className="font-semibold text-gray-900 mb-2">Leaderboard</h3>
               <p className="text-sm text-gray-600">See top contributors</p>
