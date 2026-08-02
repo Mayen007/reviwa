@@ -5,6 +5,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  NPM_FLAGS = "--include=dev"
 
 # SPA redirect rule - redirect all routes to index.html for client-side routing
 [[redirects]]
