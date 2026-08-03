@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 import User from '../models/User.model.js';
 import { MONGODB_URI } from '../config/env.js';
+import dns from 'dns';
+
+dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 /**
  * Script to make a user an admin

@@ -2,6 +2,9 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import dns from 'dns';
+
+dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,34 +15,34 @@ import Report from '../models/Report.model.js';
 import User from '../models/User.model.js';
 
 // Dummy locations across different cities (you can customize these)
-// Using Kampala, Uganda as an example - change to your preferred city
+// Using Nairobi, Kenya
 const dummyLocations = [
-  // Central Kampala
-  { lat: 0.3476, lng: 32.5825, address: 'Kampala Road, Central Division' },
-  { lat: 0.3136, lng: 32.5811, address: 'Nakasero Market Area' },
-  { lat: 0.3163, lng: 32.5822, address: 'Nakivubo Channel, Industrial Area' },
+  // Central Nairobi
+  { lat: -1.2841, lng: 36.8219, address: 'Kenyatta Avenue, CBD' },
+  { lat: -1.2833, lng: 36.8283, address: 'Gikomba Market Area' },
+  { lat: -1.2911, lng: 36.8460, address: 'Industrial Area' },
 
-  // Makindye Division
-  { lat: 0.2897, lng: 32.6013, address: 'Ggaba Road, Makindye' },
-  { lat: 0.2945, lng: 32.5847, address: 'Tank Hill, Muyenga' },
+  // Langata / Karen
+  { lat: -1.3133, lng: 36.7820, address: 'Kibera, Langata' },
+  { lat: -1.3197, lng: 36.7076, address: 'Karen' },
 
-  // Kawempe Division
-  { lat: 0.3723, lng: 32.5645, address: 'Bwaise II, Kawempe' },
-  { lat: 0.3842, lng: 32.5583, address: 'Kalerwe Market' },
+  // Kasarani / Roysambu
+  { lat: -1.2270, lng: 36.8974, address: 'Kasarani' },
+  { lat: -1.2167, lng: 36.8833, address: 'Roysambu' },
 
-  // Nakawa Division
-  { lat: 0.3371, lng: 32.6182, address: 'Kireka, Nakawa' },
-  { lat: 0.3289, lng: 32.6241, address: 'Banda Hill' },
+  // Embakasi / Eastlands
+  { lat: -1.3230, lng: 36.8950, address: 'Embakasi' },
+  { lat: -1.2833, lng: 36.8917, address: 'Umoja' },
 
-  // Rubaga Division
-  { lat: 0.3024, lng: 32.5498, address: 'Mengo, Rubaga' },
-  { lat: 0.2978, lng: 32.5523, address: 'Namirembe Road' },
+  // Dagoretti / Westlands
+  { lat: -1.3006, lng: 36.7513, address: 'Dagoretti' },
+  { lat: -1.2648, lng: 36.8065, address: 'Westlands' },
 
   // Outer areas
-  { lat: 0.3567, lng: 32.6523, address: 'Ntinda Shopping Complex' },
-  { lat: 0.2756, lng: 32.6134, address: 'Bunga, Ggaba' },
-  { lat: 0.3945, lng: 32.5234, address: 'Nansana Town' },
-  { lat: 0.2623, lng: 32.5912, address: 'Munyonyo' },
+  { lat: -1.2757, lng: 36.8442, address: 'Eastleigh' },
+  { lat: -1.2833, lng: 36.8667, address: 'Buruburu' },
+  { lat: -1.3167, lng: 36.8333, address: 'South B' },
+  { lat: -1.2977, lng: 36.7481, address: 'Kawangware' },
 ];
 
 const wasteTypes = ['plastic', 'organic', 'metal', 'glass', 'electronic', 'mixed'];
