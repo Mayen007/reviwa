@@ -205,10 +205,10 @@ const LandingPage = () => {
                         whileTap={{ scale: 0.95 }}
                       >
                         <Link
-                          to="/login"
+                          to="/map"
                           className="btn w-48 bg-white/10 hover:bg-white/20 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300"
                         >
-                          Sign in
+                          Explore Map
                         </Link>
                       </motion.div>
                     </>
@@ -1521,10 +1521,10 @@ const LandingPage = () => {
                       whileTap={{ scale: 0.95 }}
                     >
                       <Link
-                        to="/login"
-                        className="inline-flex items-center text-center gap-2 w-52 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-10 py-4 text-lg font-bold rounded-xl hover:bg-white/20 transition-all shadow-xl"
+                        to="/map"
+                        className="inline-flex items-center justify-center text-center gap-2 w-52 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-10 py-4 text-lg font-bold rounded-xl hover:bg-white/20 transition-all shadow-xl"
                       >
-                        Sign In
+                        Explore Map
                       </Link>
                     </motion.div>
                   </>
