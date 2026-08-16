@@ -65,7 +65,7 @@ const HeroSection = ({
                       to="/create-report"
                       className="btn bg-white inline-flex items-center justify-center text-primary-700 hover:bg-emerald-50 px-8 py-3.5 sm:py-4 text-base sm:text-lg font-bold shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 relative overflow-hidden group w-full sm:w-auto sm:min-w-[190px] rounded-xl"
                     >
-                      <span className="relative z-10">Create Report</span>
+                      <span className="relative z-10">Report Waste</span>
                       <svg
                         className="relative z-10 w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform inline"
                         fill="none"
@@ -88,10 +88,11 @@ const HeroSection = ({
                     className="w-full sm:w-auto"
                   >
                     <Link
-                      to="/reports"
-                      className="btn bg-white/10 hover:bg-white/20 text-white inline-flex items-center justify-center px-8 py-3.5 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300 w-full sm:w-auto sm:min-w-[190px] rounded-xl"
+                      to="/map"
+                      className="btn bg-white/10 hover:bg-white/20 text-white inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300 w-full sm:w-auto sm:min-w-[190px] rounded-xl"
                     >
-                      View Reports
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <span>Explore Live Map</span>
                     </Link>
                   </motion.div>
                 </>
@@ -107,8 +108,21 @@ const HeroSection = ({
                       className="btn bg-white inline-flex items-center justify-center text-primary-700 hover:bg-emerald-50 px-8 py-3.5 sm:py-4 text-base sm:text-lg font-bold shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 relative overflow-hidden group w-full sm:w-auto sm:min-w-[190px] rounded-xl"
                     >
                       <span className="relative z-10">
-                        Get Started Free →
+                        Report Waste
                       </span>
+                      <svg
+                        className="relative z-10 w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform inline"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 7l5 5m0 0l-5 5m5-5H6"
+                        />
+                      </svg>
                       <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-primary-400 opacity-0 group-hover:opacity-10 transition-opacity"></div>
                     </Link>
                   </motion.div>
@@ -119,9 +133,10 @@ const HeroSection = ({
                   >
                     <Link
                       to="/map"
-                      className="btn bg-white/10 hover:bg-white/20 text-white inline-flex items-center justify-center px-8 py-3.5 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300 w-full sm:w-auto sm:min-w-[190px] rounded-xl"
+                      className="btn bg-white/10 hover:bg-white/20 text-white inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-base sm:text-lg font-bold border-2 border-white/50 backdrop-blur-md transition-all duration-300 w-full sm:w-auto sm:min-w-[190px] rounded-xl"
                     >
-                      Explore Map
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <span>Explore Live Map</span>
                     </Link>
                   </motion.div>
                 </>
